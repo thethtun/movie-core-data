@@ -14,6 +14,16 @@ class MovieModel {
     
     private init() {}
     
+    func fetchMovieDetails(movieId : Int) {
+        let route = URL(string: "\(Routes.ROUTE_MOVIE_DETAILS)/\(movieId)?api_key=\(API.KEY)")!
+        URLSession.shared.dataTask(with: route) { (data, urlResponse, error) in
+            let response : MovieVO? = self.responseHandler(data: data, urlResponse: urlResponse, error: error)
+            if let data = response {
+                print(data)
+//                completion(data.results)
+            }
+            }.resume()
+    }
     
     func fetchTopRatedMovies(pageId : Int = 1, completion : @escaping (([MovieVO]) -> Void) )  {
         let route = URL(string: "\(Routes.ROUTE_TOP_RATED_MOVIES)&page=\(pageId)")!

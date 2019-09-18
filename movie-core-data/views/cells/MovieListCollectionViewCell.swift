@@ -16,7 +16,7 @@ class MovieListCollectionViewCell: UICollectionViewCell {
     var data : MovieVO? {
         didSet {
             if let data = data {
-                imageViewMoviePoster.sd_setImage(with: URL(string: "\(API.BASE_IMG_URL)\(data.poster_path)"), completed: nil)
+                imageViewMoviePoster.sd_setImage(with: URL(string: "\(API.BASE_IMG_URL)\(data.poster_path ?? "")"), completed: nil)
             }
         }
     }

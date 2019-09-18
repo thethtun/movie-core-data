@@ -11,4 +11,5 @@ import UIKit
 
 class Theme {
     static let background = UIColor(red:0.20, green:0.20, blue:0.20, alpha:1.0)
+    static let primaryTextColor = UIColor(red:0.95, green:0.95, blue:0.95, alpha:1.0)
 }
