@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14492.1" systemVersion="19A536g" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="MovieGenreVO" representedClassName="MovieGenreVO" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="movies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MovieVO" inverseName="genres" inverseEntity="MovieVO" syncable="YES"/>
+    </entity>
     <entity name="MovieVO" representedClassName="MovieVO" syncable="YES" codeGenerationType="class">
         <attribute name="adult" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="backdrop_path" optional="YES" attributeType="String" syncable="YES"/>
@@ -20,8 +25,10 @@
         <attribute name="video" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="vote_average" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="vote_count" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="genres" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MovieGenreVO" inverseName="movies" inverseEntity="MovieGenreVO" syncable="YES"/>
     </entity>
     <elements>
         <element name="MovieVO" positionX="-3957.4140625" positionY="-2913.03125" width="128" height="328"/>
+        <element name="MovieGenreVO" positionX="-3682.78515625" positionY="-2848.66796875" width="128" height="88"/>
     </elements>
 </model>

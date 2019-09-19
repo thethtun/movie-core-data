@@ -17,21 +17,23 @@ class MovieModel {
     func fetchMovieDetails(movieId : Int) {
         let route = URL(string: "\(Routes.ROUTE_MOVIE_DETAILS)/\(movieId)?api_key=\(API.KEY)")!
         URLSession.shared.dataTask(with: route) { (data, urlResponse, error) in
-            let response : MovieVO? = self.responseHandler(data: data, urlResponse: urlResponse, error: error)
+            let response : MovieInfoResponse? = self.responseHandler(data: data, urlResponse: urlResponse, error: error)
             if let data = response {
-                print(data)
+//                print(data)
 //                completion(data.results)
             }
             }.resume()
     }
     
-    func fetchTopRatedMovies(pageId : Int = 1, completion : @escaping (([MovieVO]) -> Void) )  {
+    func fetchTopRatedMovies(pageId : Int = 1, completion : @escaping (([MovieInfoResponse]) -> Void) )  {
         let route = URL(string: "\(Routes.ROUTE_TOP_RATED_MOVIES)&page=\(pageId)")!
         URLSession.shared.dataTask(with: route) { (data, urlResponse, error) in
             let response : MovieListResponse? = self.responseHandler(data: data, urlResponse: urlResponse, error: error)
             if let data = response {
-                print(data.results.count)
+//                print(data.results.count)
                 completion(data.results)
+            } else {
+                completion([MovieInfoResponse]())
             }
         }.resume()
         
@@ -41,10 +43,9 @@ class MovieModel {
         
         let route = URL(string: Routes.ROUTE_MOVIE_GENRES)!
         let task = URLSession.shared.dataTask(with: route) { (data, urlResponse, error) in
-            let response : MovieGenreResponse? = self.responseHandler(data: data, urlResponse: urlResponse, error: error)
-            
+            let response : MovieGenreListResponse? = self.responseHandler(data: data, urlResponse: urlResponse, error: error)
             if let data = response {
-//                print(data)
+                print(data.genres.count)
             }
         }
         task.resume()

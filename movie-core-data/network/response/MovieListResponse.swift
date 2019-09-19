@@ -12,5 +12,5 @@ struct MovieListResponse : Codable {
     let page : Int
     let total_results : Int
     let total_pages : Int
-    let results : [MovieVO]
+    let results : [MovieInfoResponse]
 }

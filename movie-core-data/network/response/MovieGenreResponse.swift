@@ -9,5 +9,6 @@
 import Foundation
 
 struct MovieGenreResponse : Codable {
-    let genres : [MovieGenreVO]
+    let id : Int
+    let name : String
 }

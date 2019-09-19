@@ -30,7 +30,7 @@ class MovieDetailsViewController: UIViewController {
         super.viewDidLoad()
         
         
-        MovieModel.shared.fetchMovieDetails(movieId: data?.id ?? 0)
+        MovieModel.shared.fetchMovieDetails(movieId: Int(data?.id ?? 0))
         
 
         self.view.addSubview(scrollViewPrimary)

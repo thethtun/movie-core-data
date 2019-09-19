@@ -7,30 +7,54 @@
 //
 
 import UIKit
+import CoreData
 
 class MovieListViewController: UIViewController {
-
+    
     @IBOutlet weak var collectionViewMovieList : UICollectionView!
     
-    var movies = [MovieVO]()
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action:#selector(handleRefresh(_:)),for: .valueChanged)
+        refreshControl.tintColor = UIColor.red
+        return refreshControl
+    }()
+    
+    var movies = [MovieInfoResponse]()
+    
+    var fetchResultController: NSFetchedResultsController<MovieVO>!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         
+        initView()
         
-//        MovieModel.shared.fetchMovieGenres()
-        MovieModel.shared.fetchTopRatedMovies(pageId: 1) { [weak self] data in
-            DispatchQueue.main.async {
-                self?.movies = data
-                self?.collectionViewMovieList.reloadData()
+        //Remove all cached data in URL Response
+        URLCache.shared.removeAllCachedResponses()
+
+        MovieModel.shared.fetchMovieGenres()
+
+        //FetchRequest
+        let fetchRequest : NSFetchRequest<MovieVO> = MovieVO.fetchRequest()
+        let sortDescriptor = NSSortDescriptor(key: "popularity", ascending: false)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.shared.viewContext, sectionNameKeyPath: nil, cacheName: "movies")
+        fetchResultController.delegate = self
+        
+        do {
+            try fetchResultController.performFetch()
+            if let objects = fetchResultController.fetchedObjects, objects.count == 0 {
+                self.fetchTopRatedMovies()
             }
-            
+        } catch {
+            DialogUtil.showAlert(viewController: self, title: "Error", message: "Failed to fetch data from database")
         }
         
-        collectionViewMovieList.dataSource = self
-        collectionViewMovieList.delegate = self
-        collectionViewMovieList.backgroundColor = Theme.background
+        
+//        if let result = try? CoreDataStack.shared.viewContext.fetch(fetchRequest) {
+//            print("========== Total Saved Data : \(result.count) ==========")
+//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -39,21 +63,85 @@ class MovieListViewController: UIViewController {
         self.navigationItem.title = "Movie List"
     }
 
-
+    private func initView() {
+        
+        collectionViewMovieList.dataSource = self
+        collectionViewMovieList.delegate = self
+        collectionViewMovieList.backgroundColor = Theme.background
+        
+        //Add RefreshControl
+        self.collectionViewMovieList.addSubview(refreshControl)
+        
+    }
+    
+    
+    fileprivate func fetchTopRatedMovies() {
+        //        MovieModel.shared.fetchMovieGenres()
+        MovieModel.shared.fetchTopRatedMovies(pageId: 1) { [weak self] data in
+            
+            DispatchQueue.main.async {
+                
+                data.forEach({ (movieInfo) in
+                    MovieInfoResponse.saveMovieEntity(data: movieInfo, context: CoreDataStack.shared.viewContext)
+                })
+                
+//                self?.movies = data
+//                self?.collectionViewMovieList.reloadData()
+                self?.refreshControl.endRefreshing()
+            }
+            
+        }
+    }
+    
+    @IBAction func onClickAddDummyData(_ sender: Any) {
+        let movieVO = fetchResultController.object(at: IndexPath(item: 1, section: 0))
+        let movieInfo = MovieInfoResponse(
+            popularity: movieVO.popularity,
+            vote_count: 0,
+            video: movieVO.video,
+            poster_path: movieVO.poster_path,
+            id: 100,
+            adult: movieVO.adult,
+            backdrop_path: movieVO.backdrop_path,
+            original_language: movieVO.original_language,
+            original_title: "",
+            genre_ids: nil,
+            title: "",
+            vote_average: 0.0,
+            overview: "", release_date: "", budget: 0, homepage: "", imdb_id: "", revenue: 0, runtime: 0, tagline: "")
+        print("dummy data added")
+        MovieInfoResponse.saveMovieEntity(data: movieInfo, context: CoreDataStack.shared.viewContext)
+        
+    }
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
+        if let data = fetchResultController.fetchedObjects, !data.isEmpty {
+            data.forEach { movie in
+                CoreDataStack.shared.viewContext.delete(movie)
+                try? CoreDataStack.shared.viewContext.save()
+            }
+        }
+        
+        self.fetchTopRatedMovies()
+    }
 }
 
 extension MovieListViewController: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return fetchResultController.sections?.count ?? 1
+    }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return movies.count
+        return fetchResultController.sections?[section].numberOfObjects ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let movie = fetchResultController.object(at: indexPath)
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieListCollectionViewCell.identifier, for: indexPath) as? MovieListCollectionViewCell else {
             return UICollectionViewCell()
         }
         
-        cell.contentView.backgroundColor = UIColor.yellow
-        cell.data = self.movies[indexPath.row]
+//        cell.contentView.backgroundColor = UIColor.yellow
+//        cell.data = self.movies[indexPath.row]
+        cell.data = movie
         return cell
     }
 }
@@ -66,9 +154,11 @@ extension MovieListViewController : UICollectionViewDelegate {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let movieDetailsViewController = segue.destination as? MovieDetailsViewController {
+            
             if let indexPaths = collectionViewMovieList.indexPathsForSelectedItems, indexPaths.count > 0 {
                 let selectedIndexPath = indexPaths[0]
-                let movie = movies[selectedIndexPath.row]
+//                let movie = movies[selectedIndexPath.row]
+                let movie = fetchResultController.object(at: selectedIndexPath)
                 
                 movieDetailsViewController.data = movie
                 
@@ -86,3 +176,21 @@ extension MovieListViewController : UICollectionViewDelegateFlowLayout {
         return CGSize(width: width, height: width * 1.45)
     }
 }
+
+extension MovieListViewController : NSFetchedResultsControllerDelegate {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            collectionViewMovieList.insertItems(at: [newIndexPath!])
+            break
+        case .delete:
+            collectionViewMovieList.deleteItems(at: [indexPath!])
+            break
+        default:()
+        }
+    }
+    
+}
+
+
+

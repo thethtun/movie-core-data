@@ -49,11 +49,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     lazy var persistentContainer : NSPersistentContainer  = {
         let container = NSPersistentContainer(name: "Movie")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+        let psc = container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
+        
+        let description = NSPersistentStoreDescription()
+        
+        description.shouldInferMappingModelAutomatically = true
+        description.shouldMigrateStoreAutomatically = true
+        
+        container.persistentStoreDescriptions = [description]
         
         return container
     }()
