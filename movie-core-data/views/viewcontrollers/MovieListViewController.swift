@@ -39,15 +39,6 @@ class MovieListViewController: UIViewController {
 
         initMovieListFetchRequest()
         
-        if let actionGenre = MovieGenreVO.getMovieGenreVOById(genreId: 80) {
-            if let movies = MovieVO.getMoviesByGenre(genre: actionGenre) {
-                movies.forEach { movie in
-                    print("\(movie.original_title ?? "")")
-                }
-            }
-        }
-        
-        
     }
     
     fileprivate func initGenreListFetchRequest() {

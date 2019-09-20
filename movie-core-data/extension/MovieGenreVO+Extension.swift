@@ -28,4 +28,11 @@ extension MovieGenreVO {
         
     }
     
+    static func getFetchRequest() -> NSFetchRequest<MovieGenreVO> {
+        let fetchRequest : NSFetchRequest<MovieGenreVO> = MovieGenreVO.fetchRequest()
+        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        return fetchRequest
+    }
 }

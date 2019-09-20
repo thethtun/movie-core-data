@@ -41,9 +41,7 @@ extension MovieVO {
     }
     
     static func getMoviesByGenre(genre : MovieGenreVO) -> [MovieVO]? {
-        let fetchRequest : NSFetchRequest<MovieVO> = MovieVO.fetchRequest()
-        let predicate = NSPredicate(format: "genres CONTAINS[cd] %@", genre)
-        fetchRequest.predicate = predicate
+        let fetchRequest = getMoviesByGenreFetchRequest(genre: genre)
         
         do {
             let data = try CoreDataStack.shared.viewContext.fetch(fetchRequest)
@@ -55,5 +53,16 @@ extension MovieVO {
             print("failed to fetch movie with genre \(genre.name ?? ""): \(error.localizedDescription)")
             return nil
         }
+    }
+    
+    static func getMoviesByGenreFetchRequest(genre : MovieGenreVO) -> NSFetchRequest<MovieVO> {
+        let fetchRequest : NSFetchRequest<MovieVO> = MovieVO.fetchRequest()
+        let predicate = NSPredicate(format: "genres CONTAINS[cd] %@", genre)
+        fetchRequest.predicate = predicate
+        
+        let sortDescriptor = NSSortDescriptor(key: "popularity", ascending: false)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        return fetchRequest
     }
 }
