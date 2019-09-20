@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 
-class DialogUtil {
+class Dialog {
     static func showAlert(viewController : UIViewController, title : String, message : String) {
         let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))

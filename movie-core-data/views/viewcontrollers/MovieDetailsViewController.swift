@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class MovieDetailsViewController: UIViewController {
 
@@ -24,15 +25,39 @@ class MovieDetailsViewController: UIViewController {
         return ui
     }()
     
-    var data : MovieVO?
+    var movieId : Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        initView()
         
-        MovieModel.shared.fetchMovieDetails(movieId: Int(data?.id ?? 0))
+        if NetworkUtils.checkReachable() == false {
+            Dialog.showAlert(viewController: self, title: "Error", message: "No Internet Connection!")
+            if let data = MovieVO.getMovieById(movieId: movieId) {
+                self.bindData(data: data)
+            }
+            return
+        }
         
-
+        MovieModel.shared.fetchMovieDetails(movieId: movieId) { movieDetails in
+            
+            let fetchRequest : NSFetchRequest<MovieVO> = MovieVO.fetchRequest()
+            let predicate = NSPredicate(format: "id == %d", self.movieId)
+            fetchRequest.predicate = predicate
+            if let movies = try? CoreDataStack.shared.viewContext.fetch(fetchRequest), !movies.isEmpty {
+                MovieInfoResponse.updateMovieEntity(existingData: movies[0], newData: movieDetails, context: CoreDataStack.shared.viewContext)
+                
+                DispatchQueue.main.async { [weak self] in
+                    self?.bindData(data: movies[0])
+                }
+                
+            }
+        }
+        
+    }
+    
+    fileprivate func initView() {
         self.view.addSubview(scrollViewPrimary)
         scrollViewPrimary.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
         scrollViewPrimary.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
@@ -48,19 +73,30 @@ class MovieDetailsViewController: UIViewController {
         stackViewTemp.bottomAnchor.constraint(equalTo: self.scrollViewPrimary.bottomAnchor, constant: 20).isActive = true
         stackViewTemp.centerXAnchor.constraint(equalTo: self.scrollViewPrimary.centerXAnchor).isActive = true
         
+    }
+    
+    fileprivate func bindData(data : MovieVO) {
         let overviewTitle = WidgetGenerator.getUILabelTitle("Overview")
         stackViewTemp.addArrangedSubview(overviewTitle)
-        let movieOverview = data?.overview ?? "No overview"
+        let movieOverview = data.overview ?? "No overview"
         stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo(movieOverview))
         
         stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo(" ")) //Add some spacing
         
         let releaseTitle = WidgetGenerator.getUILabelTitle("Release Date")
         stackViewTemp.addArrangedSubview(releaseTitle)
-        let releasedDate = data?.release_date ?? "No release date"
+        let releasedDate = data.release_date ?? "No release date"
         stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo(releasedDate))
         
-    
+        stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo(" ")) //Add some spacing
+        
+        let genreTitle = WidgetGenerator.getUILabelTitle("Genres")
+        stackViewTemp.addArrangedSubview(genreTitle)
+        data.genres?.allObjects.forEach{ data in
+            if let genre = data as? MovieGenreVO {
+                stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo(genre.name ?? "undefined"))
+            }
+        }
     }
     
 }

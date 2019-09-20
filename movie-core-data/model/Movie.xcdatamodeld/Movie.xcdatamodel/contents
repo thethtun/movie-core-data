@@ -22,6 +22,6 @@
         <attribute name="vote_count" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <elements>
-        <element name="MovieVO" positionX="-3957.4140625" positionY="-2913.03125" width="128" height="328"/>
+        <element name="MovieVO" positionX="-10945.84375" positionY="-3001.03515625" width="128" height="330"/>
     </elements>
 </model>

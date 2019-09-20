@@ -59,9 +59,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         description.shouldInferMappingModelAutomatically = true
         description.shouldMigrateStoreAutomatically = true
-        
+
         container.persistentStoreDescriptions = [description]
-        
+//
         return container
     }()
     

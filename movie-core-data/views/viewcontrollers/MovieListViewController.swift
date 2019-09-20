@@ -24,6 +24,9 @@ class MovieListViewController: UIViewController {
     
     var fetchResultController: NSFetchedResultsController<MovieVO>!
     
+    let TAG : String = "MovieListViewController"
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,8 +35,42 @@ class MovieListViewController: UIViewController {
         //Remove all cached data in URL Response
         URLCache.shared.removeAllCachedResponses()
 
-        MovieModel.shared.fetchMovieGenres()
+        initGenreListFetchRequest()
 
+        initMovieListFetchRequest()
+        
+        if let actionGenre = MovieGenreVO.getMovieGenreVOById(genreId: 80) {
+            if let movies = MovieVO.getMoviesByGenre(genre: actionGenre) {
+                movies.forEach { movie in
+                    print("\(movie.original_title ?? "")")
+                }
+            }
+        }
+        
+        
+    }
+    
+    fileprivate func initGenreListFetchRequest() {
+        //FetchRequest
+        let fetchRequest : NSFetchRequest<MovieGenreVO> = MovieGenreVO.fetchRequest()
+        let sortDescriptor = NSSortDescriptor(key: "id", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        if let data = try? CoreDataStack.shared.viewContext.fetch(fetchRequest) {
+            if data.isEmpty {
+                //Fetch Movie Genre
+                MovieModel.shared.fetchMovieGenres{ genreResponses in
+                    genreResponses.forEach { genre in
+                        MovieGenreResponse.saveMovieGenreEntity(data: genre, context: CoreDataStack.shared.viewContext)
+                    }
+                }
+            } else {
+                print("Existing Movie Genre Count : \(data.count)")
+            }
+        }
+    }
+    
+    fileprivate func initMovieListFetchRequest() {
         //FetchRequest
         let fetchRequest : NSFetchRequest<MovieVO> = MovieVO.fetchRequest()
         let sortDescriptor = NSSortDescriptor(key: "popularity", ascending: false)
@@ -48,13 +85,8 @@ class MovieListViewController: UIViewController {
                 self.fetchTopRatedMovies()
             }
         } catch {
-            DialogUtil.showAlert(viewController: self, title: "Error", message: "Failed to fetch data from database")
+            Dialog.showAlert(viewController: self, title: "Error", message: "Failed to fetch data from database")
         }
-        
-        
-//        if let result = try? CoreDataStack.shared.viewContext.fetch(fetchRequest) {
-//            print("========== Total Saved Data : \(result.count) ==========")
-//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -72,11 +104,15 @@ class MovieListViewController: UIViewController {
         //Add RefreshControl
         self.collectionViewMovieList.addSubview(refreshControl)
         
+        
     }
     
     
     fileprivate func fetchTopRatedMovies() {
-        //        MovieModel.shared.fetchMovieGenres()
+        if NetworkUtils.checkReachable() == false {
+            Dialog.showAlert(viewController: self, title: "Error", message: "No Internet Connection!")
+            return
+        }
         MovieModel.shared.fetchTopRatedMovies(pageId: 1) { [weak self] data in
             
             DispatchQueue.main.async {
@@ -85,8 +121,6 @@ class MovieListViewController: UIViewController {
                     MovieInfoResponse.saveMovieEntity(data: movieInfo, context: CoreDataStack.shared.viewContext)
                 })
                 
-//                self?.movies = data
-//                self?.collectionViewMovieList.reloadData()
                 self?.refreshControl.endRefreshing()
             }
             
@@ -139,8 +173,8 @@ extension MovieListViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-//        cell.contentView.backgroundColor = UIColor.yellow
-//        cell.data = self.movies[indexPath.row]
+//        print("Genre Count : \(movie.genres?.count ?? 0)")
+        
         cell.data = movie
         return cell
     }
@@ -157,10 +191,8 @@ extension MovieListViewController : UICollectionViewDelegate {
             
             if let indexPaths = collectionViewMovieList.indexPathsForSelectedItems, indexPaths.count > 0 {
                 let selectedIndexPath = indexPaths[0]
-//                let movie = movies[selectedIndexPath.row]
                 let movie = fetchResultController.object(at: selectedIndexPath)
-                
-                movieDetailsViewController.data = movie
+                movieDetailsViewController.movieId = Int(movie.id)
                 
                 self.navigationItem.title = movie.original_title
             }
