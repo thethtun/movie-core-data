@@ -10,6 +10,26 @@ import Foundation
 import CoreData
 
 extension MovieGenreVO {
+    
+    static func saveMovieGenres(data : [MovieGenreResponse], context: NSManagedObjectContext) {
+        data.forEach{ item in
+            saveMovieGenreVO(data: item, context: context)
+        }
+    }
+    
+    static func saveMovieGenreVO(data : MovieGenreResponse, context: NSManagedObjectContext) {
+        let genre = MovieGenreVO(context: context)
+        genre.id = Int32(data.id)
+        genre.name = data.name
+        
+        do {
+            try context.save()
+        } catch {
+            print("Failed to save genre : \(error.localizedDescription)")
+        }
+    }
+    
+    
     static func getMovieGenreVOById(genreId : Int) -> MovieGenreVO? {
         let fetchRequest : NSFetchRequest<MovieGenreVO> = MovieGenreVO.fetchRequest()
         let predicate = NSPredicate(format: "id == %d", genreId)

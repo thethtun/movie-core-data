@@ -14,3 +14,6 @@ class Routes {
     static let ROUTE_MOVIE_DETAILS = "\(API.BASE_URL)/movie"
     static let ROUTE_SEACRH_MOVIES = "\(API.BASE_URL)/search/movie"
 }
+
+
+

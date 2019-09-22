@@ -21,10 +21,10 @@ class MovieListViewController: UIViewController {
     }()
     
     var movies = [MovieInfoResponse]()
-    var movieVO = [MovieVO]()
     
     let TAG : String = "MovieListViewController"
     
+    var fetchRequestController : NSFetchedResultsController<MovieVO>!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +42,30 @@ class MovieListViewController: UIViewController {
     
     fileprivate func initGenreListFetchRequest() {
         //TODO : Fetch Genre List
+        //FetchRequest
+        let fetchRequest : NSFetchRequest<MovieGenreVO> = MovieGenreVO.fetchRequest()
+        
+        
+        
+        do {
+            let genres = try CoreDataStack.shared.viewContext.fetch(fetchRequest)
+            if genres.isEmpty {
+                fetchGenresList()
+            }
+        } catch {
+            print("TAG: \(error.localizedDescription)")
+        }
+    }
+    
+    private func fetchGenresList() {
+        if NetworkUtils.checkReachable() == false {
+            Dialog.showAlert(viewController: self, title: "Error", message: "No Internet Connection!")
+            return
+        }
+        
+        MovieModel.shared.fetchMovieGenres{ genreInfoResponse in
+            MovieGenreVO.saveMovieGenres(data: genreInfoResponse, context: CoreDataStack.shared.viewContext)
+        }
     }
     
     fileprivate func initMovieListFetchRequest() {
@@ -50,8 +74,28 @@ class MovieListViewController: UIViewController {
         let sortDescriptor = NSSortDescriptor(key: "popularity", ascending: false)
         fetchRequest.sortDescriptors = [sortDescriptor]
         
+        fetchRequestController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.shared.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        fetchRequestController.delegate = self
         
-        //TODO : Fetch & Display Movie Info
+        do {
+            try fetchRequestController.performFetch()
+            
+            if let movies = fetchRequestController.fetchedObjects, movies.isEmpty {
+                self.fetchTopRatedMovies()
+            }
+        } catch {
+            print("TAG: \(error.localizedDescription)")
+        }
+        
+        
+//        //TODO : Fetch & Display Movie Info
+//        if let results = try? CoreDataStack.shared.viewContext.fetch(fetchRequest) {
+//            if results.isEmpty {
+//                fetchTopRatedMovies()
+//            } else {
+////                bindData(movies: results)
+//            }
+//        }
         
     }
     
@@ -72,7 +116,6 @@ class MovieListViewController: UIViewController {
         
     }
     
-    
     fileprivate func fetchTopRatedMovies() {
         if NetworkUtils.checkReachable() == false {
             Dialog.showAlert(viewController: self, title: "Error", message: "No Internet Connection!")
@@ -85,6 +128,7 @@ class MovieListViewController: UIViewController {
             })
             
             DispatchQueue.main.async {
+                self?.initMovieListFetchRequest()
                 self?.refreshControl.endRefreshing()
             }
             
@@ -100,14 +144,14 @@ class MovieListViewController: UIViewController {
 
 extension MovieListViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        return fetchRequestController.sections?.count ?? 1
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return movieVO.count
+        return fetchRequestController.sections![section].numberOfObjects
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let movie = movieVO[indexPath.row]
+        let movie = fetchRequestController.object(at: indexPath)
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieListCollectionViewCell.identifier, for: indexPath) as? MovieListCollectionViewCell else {
             return UICollectionViewCell()
         }
@@ -130,13 +174,19 @@ extension MovieListViewController : UICollectionViewDelegate {
             
             if let indexPaths = collectionViewMovieList.indexPathsForSelectedItems, indexPaths.count > 0 {
                 let selectedIndexPath = indexPaths[0]
-                let movie = movieVO[selectedIndexPath.row]
+                let movie = fetchRequestController.object(at: selectedIndexPath)
                 movieDetailsViewController.movieId = Int(movie.id)
                 
                 self.navigationItem.title = movie.original_title
             }
             
         }
+    }
+}
+
+extension MovieListViewController : NSFetchedResultsControllerDelegate {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        collectionViewMovieList.reloadData()
     }
 }
 
