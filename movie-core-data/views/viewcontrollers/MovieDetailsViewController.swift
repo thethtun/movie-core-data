@@ -25,6 +25,14 @@ class MovieDetailsViewController: UIViewController {
         return ui
     }()
     
+    let activityIndicator : UIActivityIndicatorView = {
+        let ui = UIActivityIndicatorView()
+        ui.translatesAutoresizingMaskIntoConstraints = false
+        ui.color = UIColor.red
+        ui.startAnimating()
+        return ui
+    }()
+    
     var movieId : Int = 0
     
     override func viewDidLoad() {
@@ -78,9 +86,15 @@ class MovieDetailsViewController: UIViewController {
         stackViewTemp.bottomAnchor.constraint(equalTo: self.scrollViewPrimary.bottomAnchor, constant: 20).isActive = true
         stackViewTemp.centerXAnchor.constraint(equalTo: self.scrollViewPrimary.centerXAnchor).isActive = true
         
+        scrollViewPrimary.addSubview(activityIndicator)
+        activityIndicator.centerXAnchor.constraint(equalTo: scrollViewPrimary.centerXAnchor, constant: 0).isActive = true
+        activityIndicator.centerYAnchor.constraint(equalTo: scrollViewPrimary.centerYAnchor, constant: -100).isActive = true
+        activityIndicator.startAnimating()
     }
     
     fileprivate func bindData(data : MovieVO) {
+        activityIndicator.stopAnimating()
+        
         let overviewTitle = WidgetGenerator.getUILabelTitle("Overview")
         stackViewTemp.addArrangedSubview(overviewTitle)
         let movieOverview = data.overview ?? "No overview"
