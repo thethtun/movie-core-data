@@ -106,12 +106,11 @@ class MovieListViewController: UIViewController {
         }
         MovieModel.shared.fetchTopRatedMovies(pageId: 1) { [weak self] data in
             
+            data.forEach({ (movieInfo) in
+                MovieInfoResponse.saveMovieEntity(data: movieInfo, context: CoreDataStack.shared.viewContext)
+            })
+            
             DispatchQueue.main.async {
-                
-                data.forEach({ (movieInfo) in
-                    MovieInfoResponse.saveMovieEntity(data: movieInfo, context: CoreDataStack.shared.viewContext)
-                })
-                
                 self?.refreshControl.endRefreshing()
             }
             

@@ -83,6 +83,10 @@ extension SearchMovieViewController : UISearchBarDelegate {
         MovieModel.shared.fetchMoviesByName(movieName: searchedMovie) { [weak self] results in
             self?.searchedResult = results
             
+            results.forEach({ (movieInfo) in
+                MovieInfoResponse.saveMovieEntity(data: movieInfo, context: CoreDataStack.shared.viewContext)
+            })
+            
             DispatchQueue.main.async {
                 if results.isEmpty {
                     self?.labelMovieNotFound.text = "No movie found with name \"\(searchedMovie)\" "

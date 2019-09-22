@@ -63,14 +63,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Movies" id="AqU-4o-HeD">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="caQ-Rx-se1">
-                            <color key="tintColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <connections>
-                                <action selector="onClickAddDummyData:" destination="BYZ-38-t0r" id="q8L-e2-M7c"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Movies" id="AqU-4o-HeD"/>
                     <connections>
                         <outlet property="collectionViewMovieList" destination="rw0-yU-3LP" id="MD2-K7-Fmu"/>
                     </connections>
@@ -408,6 +401,6 @@
         <image name="icons8-search_filled" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="gHj-gA-vly"/>
+        <segue reference="XnZ-ve-WRS"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -97,11 +97,23 @@ class MovieDetailsViewController: UIViewController {
         
         let genreTitle = WidgetGenerator.getUILabelTitle("Genres")
         stackViewTemp.addArrangedSubview(genreTitle)
-        data.genres?.allObjects.forEach{ data in
-            if let genre = data as? MovieGenreVO {
-                stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo(genre.name ?? "undefined"))
+        if let genres = data.genres, genres.count > 0 {
+            genres.allObjects.forEach{ data in
+                if let genre = data as? MovieGenreVO {
+                    stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo(genre.name ?? "undefined"))
+                }
             }
         }
+        
+        
+        stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo(" ")) //Add some spacing
+        
+        let ratinTitle = WidgetGenerator.getUILabelTitle("Rating")
+        stackViewTemp.addArrangedSubview(ratinTitle)
+        stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo("\(data.vote_average)"))
+        
+        
+        
     }
     
 }
