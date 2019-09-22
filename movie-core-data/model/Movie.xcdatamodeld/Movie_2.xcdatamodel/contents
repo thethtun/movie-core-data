@@ -28,7 +28,7 @@
         <relationship name="genres" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MovieGenreVO" inverseName="movies" inverseEntity="MovieGenreVO" syncable="YES"/>
     </entity>
     <elements>
-        <element name="MovieGenreVO" positionX="-3774" positionY="-2630.3125" width="128" height="88"/>
+        <element name="MovieGenreVO" positionX="-3773.3359375" positionY="-2658.23046875" width="128" height="88"/>
         <element name="MovieVO" positionX="-3957.4140625" positionY="-2913.03125" width="128" height="343"/>
     </elements>
 </model>

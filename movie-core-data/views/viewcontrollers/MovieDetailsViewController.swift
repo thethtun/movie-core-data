@@ -47,12 +47,17 @@ class MovieDetailsViewController: UIViewController {
             fetchRequest.predicate = predicate
             if let movies = try? CoreDataStack.shared.viewContext.fetch(fetchRequest), !movies.isEmpty {
                 MovieInfoResponse.updateMovieEntity(existingData: movies[0], newData: movieDetails, context: CoreDataStack.shared.viewContext)
-                
                 DispatchQueue.main.async { [weak self] in
                     self?.bindData(data: movies[0])
                 }
+            } else {
+                let movieVO = MovieInfoResponse.convertToMovieVO(data: movieDetails, context: CoreDataStack.shared.viewContext)
                 
+                DispatchQueue.main.async { [weak self] in
+                    self?.bindData(data: movieVO)
+                }
             }
+            
         }
         
     }

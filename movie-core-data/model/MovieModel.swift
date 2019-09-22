@@ -14,6 +14,16 @@ class MovieModel {
     
     private init() {}
     
+    func fetchMoviesByName(movieName : String, completion : @escaping ([MovieInfoResponse]) -> Void) {
+        let route = URL(string: "\(Routes.ROUTE_SEACRH_MOVIES)?api_key=\(API.KEY)&query=\(movieName)")!
+        URLSession.shared.dataTask(with: route) { (data, urlResponse, error) in
+            let response : MovieListResponse? = self.responseHandler(data: data, urlResponse: urlResponse, error: error)
+            if let data = response {
+                completion(data.results)
+            }
+        }.resume()
+    }
+    
     func fetchMovieDetails(movieId : Int, completion: @escaping (MovieInfoResponse) -> Void) {
         let route = URL(string: "\(Routes.ROUTE_MOVIE_DETAILS)/\(movieId)?api_key=\(API.KEY)")!
         URLSession.shared.dataTask(with: route) { (data, urlResponse, error) in

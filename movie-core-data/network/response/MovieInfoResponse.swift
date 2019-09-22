@@ -141,4 +141,32 @@ struct MovieInfoResponse : Codable {
         
     }
     
+    static func convertToMovieVO(data : MovieInfoResponse, context : NSManagedObjectContext) -> MovieVO {
+        
+        let movieVO = MovieVO(entity: NSEntityDescription.entity(forEntityName: "MovieVO", in: CoreDataStack.shared.viewContext)!, insertInto: nil)
+        
+        movieVO.popularity = data.popularity ?? 0.0
+        movieVO.vote_count = Int32(data.vote_count ?? 0)
+        movieVO.video = data.video ?? false
+        movieVO.poster_path = data.poster_path
+        movieVO.id = Int32(data.id ?? 0)
+        movieVO.adult = data.adult ?? false
+        movieVO.backdrop_path = data.backdrop_path
+        movieVO.original_language = data.original_language
+        movieVO.original_title = data.original_title
+        movieVO.title = data.title
+        movieVO.vote_average = data.vote_average ?? 0.0
+        movieVO.overview = data.overview
+        movieVO.release_date = data.release_date
+        movieVO.budget = Int32(data.budget ?? 0)
+        movieVO.homepage = data.homepage
+        movieVO.imdb_id = data.imdb_id
+        movieVO.revenue = Int32(data.revenue ?? 0)
+        movieVO.runtime = Int16(data.runtime ?? 0)
+        movieVO.tagline = data.tagline
+        
+        
+        return movieVO
+    }
+    
 }

@@ -151,7 +151,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rsq-bf-1aq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3857" y="74"/>
+            <point key="canvasLocation" x="4433" y="788"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="M25-Bw-7x1">
@@ -167,17 +167,18 @@
                     <connections>
                         <segue destination="NQy-0N-QgK" kind="relationship" relationship="viewControllers" id="d1C-I2-kHQ"/>
                         <segue destination="2bU-5A-o09" kind="relationship" relationship="viewControllers" id="szr-xg-1Wq"/>
+                        <segue destination="Qri-Cc-W0O" kind="relationship" relationship="viewControllers" id="wIr-xY-nWb"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vD0-cH-Aoe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-55" y="371"/>
+            <point key="canvasLocation" x="-96" y="749"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Movies-->
         <scene sceneID="xEz-Bn-5us">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="NQy-0N-QgK" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" systemItem="topRated" id="x3w-dI-Cb0">
+                    <tabBarItem key="tabBarItem" title="Movies" image="icons8-movie_filled" id="x3w-dI-Cb0">
                         <color key="badgeColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBarItem>
                     <toolbarItems/>
@@ -228,6 +229,88 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wMm-5h-jcK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="925" y="749"/>
+        </scene>
+        <!--Search Movies-->
+        <scene sceneID="3Up-oh-UR9">
+            <objects>
+                <viewController id="RUd-eW-9f2" customClass="SearchMovieViewController" customModule="movie_core_data" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8C3-O8-pC5">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="nCf-hw-VY6">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="813"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Tji-33-g4X">
+                                    <size key="itemSize" width="156" height="186"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="5" minY="5" maxX="5" maxY="5"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MovieListCollectionViewCell" id="B7x-w5-jCJ" customClass="MovieListCollectionViewCell" customModule="movie_core_data" customModuleProvider="target">
+                                        <rect key="frame" x="5" y="5" width="156" height="186"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="156" height="186"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icons8-home_filled" translatesAutoresizingMaskIntoConstraints="NO" id="vN7-1U-4nq">
+                                                    <rect key="frame" x="0.0" y="0.0" width="156" height="186"/>
+                                                </imageView>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="vN7-1U-4nq" secondAttribute="bottom" id="1e6-bQ-X9Y"/>
+                                            <constraint firstItem="vN7-1U-4nq" firstAttribute="top" secondItem="B7x-w5-jCJ" secondAttribute="top" id="7wo-K3-sr9"/>
+                                            <constraint firstItem="vN7-1U-4nq" firstAttribute="leading" secondItem="B7x-w5-jCJ" secondAttribute="leading" id="Wuy-yk-gpC"/>
+                                            <constraint firstAttribute="trailing" secondItem="vN7-1U-4nq" secondAttribute="trailing" id="gp9-Rh-LRm"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="imageViewMoviePoster" destination="vN7-1U-4nq" id="KYv-UO-uUo"/>
+                                            <segue destination="RDH-qR-ecD" kind="show" id="gHj-gA-vly"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h9V-nB-axj">
+                                <rect key="frame" x="20" y="448" width="374" height="0.0"/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="nCf-hw-VY6" firstAttribute="trailing" secondItem="t8Q-HJ-ERu" secondAttribute="trailing" id="7bh-eb-PCY"/>
+                            <constraint firstItem="h9V-nB-axj" firstAttribute="leading" secondItem="8C3-O8-pC5" secondAttribute="leading" constant="20" id="8C9-Oc-Hp1"/>
+                            <constraint firstItem="h9V-nB-axj" firstAttribute="centerY" secondItem="8C3-O8-pC5" secondAttribute="centerY" id="9Dd-YI-UQm"/>
+                            <constraint firstAttribute="trailing" secondItem="h9V-nB-axj" secondAttribute="trailing" constant="20" id="Ceb-AH-y9S"/>
+                            <constraint firstItem="h9V-nB-axj" firstAttribute="centerX" secondItem="8C3-O8-pC5" secondAttribute="centerX" id="SAz-YI-fKr"/>
+                            <constraint firstItem="nCf-hw-VY6" firstAttribute="top" secondItem="8C3-O8-pC5" secondAttribute="top" id="SKK-A1-sqL"/>
+                            <constraint firstItem="nCf-hw-VY6" firstAttribute="leading" secondItem="t8Q-HJ-ERu" secondAttribute="leading" id="q0O-Ar-ewa"/>
+                            <constraint firstItem="t8Q-HJ-ERu" firstAttribute="bottom" secondItem="nCf-hw-VY6" secondAttribute="bottom" id="xrc-rZ-4Mf"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="t8Q-HJ-ERu"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Search Movies" id="yt8-le-pzl"/>
+                    <connections>
+                        <outlet property="collectionViewMovieList" destination="nCf-hw-VY6" id="uA8-Tt-tZV"/>
+                        <outlet property="labelMovieNotFound" destination="h9V-nB-axj" id="pXV-EU-7pa"/>
+                        <outlet property="searchDisplayController" destination="z7S-o9-Abt" id="bQz-Xv-0O4"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mos-FI-cHm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="z7S-o9-Abt">
+                    <connections>
+                        <outlet property="delegate" destination="RUd-eW-9f2" id="Ogk-xx-4jy"/>
+                        <outlet property="searchContentsController" destination="RUd-eW-9f2" id="SWy-QU-dIV"/>
+                        <outlet property="searchResultsDataSource" destination="RUd-eW-9f2" id="8hs-F5-VZg"/>
+                        <outlet property="searchResultsDelegate" destination="RUd-eW-9f2" id="tjx-qk-3zy"/>
+                    </connections>
+                </searchDisplayController>
+            </objects>
+            <point key="canvasLocation" x="1828.985507246377" y="1471.875"/>
         </scene>
         <!--Movies-->
         <scene sceneID="M1K-3c-LGu">
@@ -291,12 +374,40 @@
             </objects>
             <point key="canvasLocation" x="2922" y="749"/>
         </scene>
+        <!--Search-->
+        <scene sceneID="kFL-F4-895">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Qri-Cc-W0O" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Search" image="icons8-search_filled" id="Pkb-Uc-uyc"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="R2g-RK-n4w">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
+                        <textAttributes key="largeTitleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="RUd-eW-9f2" kind="relationship" relationship="rootViewController" id="PFx-Tc-c5c"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="v0W-sS-Ix5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="918.84057971014499" y="1471.875"/>
+        </scene>
     </scenes>
     <resources>
         <image name="icons8-comedy_filled-1" width="32" height="32"/>
         <image name="icons8-home_filled" width="50" height="50"/>
+        <image name="icons8-movie_filled" width="32" height="32"/>
+        <image name="icons8-search_filled" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="XnZ-ve-WRS"/>
+        <segue reference="gHj-gA-vly"/>
     </inferredMetricsTieBreakers>
 </document>
