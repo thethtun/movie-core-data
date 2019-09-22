@@ -18,6 +18,15 @@ class SearchMovieViewController: UIViewController {
     
     private var searchedResult = [MovieInfoResponse]()
     
+    let activityIndicator : UIActivityIndicatorView = {
+        let ui = UIActivityIndicatorView()
+        ui.translatesAutoresizingMaskIntoConstraints = false
+        ui.color = UIColor.red
+        ui.startAnimating()
+        return ui
+    }()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -49,6 +58,11 @@ class SearchMovieViewController: UIViewController {
         collectionViewMovieList.dataSource = self
         collectionViewMovieList.delegate = self
         collectionViewMovieList.backgroundColor = Theme.background
+        
+        self.view.addSubview(activityIndicator)
+        activityIndicator.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
+        activityIndicator.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 0).isActive = true
+        activityIndicator.stopAnimating()
     }
     
 }
@@ -91,7 +105,9 @@ extension SearchMovieViewController: UICollectionViewDataSource {
 extension SearchMovieViewController : UISearchBarDelegate {
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        activityIndicator.startAnimating()
         let searchedMovie = searchBar.text ?? ""
+        
         //TODO :
         //Implement Search Movie API
         
