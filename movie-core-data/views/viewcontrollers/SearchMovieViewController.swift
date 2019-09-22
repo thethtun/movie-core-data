@@ -74,30 +74,27 @@ extension SearchMovieViewController: UICollectionViewDataSource {
         
         return cell
     }
+    
+    func bindData(_ results : [MovieInfoResponse]) {
+        DispatchQueue.main.async { [weak self] in
+            if results.isEmpty {
+                self?.labelMovieNotFound.text = "No movie found :("
+                return
+            }
+            
+            self?.labelMovieNotFound.text = ""
+            self?.collectionViewMovieList.reloadData()
+        }
+    }
 }
 
 extension SearchMovieViewController : UISearchBarDelegate {
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         let searchedMovie = searchBar.text ?? ""
-        MovieModel.shared.fetchMoviesByName(movieName: searchedMovie) { [weak self] results in
-            self?.searchedResult = results
-            
-            results.forEach({ (movieInfo) in
-                MovieInfoResponse.saveMovieEntity(data: movieInfo, context: CoreDataStack.shared.viewContext)
-            })
-            
-            DispatchQueue.main.async {
-                if results.isEmpty {
-                    self?.labelMovieNotFound.text = "No movie found with name \"\(searchedMovie)\" "
-                    return
-                }
-                
-                self?.labelMovieNotFound.text = ""
-                self?.collectionViewMovieList.reloadData()
-            }
-
-        }
+        //TODO :
+        //Implement Search Movie API
+        
     }
 }
 
