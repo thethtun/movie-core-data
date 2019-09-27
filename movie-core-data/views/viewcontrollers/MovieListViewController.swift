@@ -20,16 +20,27 @@ class MovieListViewController: UIViewController {
         return refreshControl
     }()
     
+    lazy var activityIndicator : UIActivityIndicatorView = {
+        let ui = UIActivityIndicatorView()
+        ui.translatesAutoresizingMaskIntoConstraints = false
+        ui.startAnimating()
+        ui.style = UIActivityIndicatorView.Style.whiteLarge
+        return ui
+    }()
+    
     
     let TAG : String = "MovieListViewController"
     
     let realm = try! Realm(configuration: Realm.Configuration(
-        schemaVersion: 2,
+        schemaVersion: 4,
         migrationBlock: { migration, oldSchemaVersion in
-            if (oldSchemaVersion < 2) {
-//                migration.enumerateObjects(ofType: ContactVO.className(), { oldObject, newObject in
-//                        //Migration Script
-//                })
+            if (oldSchemaVersion < 4) {
+                migration.enumerateObjects(ofType: BookmarkVO.className(), { oldObject, newObject in
+//                    newObject!["id"] = oldObject!["id"]
+//                    newObject!["movieDetails"] = oldObject!["movieDetails"]
+//                    newObject!["created_at"] = Date()
+//                    oldObject!["movie_id"] = nil
+                })
             }
     }))
     
@@ -51,6 +62,23 @@ class MovieListViewController: UIViewController {
         
     }
     
+    private func initView() {
+        
+        collectionViewMovieList.dataSource = self
+        collectionViewMovieList.delegate = self
+        collectionViewMovieList.backgroundColor = Theme.background
+        
+        //Add RefreshControl
+        self.collectionViewMovieList.addSubview(refreshControl)
+        
+        self.view.addSubview(activityIndicator)
+        activityIndicator.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
+        activityIndicator.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 0).isActive = true
+        activityIndicator.startAnimating()
+        
+    }
+    
+    
     fileprivate func initGenreListFetchRequest() {
         let genres = realm.objects(MovieGenreVO.self)
         if genres.isEmpty {
@@ -66,6 +94,7 @@ class MovieListViewController: UIViewController {
     }
     
     fileprivate func initMovieListFetchRequest() {
+        
         movieList = realm.objects(MovieVO.self).sorted(byKeyPath: "vote_average", ascending: false)
         if movieList!.isEmpty {
             self.fetchTopRatedMovies()
@@ -75,6 +104,7 @@ class MovieListViewController: UIViewController {
             switch changes {
             case .initial:
                 self?.collectionViewMovieList.reloadData()
+                self?.activityIndicator.stopAnimating()
                 break
             case .update(_,let deletions,let insertions,let modification):
                 self?.collectionViewMovieList.performBatchUpdates({
@@ -98,18 +128,7 @@ class MovieListViewController: UIViewController {
         self.navigationItem.title = "Movie List"
     }
 
-    private func initView() {
-        
-        collectionViewMovieList.dataSource = self
-        collectionViewMovieList.delegate = self
-        collectionViewMovieList.backgroundColor = Theme.background
-
-        //Add RefreshControl
-        self.collectionViewMovieList.addSubview(refreshControl)
-        
-        
-    }
-    
+  
     
     fileprivate func fetchTopRatedMovies() {
         if NetworkUtils.checkReachable() == false {
@@ -123,10 +142,9 @@ class MovieListViewController: UIViewController {
                     MovieInfoResponse.saveMovie(data: movie, realm: self!.realm)
                 }
                 
-                
+                self?.activityIndicator.stopAnimating()
                 self?.refreshControl.endRefreshing()
             }
-            
             
         }
     }

@@ -32,6 +32,7 @@ class MovieVO : Object {
     @objc dynamic var tagline : String?
     var genres = List<MovieGenreVO>()
     
+    
     //Production Companies
     
     //Production Countries

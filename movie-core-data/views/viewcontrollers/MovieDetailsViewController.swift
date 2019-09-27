@@ -90,15 +90,15 @@ class MovieDetailsViewController: UIViewController {
     
     @objc private func onClickBookmark(_ sender : UIBarButtonItem) {
         ///bookmarked
-//        if sender.image == #imageLiteral(resourceName: "icons8-bookmark_ribbon_filled_red") {
-//            BookmarkVO.deleteMovieBookmark(movieId: movieId, context: CoreDataStack.shared.viewContext)
-//            sender.image = #imageLiteral(resourceName: "icons8-bookmark_ribbon_not_fillled")
-//            sender.tintColor = UIColor.white
-//        } else { ///not yet bookmarked
-//            BookmarkVO.saveMovieBookmark(movieId: movieId, context: CoreDataStack.shared.viewContext)
-//            sender.image = #imageLiteral(resourceName: "icons8-bookmark_ribbon_filled_red")
-//            sender.tintColor = UIColor.red
-//        }
+        if sender.image == #imageLiteral(resourceName: "icons8-bookmark_ribbon_filled_red") {
+            BookmarkVO.deleteMovieBookmark(movieId: movieId, realm: realm)
+            sender.image = #imageLiteral(resourceName: "icons8-bookmark_ribbon_not_fillled")
+            sender.tintColor = UIColor.white
+        } else { ///not yet bookmarked
+            BookmarkVO.saveMovieBookmark(movieId: movieId, realm: realm)
+            sender.image = #imageLiteral(resourceName: "icons8-bookmark_ribbon_filled_red")
+            sender.tintColor = UIColor.red
+        }
     }
     
     fileprivate func fetchMovieDetails(movieId : Int) {
@@ -146,17 +146,17 @@ class MovieDetailsViewController: UIViewController {
         stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo("\(data.vote_average)"))
         
         ///setting bookmark
-//        let bookmarkItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-bookmark_ribbon_not_fillled"), style: .plain, target: self, action: #selector(onClickBookmark(_:)))
-//        bookmarkItem.imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: -10)
-//        if let bookmark = data.bookmark {
-//            bookmarkItem.image = #imageLiteral(resourceName: "icons8-bookmark_ribbon_filled_red")
-//            bookmarkItem.tintColor = UIColor.red
-//        } else {
-//            bookmarkItem.image = #imageLiteral(resourceName: "icons8-bookmark_ribbon_not_fillled")
-//            bookmarkItem.tintColor = UIColor.white
-//        }
+        let bookmarkItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-bookmark_ribbon_not_fillled"), style: .plain, target: self, action: #selector(onClickBookmark(_:)))
+        bookmarkItem.imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: -10)
+        if let _ = realm.object(ofType: BookmarkVO.self, forPrimaryKey: data.id) {
+            bookmarkItem.image = #imageLiteral(resourceName: "icons8-bookmark_ribbon_filled_red")
+            bookmarkItem.tintColor = UIColor.red
+        } else {
+            bookmarkItem.image = #imageLiteral(resourceName: "icons8-bookmark_ribbon_not_fillled")
+            bookmarkItem.tintColor = UIColor.white
+        }
         
-//        navigationItem.rightBarButtonItem = bookmarkItem
+        navigationItem.rightBarButtonItem = bookmarkItem
         
     }
     

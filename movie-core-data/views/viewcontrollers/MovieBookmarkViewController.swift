@@ -7,14 +7,16 @@
 //
 
 import UIKit
-import CoreData
+import RealmSwift
 
 class MovieBookmarkViewController: UIViewController {
 
     @IBOutlet weak var collectionViewMovieList : UICollectionView!
     
-//    var fetchResultController: NSFetchedResultsController<BookmarkVO>!
-
+    let realm = try! Realm()
+    
+    var bookmarkListToken : NotificationToken?
+    var bookmarkList  : Results<BookmarkVO>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,23 +26,27 @@ class MovieBookmarkViewController: UIViewController {
     }
     
     fileprivate func initView() {
-//        collectionViewMovieList.dataSource = self
-//        collectionViewMovieList.delegate = self
-//        collectionViewMovieList.backgroundColor = Theme.background
+        collectionViewMovieList.dataSource = self
+        collectionViewMovieList.delegate = self
+        collectionViewMovieList.backgroundColor = Theme.background
         
-//        //FetchRequest
-//        let fetchRequest : NSFetchRequest<BookmarkVO> = BookmarkVO.fetchRequest()
-//        let sortDescription = NSSortDescriptor(key: "created_at", ascending: true)
-//        fetchRequest.sortDescriptors = [sortDescription]
-//
-//        fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.shared.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-//        fetchResultController.delegate = self
-//
-//        do {
-//            try fetchResultController.performFetch()
-//        } catch {
-//            Dialog.showAlert(viewController: self, title: "Error", message: "Failed to fetch data from database")
-//        }
+        bookmarkList = realm.objects(BookmarkVO.self).sorted(byKeyPath: "created_at", ascending: true)
+        bookmarkListToken = bookmarkList?.observe{ [weak self] changes in
+            switch changes {
+            case .initial:
+                break
+            case .update(_, let deletions, let insertions, let modifications):
+                self?.collectionViewMovieList.performBatchUpdates({ () -> Void in
+                    self?.collectionViewMovieList.deleteItems(at: deletions.map({IndexPath(row: $0, section: 0)}))
+                    self?.collectionViewMovieList.insertItems(at: insertions.map({ IndexPath(row: $0, section: 0) }))
+                    self?.collectionViewMovieList.reloadItems(at: modifications.map({ IndexPath(row: $0, section: 0) }))
+                }, completion: nil)
+                break
+            case .error(let error):
+                fatalError("failed to load bookmarks \(error.localizedDescription)")
+            }
+        }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,66 +59,52 @@ class MovieBookmarkViewController: UIViewController {
 
 
 
-//extension MovieBookmarkViewController: UICollectionViewDataSource {
-//    func numberOfSections(in collectionView: UICollectionView) -> Int {
-//        return fetchResultController.sections?.count ?? 1
-//    }
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return fetchResultController.sections?[section].numberOfObjects ?? 0
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let bookmarkVO = fetchResultController.object(at: indexPath)
-//
-//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieListCollectionViewCell.identifier, for: indexPath) as? MovieListCollectionViewCell else {
-//            return UICollectionViewCell()
-//        }
-//
-//        cell.data = bookmarkVO.movie
-//
-//        return cell
-//    }
-//}
+extension MovieBookmarkViewController: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return bookmarkList?.count ?? 0
+    }
 
-//extension MovieBookmarkViewController : UICollectionViewDelegate {
-//
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//
-//    }
-//
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if let movieDetailsViewController = segue.destination as? MovieDetailsViewController {
-//
-//            if let indexPaths = collectionViewMovieList.indexPathsForSelectedItems, indexPaths.count > 0 {
-//                let selectedIndexPath = indexPaths[0]
-//                let bookmarkVO = fetchResultController.object(at: selectedIndexPath)
-//                let movie = bookmarkVO.movie
-//
-//                if let movie = movie, movie.id > 0 {
-//                    movieDetailsViewController.movieId = Int(movie.id)
-//
-//                    self.navigationItem.title = movie.original_title
-//                }
-//
-//            }
-//
-//        }
-//    }
-//}
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let bookmarkVO = bookmarkList?[indexPath.row]
 
-//extension MovieBookmarkViewController : NSFetchedResultsControllerDelegate {
-//    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-//        switch type {
-//        case .insert:
-//            collectionViewMovieList.insertItems(at: [newIndexPath!])
-//            break
-//        case .delete:
-//            collectionViewMovieList.deleteItems(at: [indexPath!])
-//            break
-//        default:()
-//        }
-//    }
-//}
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieListCollectionViewCell.identifier, for: indexPath) as? MovieListCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+
+        cell.data = bookmarkVO?.movieDetails
+
+        return cell
+    }
+}
+
+extension MovieBookmarkViewController : UICollectionViewDelegate {
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let movieDetailsViewController = segue.destination as? MovieDetailsViewController {
+
+            if let indexPaths = collectionViewMovieList.indexPathsForSelectedItems, indexPaths.count > 0 {
+                let selectedIndexPath = indexPaths[0]
+                let bookmarkVO = bookmarkList?[selectedIndexPath.row]
+                let movie = bookmarkVO?.movieDetails
+
+                if let movie = movie, movie.id > 0 {
+                    movieDetailsViewController.movieId = Int(movie.id)
+
+                    self.navigationItem.title = movie.original_title
+                }
+
+            }
+
+        }
+    }
+}
 
 
 extension MovieBookmarkViewController : UICollectionViewDelegateFlowLayout {

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import CoreData
+import RealmSwift
 
 class SearchMovieViewController: UIViewController {
 
@@ -16,7 +16,18 @@ class SearchMovieViewController: UIViewController {
     @IBOutlet weak var collectionViewMovieList : UICollectionView!
     @IBOutlet weak var labelMovieNotFound : UILabel!
     
+    lazy var activityIndicator : UIActivityIndicatorView = {
+        let ui = UIActivityIndicatorView()
+        ui.translatesAutoresizingMaskIntoConstraints = false
+        ui.stopAnimating()
+        ui.isHidden = true
+        ui.style = UIActivityIndicatorView.Style.whiteLarge
+        return ui
+    }()
+    
     private var searchedResult = [MovieInfoResponse]()
+    let realm  = try! Realm()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,6 +60,11 @@ class SearchMovieViewController: UIViewController {
         collectionViewMovieList.dataSource = self
         collectionViewMovieList.delegate = self
         collectionViewMovieList.backgroundColor = Theme.background
+        
+        self.view.addSubview(activityIndicator)
+        activityIndicator.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
+        activityIndicator.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 0).isActive = true
+        
     }
     
 }
@@ -66,11 +82,12 @@ extension SearchMovieViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieListCollectionViewCell.identifier, for: indexPath) as? MovieListCollectionViewCell else {
             return UICollectionViewCell()
         }
-//
-//
-//        let movieVO = MovieInfoResponse.convertToMovieVO(data: movie, context: CoreDataStack.shared.viewContext)
-//
-//        cell.data = movieVO
+        
+        
+        let movieVO = MovieInfoResponse.convertToMovieVO(data: movie, realm: realm)
+
+        cell.data = movieVO
+        
         
         return cell
     }
@@ -79,24 +96,27 @@ extension SearchMovieViewController: UICollectionViewDataSource {
 extension SearchMovieViewController : UISearchBarDelegate {
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        activityIndicator.startAnimating()
         let searchedMovie = searchBar.text ?? ""
         MovieModel.shared.fetchMoviesByName(movieName: searchedMovie) { [weak self] results in
-//            self?.searchedResult = results
-//
-//            results.forEach({ (movieInfo) in
-//                MovieInfoResponse.saveMovieEntity(data: movieInfo, context: CoreDataStack.shared.viewContext)
-//            })
-//
-//            DispatchQueue.main.async {
-//                if results.isEmpty {
-//                    self?.labelMovieNotFound.text = "No movie found with name \"\(searchedMovie)\" "
-//                    return
-//                }
-//
-//                self?.labelMovieNotFound.text = ""
-//                self?.collectionViewMovieList.reloadData()
-//            }
+            self?.searchedResult = results
 
+            DispatchQueue.main.async {
+                
+                results.forEach({ [weak self] (movieInfo) in
+                    MovieInfoResponse.saveMovie(data: movieInfo, realm: self!.realm)
+                })
+                
+                if results.isEmpty {
+                    self?.labelMovieNotFound.text = "No movie found with name \"\(searchedMovie)\" "
+                    return
+                }
+
+                self?.labelMovieNotFound.text = ""
+                self?.collectionViewMovieList.reloadData()
+                
+                self?.activityIndicator.stopAnimating()
+            }
         }
     }
 }

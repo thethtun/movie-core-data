@@ -82,7 +82,6 @@ struct MovieInfoResponse : Codable {
         movie.original_title = data.original_title
 
         if let genre_ids = data.genre_ids, !genre_ids.isEmpty {
-            movie.genres.removeAll()
             genre_ids.forEach{ id in
                 if let movieGenreVO = MovieGenreVO.getMovieGenreVOById(realm: realm, genreId: id) {
                     movie.genres.append(movieGenreVO)
