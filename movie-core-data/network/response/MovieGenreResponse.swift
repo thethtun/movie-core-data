@@ -8,21 +8,24 @@
 
 import Foundation
 import CoreData
+import RealmSwift
 
 struct MovieGenreResponse : Codable {
     let id : Int
     let name : String
     
-//    static func saveMovieGenreEntity(data : MovieGenreResponse, context : NSManagedObjectContext) {
-//        let entity = MovieGenreVO(context: context)
-//        entity.id = Int32(data.id)
-//        entity.name = data.name
-//        
-//        do {
-//            try context.save()
-//        } catch {
-//            print("failed to save movie genre : \(error.localizedDescription)")
-//        }
-//        
-//    }
+    static func saveMovieGenre(data : MovieGenreResponse, realm: Realm) {
+        let entity = MovieGenreVO()
+        entity.id = data.id
+        entity.name = data.name
+        
+        do {
+            try realm.write {
+                realm.add(entity)
+            }
+        } catch {
+            print("failed to save movie genre : \(error.localizedDescription)")
+        }
+        
+    }
 }

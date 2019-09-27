@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import CoreData
+import RealmSwift
 
 class MovieDetailsViewController: UIViewController {
 
@@ -35,22 +35,34 @@ class MovieDetailsViewController: UIViewController {
     
     var movieId : Int = 0
     
+    let realm = try! Realm()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         initView()
         
+        
+        ///Load persistent data
+        if let data = MovieVO.getMovieById(movieId: movieId, realm: realm) {
+            self.bindData(data: data)
+        }
+        
 //        if NetworkUtils.checkReachable() == false {
 //            Dialog.showAlert(viewController: self, title: "Error", message: "No Internet Connection!")
-//            if let data = MovieVO.getMovieById(movieId: movieId) {
+//
+//            ///Load persistent data
+//            if let data = MovieVO.getMovieById(movieId: movieId, realm: realm) {
 //                self.bindData(data: data)
 //            }
-//            return
+//
+//        } else {
+//            fetchMovieDetails(movieId : movieId)
 //        }
         
-//        fetchMovieDetails(movieId : movieId)
-        
+
     }
+
     
     fileprivate func initView() {
         self.view.addSubview(scrollViewPrimary)
@@ -90,25 +102,14 @@ class MovieDetailsViewController: UIViewController {
     }
     
     fileprivate func fetchMovieDetails(movieId : Int) {
-//        MovieModel.shared.fetchMovieDetails(movieId: movieId) { movieDetails in
-//
-//            let fetchRequest : NSFetchRequest<MovieVO> = MovieVO.fetchRequest()
-//            let predicate = NSPredicate(format: "id == %d", self.movieId)
-//            fetchRequest.predicate = predicate
-//            if let movies = try? CoreDataStack.shared.viewContext.fetch(fetchRequest), !movies.isEmpty {
-//                MovieInfoResponse.updateMovieEntity(existingData: movies[0], newData: movieDetails, context: CoreDataStack.shared.viewContext)
-//                DispatchQueue.main.async { [weak self] in
-//                    self?.bindData(data: movies[0])
-//                }
-//            } else {
-//                let movieVO = MovieInfoResponse.convertToMovieVO(data: movieDetails, context: CoreDataStack.shared.viewContext)
-//
-//                DispatchQueue.main.async { [weak self] in
-//                    self?.bindData(data: movieVO)
-//                }
-//            }
+        
+        MovieModel.shared.fetchMovieDetails(movieId: movieId) { [weak self] movieDetails in
             
-//        }
+            DispatchQueue.main.async {
+                self?.bindData(data: MovieInfoResponse.convertToMovieVO(data: movieDetails, realm: self!.realm))
+            }
+        }
+        
     }
     
     
@@ -116,37 +117,35 @@ class MovieDetailsViewController: UIViewController {
         activityIndicator.stopAnimating()
         
         ///setting movie overview
-//        let overviewTitle = WidgetGenerator.getUILabelTitle("Overview")
-//        stackViewTemp.addArrangedSubview(overviewTitle)
-//        let movieOverview = data.overview ?? "No overview"
-//        stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo(movieOverview))
-//        addTempSpacing()
-//        
-//        ///setting release data
-//        let releaseTitle = WidgetGenerator.getUILabelTitle("Release Date")
-//        stackViewTemp.addArrangedSubview(releaseTitle)
-//        let releasedDate = data.release_date ?? "No release date"
-//        stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo(releasedDate))
-//        addTempSpacing()
+        let overviewTitle = WidgetGenerator.getUILabelTitle("Overview")
+        stackViewTemp.addArrangedSubview(overviewTitle)
+        let movieOverview = data.overview ?? "No overview"
+        stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo(movieOverview))
+        addTempSpacing()
+        
+        ///setting release data
+        let releaseTitle = WidgetGenerator.getUILabelTitle("Release Date")
+        stackViewTemp.addArrangedSubview(releaseTitle)
+        let releasedDate = data.release_date ?? "No release date"
+        stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo(releasedDate))
+        addTempSpacing()
         
         ///setting genres view
-//        let genreTitle = WidgetGenerator.getUILabelTitle("Genres")
-//        stackViewTemp.addArrangedSubview(genreTitle)
-//        if let genres = data.genres, genres.count > 0 {
-//            genres.allObjects.forEach{ data in
-//                if let genre = data as? MovieGenreVO {
-//                    stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo(genre.name ?? "undefined"))
-//                }
-//            }
-//        }
-//        addTempSpacing()
-//        
-//        ///setting rating view
-//        let ratinTitle = WidgetGenerator.getUILabelTitle("Rating")
-//        stackViewTemp.addArrangedSubview(ratinTitle)
-//        stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo("\(data.vote_average)"))
-//        
-//        ///setting bookmark
+        let genreTitle = WidgetGenerator.getUILabelTitle("Genres")
+        stackViewTemp.addArrangedSubview(genreTitle)
+        if data.genres.count > 0 {
+            data.genres.forEach{ genre in
+                stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo(genre.name))
+            }
+        }
+        addTempSpacing()
+        
+        ///setting rating view
+        let ratinTitle = WidgetGenerator.getUILabelTitle("Rating")
+        stackViewTemp.addArrangedSubview(ratinTitle)
+        stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo("\(data.vote_average)"))
+        
+        ///setting bookmark
 //        let bookmarkItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-bookmark_ribbon_not_fillled"), style: .plain, target: self, action: #selector(onClickBookmark(_:)))
 //        bookmarkItem.imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: -10)
 //        if let bookmark = data.bookmark {

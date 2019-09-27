@@ -9,7 +9,19 @@
 import Foundation
 import RealmSwift
 
-class MovieGenreVO : Object, Codable {
-    @objc dynamic var id : Int
-    @objc dynamic var name : String
+class MovieGenreVO : Object {
+    @objc dynamic var id : Int = 0
+    @objc dynamic var name : String = ""
+    let movies = LinkingObjects(fromType: MovieVO.self, property: "genres")
+    
+    override class func primaryKey() -> String? {
+        return "id"
+    }
+}
+
+
+extension MovieGenreVO {
+    static func getMovieGenreVOById(realm : Realm, genreId : Int) -> MovieGenreVO? {
+        return realm.object(ofType: MovieGenreVO.self, forPrimaryKey: genreId)
+    }
 }

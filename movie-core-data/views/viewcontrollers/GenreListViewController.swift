@@ -30,15 +30,6 @@ class GenreListViewController: UIViewController {
     }
     
     fileprivate func initView() {
-//        let fetchRequest = MovieGenreVO.getFetchRequest()
-//        genreFetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.shared.viewContext, sectionNameKeyPath: nil, cacheName: "genre_list")
-//
-//        do {
-//            try genreFetchResultController.performFetch()
-//        } catch {
-//            Dialog.showAlert(viewController: self, title: "Error", message: "failed to load genres \(error.localizedDescription)")
-//        }
-        
         movieGenres = realm.objects(MovieGenreVO.self)
         if movieGenres!.isEmpty {
             //Do Network Fetch
@@ -66,12 +57,12 @@ class GenreListViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let movieListByGenreViewController = segue.destination as? MovieListByGenreViewController {
-//            if let indexPath = tableViewGenreList.indexPathForSelectedRow {
-//                let genreVO = genreFetchResultController.object(at: indexPath)
-//                movieListByGenreViewController.movieGenreVO = genreVO
-//                
-//                self.navigationItem.title = genreVO.name
-//            }
+            if let indexPath = tableViewGenreList.indexPathForSelectedRow {
+                let genreVO = movieGenres?[indexPath.row]
+                movieListByGenreViewController.movieGenreVO = genreVO
+                
+                self.navigationItem.title = genreVO?.name ?? ""
+            }
             
         }
     }

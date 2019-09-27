@@ -23,7 +23,15 @@ class MovieListViewController: UIViewController {
     
     let TAG : String = "MovieListViewController"
     
-    let realm = try! Realm()
+    let realm = try! Realm(configuration: Realm.Configuration(
+        schemaVersion: 2,
+        migrationBlock: { migration, oldSchemaVersion in
+            if (oldSchemaVersion < 2) {
+//                migration.enumerateObjects(ofType: ContactVO.className(), { oldObject, newObject in
+//                        //Migration Script
+//                })
+            }
+    }))
     
     var movieList : Results<MovieVO>?
     
@@ -49,9 +57,7 @@ class MovieListViewController: UIViewController {
             MovieModel.shared.fetchMovieGenres{ genres in
                 genres.forEach { [weak self] genre in
                     DispatchQueue.main.async {
-                        try! self?.realm.write {
-                            self?.realm.add(genre)
-                        }
+                        MovieGenreResponse.saveMovieGenre(data: genre, realm: self!.realm)
                     }
                 }
             }
@@ -60,26 +66,6 @@ class MovieListViewController: UIViewController {
     }
     
     fileprivate func initMovieListFetchRequest() {
-//        //FetchRequest
-//        let fetchRequest : NSFetchRequest<MovieVO> = MovieVO.fetchRequest()
-//        let sortDescriptor = NSSortDescriptor(key: "vote_average", ascending: false)
-//        fetchRequest.sortDescriptors = [sortDescriptor]
-//        fetchRequest.fetchLimit = 5
-//        fetchRequest.predicate = NSPredicate(format: "overview CONTAINS[c] %@", "knight")
-//
-//        fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.shared.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-//        fetchResultController.delegate = self
-//
-//
-//        do {
-//            try fetchResultController.performFetch()
-//            if let objects = fetchResultController.fetchedObjects, objects.count == 0 {
-//                self.fetchTopRatedMovies()
-//            }
-//        } catch {
-//            Dialog.showAlert(viewController: self, title: "Error", message: "Failed to fetch data from database")
-//        }
-        
         movieList = realm.objects(MovieVO.self).sorted(byKeyPath: "vote_average", ascending: false)
         if movieList!.isEmpty {
             self.fetchTopRatedMovies()
@@ -91,10 +77,6 @@ class MovieListViewController: UIViewController {
                 self?.collectionViewMovieList.reloadData()
                 break
             case .update(_,let deletions,let insertions,let modification):
-                print("deletion: \(deletions.count)")
-                print("insertion: \(insertions.count)")
-                print("modification: \(modification.count)")
-                
                 self?.collectionViewMovieList.performBatchUpdates({
                     self?.collectionViewMovieList.deleteItems(at: deletions.map({IndexPath(row: $0, section: 0)}))
                     self?.collectionViewMovieList.insertItems(at: insertions.map({ IndexPath(row: $0, section: 0) }))
@@ -136,9 +118,11 @@ class MovieListViewController: UIViewController {
         }
         MovieModel.shared.fetchTopRatedMovies(pageId: 1) { [weak self] movies in
             DispatchQueue.main.async { [weak self] in
-                try! self?.realm.write {
-                    self?.realm.add(movies)
+                
+                movies.forEach{ movie in
+                    MovieInfoResponse.saveMovie(data: movie, realm: self!.realm)
                 }
+                
                 
                 self?.refreshControl.endRefreshing()
             }
