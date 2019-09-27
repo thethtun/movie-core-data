@@ -40,13 +40,13 @@ class MovieDetailsViewController: UIViewController {
         
         initView()
         
-        if NetworkUtils.checkReachable() == false {
-            Dialog.showAlert(viewController: self, title: "Error", message: "No Internet Connection!")
-            if let data = MovieVO.getMovieById(movieId: movieId) {
-                self.bindData(data: data)
-            }
-            return
-        }
+//        if NetworkUtils.checkReachable() == false {
+//            Dialog.showAlert(viewController: self, title: "Error", message: "No Internet Connection!")
+//            if let data = MovieVO.getMovieById(movieId: movieId) {
+//                self.bindData(data: data)
+//            }
+//            return
+//        }
         
         fetchMovieDetails(movieId : movieId)
         
@@ -78,35 +78,35 @@ class MovieDetailsViewController: UIViewController {
     
     @objc private func onClickBookmark(_ sender : UIBarButtonItem) {
         ///bookmarked
-        if sender.image == #imageLiteral(resourceName: "icons8-bookmark_ribbon_filled_red") {
-            BookmarkVO.deleteMovieBookmark(movieId: movieId, context: CoreDataStack.shared.viewContext)
-            sender.image = #imageLiteral(resourceName: "icons8-bookmark_ribbon_not_fillled")
-            sender.tintColor = UIColor.white
-        } else { ///not yet bookmarked
-            BookmarkVO.saveMovieBookmark(movieId: movieId, context: CoreDataStack.shared.viewContext)
-            sender.image = #imageLiteral(resourceName: "icons8-bookmark_ribbon_filled_red")
-            sender.tintColor = UIColor.red
-        }
+//        if sender.image == #imageLiteral(resourceName: "icons8-bookmark_ribbon_filled_red") {
+//            BookmarkVO.deleteMovieBookmark(movieId: movieId, context: CoreDataStack.shared.viewContext)
+//            sender.image = #imageLiteral(resourceName: "icons8-bookmark_ribbon_not_fillled")
+//            sender.tintColor = UIColor.white
+//        } else { ///not yet bookmarked
+//            BookmarkVO.saveMovieBookmark(movieId: movieId, context: CoreDataStack.shared.viewContext)
+//            sender.image = #imageLiteral(resourceName: "icons8-bookmark_ribbon_filled_red")
+//            sender.tintColor = UIColor.red
+//        }
     }
     
     fileprivate func fetchMovieDetails(movieId : Int) {
         MovieModel.shared.fetchMovieDetails(movieId: movieId) { movieDetails in
-            
-            let fetchRequest : NSFetchRequest<MovieVO> = MovieVO.fetchRequest()
-            let predicate = NSPredicate(format: "id == %d", self.movieId)
-            fetchRequest.predicate = predicate
-            if let movies = try? CoreDataStack.shared.viewContext.fetch(fetchRequest), !movies.isEmpty {
-                MovieInfoResponse.updateMovieEntity(existingData: movies[0], newData: movieDetails, context: CoreDataStack.shared.viewContext)
-                DispatchQueue.main.async { [weak self] in
-                    self?.bindData(data: movies[0])
-                }
-            } else {
-                let movieVO = MovieInfoResponse.convertToMovieVO(data: movieDetails, context: CoreDataStack.shared.viewContext)
-                
-                DispatchQueue.main.async { [weak self] in
-                    self?.bindData(data: movieVO)
-                }
-            }
+//
+//            let fetchRequest : NSFetchRequest<MovieVO> = MovieVO.fetchRequest()
+//            let predicate = NSPredicate(format: "id == %d", self.movieId)
+//            fetchRequest.predicate = predicate
+//            if let movies = try? CoreDataStack.shared.viewContext.fetch(fetchRequest), !movies.isEmpty {
+//                MovieInfoResponse.updateMovieEntity(existingData: movies[0], newData: movieDetails, context: CoreDataStack.shared.viewContext)
+//                DispatchQueue.main.async { [weak self] in
+//                    self?.bindData(data: movies[0])
+//                }
+//            } else {
+//                let movieVO = MovieInfoResponse.convertToMovieVO(data: movieDetails, context: CoreDataStack.shared.viewContext)
+//
+//                DispatchQueue.main.async { [weak self] in
+//                    self?.bindData(data: movieVO)
+//                }
+//            }
             
         }
     }
@@ -130,34 +130,34 @@ class MovieDetailsViewController: UIViewController {
         addTempSpacing()
         
         ///setting genres view
-        let genreTitle = WidgetGenerator.getUILabelTitle("Genres")
-        stackViewTemp.addArrangedSubview(genreTitle)
-        if let genres = data.genres, genres.count > 0 {
-            genres.allObjects.forEach{ data in
-                if let genre = data as? MovieGenreVO {
-                    stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo(genre.name ?? "undefined"))
-                }
-            }
-        }
-        addTempSpacing()
+//        let genreTitle = WidgetGenerator.getUILabelTitle("Genres")
+//        stackViewTemp.addArrangedSubview(genreTitle)
+//        if let genres = data.genres, genres.count > 0 {
+//            genres.allObjects.forEach{ data in
+//                if let genre = data as? MovieGenreVO {
+//                    stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo(genre.name ?? "undefined"))
+//                }
+//            }
+//        }
+//        addTempSpacing()
+//        
+//        ///setting rating view
+//        let ratinTitle = WidgetGenerator.getUILabelTitle("Rating")
+//        stackViewTemp.addArrangedSubview(ratinTitle)
+//        stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo("\(data.vote_average)"))
+//        
+//        ///setting bookmark
+//        let bookmarkItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-bookmark_ribbon_not_fillled"), style: .plain, target: self, action: #selector(onClickBookmark(_:)))
+//        bookmarkItem.imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: -10)
+//        if let bookmark = data.bookmark {
+//            bookmarkItem.image = #imageLiteral(resourceName: "icons8-bookmark_ribbon_filled_red")
+//            bookmarkItem.tintColor = UIColor.red
+//        } else {
+//            bookmarkItem.image = #imageLiteral(resourceName: "icons8-bookmark_ribbon_not_fillled")
+//            bookmarkItem.tintColor = UIColor.white
+//        }
         
-        ///setting rating view
-        let ratinTitle = WidgetGenerator.getUILabelTitle("Rating")
-        stackViewTemp.addArrangedSubview(ratinTitle)
-        stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo("\(data.vote_average)"))
-        
-        ///setting bookmark
-        let bookmarkItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icons8-bookmark_ribbon_not_fillled"), style: .plain, target: self, action: #selector(onClickBookmark(_:)))
-        bookmarkItem.imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: -10)
-        if let bookmark = data.bookmark {
-            bookmarkItem.image = #imageLiteral(resourceName: "icons8-bookmark_ribbon_filled_red")
-            bookmarkItem.tintColor = UIColor.red
-        } else {
-            bookmarkItem.image = #imageLiteral(resourceName: "icons8-bookmark_ribbon_not_fillled")
-            bookmarkItem.tintColor = UIColor.white
-        }
-        
-        navigationItem.rightBarButtonItem = bookmarkItem
+//        navigationItem.rightBarButtonItem = bookmarkItem
         
     }
     

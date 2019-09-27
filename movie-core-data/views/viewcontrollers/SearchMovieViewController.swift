@@ -66,11 +66,11 @@ extension SearchMovieViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieListCollectionViewCell.identifier, for: indexPath) as? MovieListCollectionViewCell else {
             return UICollectionViewCell()
         }
-        
-        
-        let movieVO = MovieInfoResponse.convertToMovieVO(data: movie, context: CoreDataStack.shared.viewContext)
-        
-        cell.data = movieVO
+//
+//
+//        let movieVO = MovieInfoResponse.convertToMovieVO(data: movie, context: CoreDataStack.shared.viewContext)
+//
+//        cell.data = movieVO
         
         return cell
     }
@@ -82,20 +82,20 @@ extension SearchMovieViewController : UISearchBarDelegate {
         let searchedMovie = searchBar.text ?? ""
         MovieModel.shared.fetchMoviesByName(movieName: searchedMovie) { [weak self] results in
             self?.searchedResult = results
-            
-            results.forEach({ (movieInfo) in
-                MovieInfoResponse.saveMovieEntity(data: movieInfo, context: CoreDataStack.shared.viewContext)
-            })
-            
-            DispatchQueue.main.async {
-                if results.isEmpty {
-                    self?.labelMovieNotFound.text = "No movie found with name \"\(searchedMovie)\" "
-                    return
-                }
-                
-                self?.labelMovieNotFound.text = ""
-                self?.collectionViewMovieList.reloadData()
-            }
+//
+//            results.forEach({ (movieInfo) in
+//                MovieInfoResponse.saveMovieEntity(data: movieInfo, context: CoreDataStack.shared.viewContext)
+//            })
+//
+//            DispatchQueue.main.async {
+//                if results.isEmpty {
+//                    self?.labelMovieNotFound.text = "No movie found with name \"\(searchedMovie)\" "
+//                    return
+//                }
+//
+//                self?.labelMovieNotFound.text = ""
+//                self?.collectionViewMovieList.reloadData()
+//            }
 
         }
     }
