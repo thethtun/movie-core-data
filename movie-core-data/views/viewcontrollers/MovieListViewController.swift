@@ -64,7 +64,9 @@ class MovieListViewController: UIViewController {
         }
         
         MovieModel.shared.fetchMovieGenres{ genreInfoResponse in
-            MovieGenreVO.saveMovieGenres(data: genreInfoResponse, context: CoreDataStack.shared.viewContext)
+            DispatchQueue.main.async {
+                MovieGenreVO.saveMovieGenres(data: genreInfoResponse, context: CoreDataStack.shared.viewContext)
+            }
         }
     }
     
@@ -123,11 +125,11 @@ class MovieListViewController: UIViewController {
         }
         MovieModel.shared.fetchTopRatedMovies(pageId: 1) { [weak self] data in
             
-            data.forEach({ (movieInfo) in
-                MovieInfoResponse.saveMovieEntity(data: movieInfo, context: CoreDataStack.shared.viewContext)
-            })
-            
             DispatchQueue.main.async {
+                data.forEach({ (movieInfo) in
+                    MovieInfoResponse.saveMovieEntity(data: movieInfo, context: CoreDataStack.shared.viewContext)
+                })
+                
                 self?.initMovieListFetchRequest()
                 self?.refreshControl.endRefreshing()
             }
@@ -137,7 +139,12 @@ class MovieListViewController: UIViewController {
     
     
     @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
-        
+//        if let data = fetchRequestController.fetchedObjects, !data.isEmpty {
+//            data.forEach { movie in
+//                CoreDataStack.shared.viewContext.delete(movie)
+//                try? CoreDataStack.shared.viewContext.save()
+//            }
+//        }
         self.fetchTopRatedMovies()
     }
 }
@@ -186,7 +193,21 @@ extension MovieListViewController : UICollectionViewDelegate {
 
 extension MovieListViewController : NSFetchedResultsControllerDelegate {
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        collectionViewMovieList.reloadData()
+        
+        switch type {
+        case .delete:
+            collectionViewMovieList.deleteItems(at: [indexPath!])
+            break
+        case .insert:
+            collectionViewMovieList.insertItems(at: [newIndexPath!])
+            break
+        case .update:
+            collectionViewMovieList.reloadItems(at: [indexPath!])
+            break
+        default:()
+        }
+    
+    
     }
 }
 

@@ -99,13 +99,17 @@ struct MovieInfoResponse : Codable {
         movieEntity.runtime = Int16(data.runtime ?? 0)
         movieEntity.tagline = data.tagline
         
-        
-        do {
-            try context.save()
-        } catch {
-            print("failed to save movie : \(error.localizedDescription)")
-        }
-        
+    
+        context.performAndWait({
+           
+            do {
+                 try context.save()
+            } catch {
+                print("failed to save movie : \(error.localizedDescription)")
+            }
+
+        })
+    
         
     }
     

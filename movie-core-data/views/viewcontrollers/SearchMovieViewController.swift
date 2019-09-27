@@ -90,15 +90,15 @@ extension SearchMovieViewController: UICollectionViewDataSource {
     }
     
     func bindData(_ results : [MovieInfoResponse]) {
-        DispatchQueue.main.async { [weak self] in
-            if results.isEmpty {
-                self?.labelMovieNotFound.text = "No movie found :("
-                return
-            }
-            self?.searchedResult = results
-            self?.labelMovieNotFound.text = ""
-            self?.collectionViewMovieList.reloadData()
+        
+        if results.isEmpty {
+            self.labelMovieNotFound.text = "No movie found :("
+            return
         }
+        self.searchedResult = results
+        self.labelMovieNotFound.text = ""
+        self.collectionViewMovieList.reloadData()
+        
     }
 }
 
@@ -110,13 +110,13 @@ extension SearchMovieViewController : UISearchBarDelegate {
 
         MovieModel.shared.searchMoviesByName(movieName : searchedMovie) { [weak self] data in
             
-//            data.forEach({ (movieInfo) in
-//                MovieInfoResponse.saveMovieEntity(data: movieInfo, context: CoreDataStack.shared.viewContext)
-//            })
-//            
-            MovieInfoResponse.saveMovieEntity(data: data[0], context: CoreDataStack.shared.viewContext)
-            
-            self?.bindData(data)
+            DispatchQueue.main.async { [weak self] in
+                data.forEach({ (movieInfo) in
+                    MovieInfoResponse.saveMovieEntity(data: movieInfo, context: CoreDataStack.shared.viewContext)
+                })
+                
+                self?.bindData(data)
+            }
         }
     }
 }
