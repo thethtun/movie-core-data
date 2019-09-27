@@ -15,6 +15,7 @@ extension MovieVO {
         let sortDescriptor = NSSortDescriptor(key: "popularity", ascending: false)
         fetchRequest.sortDescriptors = [sortDescriptor]
         
+        
         if let data = try? CoreDataStack.shared.viewContext.fetch(fetchRequest) {
             return data
         }

@@ -39,6 +39,8 @@ class MovieListViewController: UIViewController {
 
         initMovieListFetchRequest()
         
+    
+        
     }
     
     fileprivate func initGenreListFetchRequest() {
@@ -64,11 +66,14 @@ class MovieListViewController: UIViewController {
     fileprivate func initMovieListFetchRequest() {
         //FetchRequest
         let fetchRequest : NSFetchRequest<MovieVO> = MovieVO.fetchRequest()
-        let sortDescriptor = NSSortDescriptor(key: "popularity", ascending: false)
+        let sortDescriptor = NSSortDescriptor(key: "vote_average", ascending: false)
         fetchRequest.sortDescriptors = [sortDescriptor]
+        fetchRequest.fetchLimit = 5
+        fetchRequest.predicate = NSPredicate(format: "overview CONTAINS[c] %@", "knight")
         
-        fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.shared.viewContext, sectionNameKeyPath: nil, cacheName: "movies")
+        fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStack.shared.viewContext, sectionNameKeyPath: nil, cacheName: nil)
         fetchResultController.delegate = self
+        
         
         do {
             try fetchResultController.performFetch()

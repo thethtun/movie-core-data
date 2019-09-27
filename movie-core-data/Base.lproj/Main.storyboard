@@ -144,7 +144,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rsq-bf-1aq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4433" y="788"/>
+            <point key="canvasLocation" x="3736" y="1110"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="M25-Bw-7x1">
@@ -161,11 +161,12 @@
                         <segue destination="NQy-0N-QgK" kind="relationship" relationship="viewControllers" id="d1C-I2-kHQ"/>
                         <segue destination="2bU-5A-o09" kind="relationship" relationship="viewControllers" id="szr-xg-1Wq"/>
                         <segue destination="Qri-Cc-W0O" kind="relationship" relationship="viewControllers" id="wIr-xY-nWb"/>
+                        <segue destination="epq-Nw-QQi" kind="relationship" relationship="viewControllers" id="cjH-5q-iZs"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vD0-cH-Aoe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-96" y="749"/>
+            <point key="canvasLocation" x="-404" y="1110"/>
         </scene>
         <!--Movies-->
         <scene sceneID="xEz-Bn-5us">
@@ -365,7 +366,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f16-7c-uvs" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2922" y="749"/>
+            <point key="canvasLocation" x="2786" y="1014"/>
         </scene>
         <!--Search-->
         <scene sceneID="kFL-F4-895">
@@ -393,14 +394,103 @@
             </objects>
             <point key="canvasLocation" x="918.84057971014499" y="1471.875"/>
         </scene>
+        <!--Saved Movies-->
+        <scene sceneID="qL6-qr-FIX">
+            <objects>
+                <viewController id="0HV-oF-ZJo" customClass="MovieBookmarkViewController" customModule="movie_core_data" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="V9j-02-DJ8">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="3Kk-BP-PqQ">
+                                <rect key="frame" x="0.0" y="88" width="414" height="808"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="tCf-Fl-nZf">
+                                    <size key="itemSize" width="156" height="186"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="5" minY="5" maxX="5" maxY="5"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MovieListCollectionViewCell" id="uac-VB-8Te" customClass="MovieListCollectionViewCell" customModule="movie_core_data" customModuleProvider="target">
+                                        <rect key="frame" x="5" y="5" width="156" height="186"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="156" height="186"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icons8-home_filled" translatesAutoresizingMaskIntoConstraints="NO" id="KSL-M6-pZe">
+                                                    <rect key="frame" x="0.0" y="0.0" width="156" height="186"/>
+                                                </imageView>
+                                            </subviews>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="KSL-M6-pZe" secondAttribute="trailing" id="7vx-zS-8af"/>
+                                            <constraint firstAttribute="bottom" secondItem="KSL-M6-pZe" secondAttribute="bottom" id="ARJ-pD-2sf"/>
+                                            <constraint firstItem="KSL-M6-pZe" firstAttribute="leading" secondItem="uac-VB-8Te" secondAttribute="leading" id="XIo-9a-Bh4"/>
+                                            <constraint firstItem="KSL-M6-pZe" firstAttribute="top" secondItem="uac-VB-8Te" secondAttribute="top" id="dyg-E0-mw8"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="imageViewMoviePoster" destination="KSL-M6-pZe" id="q8l-zr-lKe"/>
+                                            <segue destination="RDH-qR-ecD" kind="show" id="dhB-Zh-nSm"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="3Kk-BP-PqQ" firstAttribute="top" secondItem="pzQ-Iy-XeH" secondAttribute="top" id="HlM-ya-zZQ"/>
+                            <constraint firstItem="3Kk-BP-PqQ" firstAttribute="leading" secondItem="pzQ-Iy-XeH" secondAttribute="leading" id="IcK-v2-tiH"/>
+                            <constraint firstAttribute="bottom" secondItem="3Kk-BP-PqQ" secondAttribute="bottom" id="JGL-2a-1Pw"/>
+                            <constraint firstAttribute="trailing" secondItem="3Kk-BP-PqQ" secondAttribute="trailing" id="PBi-Ds-UUb"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="pzQ-Iy-XeH"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Saved Movies" id="DnX-ZJ-wbt"/>
+                    <connections>
+                        <outlet property="collectionViewMovieList" destination="3Kk-BP-PqQ" id="T3S-gu-SyG"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Bep-HI-dTe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1829" y="2164"/>
+        </scene>
+        <!--Bookmarks-->
+        <scene sceneID="mWN-My-823">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="epq-Nw-QQi" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Bookmarks" image="icons8-bookmark_ribbon" id="5UY-1P-vPQ"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="k8d-tO-6Gv">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
+                        <textAttributes key="largeTitleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="0HV-oF-ZJo" kind="relationship" relationship="rootViewController" id="4e8-Rt-opD"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AIS-jd-veW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="919" y="2164"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="icons8-bookmark_ribbon" width="32" height="32"/>
         <image name="icons8-comedy_filled-1" width="32" height="32"/>
         <image name="icons8-home_filled" width="50" height="50"/>
         <image name="icons8-movie_filled" width="32" height="32"/>
         <image name="icons8-search_filled" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="XnZ-ve-WRS"/>
+        <segue reference="dhB-Zh-nSm"/>
     </inferredMetricsTieBreakers>
 </document>

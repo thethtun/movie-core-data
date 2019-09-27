@@ -28,6 +28,8 @@
 		516DB1192331545B000C1973 /* MovieListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516DB1182331545B000C1973 /* MovieListCollectionViewCell.swift */; };
 		516DB11D2331D7CB000C1973 /* Movie.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 516DB11B2331D7CB000C1973 /* Movie.xcdatamodeld */; };
 		516DB1212331DC84000C1973 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516DB1202331DC84000C1973 /* CoreDataStack.swift */; };
+		5186024C233939890019E1C0 /* BookmarkVO+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5186024B233939890019E1C0 /* BookmarkVO+Extension.swift */; };
+		5186024E233940280019E1C0 /* MovieBookmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5186024D233940280019E1C0 /* MovieBookmarkViewController.swift */; };
 		518A3BE6233299170093ADA9 /* MovieDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518A3BE5233299170093ADA9 /* MovieDetailsViewController.swift */; };
 		518A3BE823329F770093ADA9 /* WidgetGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518A3BE723329F770093ADA9 /* WidgetGenerator.swift */; };
 		518A3BEC2332B6000093ADA9 /* MovieInfoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518A3BEB2332B6000093ADA9 /* MovieInfoResponse.swift */; };
@@ -62,6 +64,8 @@
 		516DB1182331545B000C1973 /* MovieListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListCollectionViewCell.swift; sourceTree = "<group>"; };
 		516DB11C2331D7CB000C1973 /* Movie.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Movie.xcdatamodel; sourceTree = "<group>"; };
 		516DB1202331DC84000C1973 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		5186024B233939890019E1C0 /* BookmarkVO+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BookmarkVO+Extension.swift"; sourceTree = "<group>"; };
+		5186024D233940280019E1C0 /* MovieBookmarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieBookmarkViewController.swift; sourceTree = "<group>"; };
 		518A3BE5233299170093ADA9 /* MovieDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewController.swift; sourceTree = "<group>"; };
 		518A3BE723329F770093ADA9 /* WidgetGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetGenerator.swift; sourceTree = "<group>"; };
 		518A3BEB2332B6000093ADA9 /* MovieInfoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieInfoResponse.swift; sourceTree = "<group>"; };
@@ -98,6 +102,7 @@
 			children = (
 				51641B2D2333F403004AE5B7 /* MovieGenreVO+Extension.swift */,
 				51641B312333FF34004AE5B7 /* MovieVO+Extension.swift */,
+				5186024B233939890019E1C0 /* BookmarkVO+Extension.swift */,
 			);
 			path = extension;
 			sourceTree = "<group>";
@@ -163,6 +168,7 @@
 				51641B3523353B6F004AE5B7 /* GenreListViewController.swift */,
 				5160920D2335460300977C3C /* MovieListByGenreViewController.swift */,
 				5160923D23371AE700977C3C /* SearchMovieViewController.swift */,
+				5186024D233940280019E1C0 /* MovieBookmarkViewController.swift */,
 			);
 			path = viewcontrollers;
 			sourceTree = "<group>";
@@ -354,8 +360,10 @@
 				516DB117233153BD000C1973 /* Theme.swift in Sources */,
 				51641B302333FC6F004AE5B7 /* Reachability.swift in Sources */,
 				518A3BF62333328F0093ADA9 /* MovieGenreListResponse.swift in Sources */,
+				5186024C233939890019E1C0 /* BookmarkVO+Extension.swift in Sources */,
 				51641B3423353B28004AE5B7 /* GenreListTableViewCell.swift in Sources */,
 				516DB1042331437D000C1973 /* Routes.swift in Sources */,
+				5186024E233940280019E1C0 /* MovieBookmarkViewController.swift in Sources */,
 				51641B3623353B6F004AE5B7 /* GenreListViewController.swift in Sources */,
 				516DB106233143F8000C1973 /* MovieModel.swift in Sources */,
 				518A3BEE2332BEE40093ADA9 /* NetworkUtil.swift in Sources */,
