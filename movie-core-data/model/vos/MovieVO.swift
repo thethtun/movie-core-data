@@ -7,29 +7,30 @@
 //
 
 import Foundation
+import RealmSwift
 
-struct MovieVO : Codable {
+class MovieVO : Object, Codable {
     
-    let popularity : Double?
-    let vote_count : Int?
-    let video : Bool?
-    let poster_path : String?
-    let id : Int?
-    let adult : Bool?
-    let backdrop_path : String?
-    let original_language : String?
-    let original_title : String?
-    let genre_ids: [Int]?
-    let title : String?
-    let vote_average : Double?
-    let overview : String?
-    let release_date : String?
-    let budget : Int?
-    let homepage : String?
-    let imdb_id : String?
-    let revenue : Int?
-    let runtime : Int?
-    let tagline : String?
+    @objc dynamic var popularity : Double = 0
+    @objc dynamic var vote_count : Int = 0
+    @objc dynamic var video : Bool = false
+    @objc dynamic var poster_path : String?
+    @objc dynamic var id : Int = 0
+    @objc dynamic var adult : Bool = false
+    @objc dynamic var backdrop_path : String?
+    @objc dynamic var original_language : String?
+    @objc dynamic var original_title : String?
+    let genre_ids: [Int]
+    @objc dynamic var title : String?
+    @objc dynamic var vote_average : Double = 0
+    @objc dynamic var overview : String?
+    @objc dynamic var release_date : String?
+//    @objc dynamic var budget : Int = 0
+//    @objc dynamic var homepage : String?
+//    @objc dynamic var imdb_id : String?
+//    @objc dynamic var revenue : Int = 0
+//    @objc dynamic var runtime : Int = 0
+//    @objc dynamic var tagline : String?
     
     //Production Companies
     
@@ -54,12 +55,16 @@ struct MovieVO : Codable {
         case vote_average
         case overview
         case release_date
-        case budget
-        case homepage
-        case imdb_id
-        case revenue
-        case runtime
-        case tagline = "tagline"
+//        case budget
+//        case homepage
+//        case imdb_id
+//        case revenue
+//        case runtime
+//        case tagline
+    }
+    
+    override class func ignoredProperties() -> [String] {
+        return ["genre_ids"]
     }
     
 }

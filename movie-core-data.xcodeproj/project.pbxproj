@@ -15,6 +15,7 @@
 		516830BE233DB0B0003F2763 /* MovieVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516830BD233DB0B0003F2763 /* MovieVO.swift */; };
 		516830C0233DB0CF003F2763 /* MovieGenreVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516830BF233DB0CF003F2763 /* MovieGenreVO.swift */; };
 		516830C2233DB0EC003F2763 /* BookmarkVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516830C1233DB0EC003F2763 /* BookmarkVO.swift */; };
+		516830C4233DBF3F003F2763 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516830C3233DBF3F003F2763 /* Extension.swift */; };
 		516DB0F023314296000C1973 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516DB0EF23314296000C1973 /* AppDelegate.swift */; };
 		516DB0F223314296000C1973 /* MovieListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516DB0F123314296000C1973 /* MovieListViewController.swift */; };
 		516DB0F523314296000C1973 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 516DB0F323314296000C1973 /* Main.storyboard */; };
@@ -48,6 +49,7 @@
 		516830BD233DB0B0003F2763 /* MovieVO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieVO.swift; sourceTree = "<group>"; };
 		516830BF233DB0CF003F2763 /* MovieGenreVO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieGenreVO.swift; sourceTree = "<group>"; };
 		516830C1233DB0EC003F2763 /* BookmarkVO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkVO.swift; sourceTree = "<group>"; };
+		516830C3233DBF3F003F2763 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		516DB0EC23314296000C1973 /* movie-core-data.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "movie-core-data.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		516DB0EF23314296000C1973 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		516DB0F123314296000C1973 /* MovieListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListViewController.swift; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 		51641B2C2333F3EF004AE5B7 /* extension */ = {
 			isa = PBXGroup;
 			children = (
+				516830C3233DBF3F003F2763 /* Extension.swift */,
 			);
 			path = extension;
 			sourceTree = "<group>";
@@ -369,6 +372,7 @@
 				5186024E233940280019E1C0 /* MovieBookmarkViewController.swift in Sources */,
 				51641B3623353B6F004AE5B7 /* GenreListViewController.swift in Sources */,
 				516DB106233143F8000C1973 /* MovieModel.swift in Sources */,
+				516830C4233DBF3F003F2763 /* Extension.swift in Sources */,
 				518A3BEE2332BEE40093ADA9 /* NetworkUtil.swift in Sources */,
 				516830BE233DB0B0003F2763 /* MovieVO.swift in Sources */,
 				516DB102233142BF000C1973 /* API.swift in Sources */,

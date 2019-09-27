@@ -7,7 +7,8 @@
 //
 
 import Foundation
+import RealmSwift
 
 struct MovieGenreListResponse: Codable {
-    let genres : [MovieGenreResponse]
+    let genres : List<MovieGenreVO>
 }

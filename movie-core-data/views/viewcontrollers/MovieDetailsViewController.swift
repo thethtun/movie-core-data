@@ -48,7 +48,7 @@ class MovieDetailsViewController: UIViewController {
 //            return
 //        }
         
-        fetchMovieDetails(movieId : movieId)
+//        fetchMovieDetails(movieId : movieId)
         
     }
     
@@ -90,7 +90,7 @@ class MovieDetailsViewController: UIViewController {
     }
     
     fileprivate func fetchMovieDetails(movieId : Int) {
-        MovieModel.shared.fetchMovieDetails(movieId: movieId) { movieDetails in
+//        MovieModel.shared.fetchMovieDetails(movieId: movieId) { movieDetails in
 //
 //            let fetchRequest : NSFetchRequest<MovieVO> = MovieVO.fetchRequest()
 //            let predicate = NSPredicate(format: "id == %d", self.movieId)
@@ -108,7 +108,7 @@ class MovieDetailsViewController: UIViewController {
 //                }
 //            }
             
-        }
+//        }
     }
     
     
@@ -116,18 +116,18 @@ class MovieDetailsViewController: UIViewController {
         activityIndicator.stopAnimating()
         
         ///setting movie overview
-        let overviewTitle = WidgetGenerator.getUILabelTitle("Overview")
-        stackViewTemp.addArrangedSubview(overviewTitle)
-        let movieOverview = data.overview ?? "No overview"
-        stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo(movieOverview))
-        addTempSpacing()
-        
-        ///setting release data
-        let releaseTitle = WidgetGenerator.getUILabelTitle("Release Date")
-        stackViewTemp.addArrangedSubview(releaseTitle)
-        let releasedDate = data.release_date ?? "No release date"
-        stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo(releasedDate))
-        addTempSpacing()
+//        let overviewTitle = WidgetGenerator.getUILabelTitle("Overview")
+//        stackViewTemp.addArrangedSubview(overviewTitle)
+//        let movieOverview = data.overview ?? "No overview"
+//        stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo(movieOverview))
+//        addTempSpacing()
+//        
+//        ///setting release data
+//        let releaseTitle = WidgetGenerator.getUILabelTitle("Release Date")
+//        stackViewTemp.addArrangedSubview(releaseTitle)
+//        let releasedDate = data.release_date ?? "No release date"
+//        stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo(releasedDate))
+//        addTempSpacing()
         
         ///setting genres view
 //        let genreTitle = WidgetGenerator.getUILabelTitle("Genres")

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 class MovieModel {
     
@@ -14,12 +15,12 @@ class MovieModel {
     
     private init() {}
     
-    func fetchMoviesByName(movieName : String, completion : @escaping ([MovieInfoResponse]) -> Void) {
+    func fetchMoviesByName(movieName : String, completion : @escaping (List<MovieVO>) -> Void) {
         let route = URL(string: "\(Routes.ROUTE_SEACRH_MOVIES)?api_key=\(API.KEY)&query=\(movieName.replacingOccurrences(of: " ", with: "%20") )")!
         URLSession.shared.dataTask(with: route) { (data, urlResponse, error) in
             let response : MovieListResponse? = self.responseHandler(data: data, urlResponse: urlResponse, error: error)
             if let data = response {
-                completion(data.results)
+//                completion(data.results)
             }
         }.resume()
     }
@@ -34,21 +35,22 @@ class MovieModel {
         }.resume()
     }
     
-    func fetchTopRatedMovies(pageId : Int = 1, completion : @escaping (([MovieInfoResponse]) -> Void) )  {
+    func fetchTopRatedMovies(pageId : Int = 1, completion : @escaping ((List<MovieVO>) -> Void) )  {
         let route = URL(string: "\(Routes.ROUTE_TOP_RATED_MOVIES)&page=\(pageId)")!
         URLSession.shared.dataTask(with: route) { (data, urlResponse, error) in
             let response : MovieListResponse? = self.responseHandler(data: data, urlResponse: urlResponse, error: error)
             if let data = response {
 //                print(data.results.count)
                 completion(data.results)
+                
             } else {
-                completion([MovieInfoResponse]())
+                completion(List<MovieVO>.init())
             }
         }.resume()
         
     }
     
-    func fetchMovieGenres(completion : @escaping ([MovieGenreResponse]) -> Void ) {
+    func fetchMovieGenres(completion : @escaping (List<MovieGenreVO>) -> Void ) {
         
         let route = URL(string: Routes.ROUTE_MOVIE_GENRES)!
         let task = URLSession.shared.dataTask(with: route) { (data, urlResponse, error) in

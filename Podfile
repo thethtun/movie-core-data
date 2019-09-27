@@ -4,8 +4,10 @@
 target 'movie-core-data' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
+  
+  # Pods for movie-core-data
+  pod 'RealmSwift'
   pod 'SDWebImage', '~> 5.0'
   pod 'ReachabilitySwift'
-  # Pods for movie-core-data
-
+  
 end

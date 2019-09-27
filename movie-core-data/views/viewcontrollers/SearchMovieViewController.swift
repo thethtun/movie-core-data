@@ -81,7 +81,7 @@ extension SearchMovieViewController : UISearchBarDelegate {
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         let searchedMovie = searchBar.text ?? ""
         MovieModel.shared.fetchMoviesByName(movieName: searchedMovie) { [weak self] results in
-            self?.searchedResult = results
+//            self?.searchedResult = results
 //
 //            results.forEach({ (movieInfo) in
 //                MovieInfoResponse.saveMovieEntity(data: movieInfo, context: CoreDataStack.shared.viewContext)
