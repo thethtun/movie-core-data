@@ -29,6 +29,7 @@
 		516DB117233153BD000C1973 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516DB116233153BD000C1973 /* Theme.swift */; };
 		516DB1192331545B000C1973 /* MovieListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516DB1182331545B000C1973 /* MovieListCollectionViewCell.swift */; };
 		516DB1212331DC84000C1973 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516DB1202331DC84000C1973 /* CoreDataStack.swift */; };
+		5174D7F6234086D5004E7CBA /* TitleSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5174D7F5234086D5004E7CBA /* TitleSupplementaryView.swift */; };
 		5186024E233940280019E1C0 /* MovieBookmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5186024D233940280019E1C0 /* MovieBookmarkViewController.swift */; };
 		518A3BE6233299170093ADA9 /* MovieDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518A3BE5233299170093ADA9 /* MovieDetailsViewController.swift */; };
 		518A3BE823329F770093ADA9 /* WidgetGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518A3BE723329F770093ADA9 /* WidgetGenerator.swift */; };
@@ -65,6 +66,7 @@
 		516DB116233153BD000C1973 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		516DB1182331545B000C1973 /* MovieListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListCollectionViewCell.swift; sourceTree = "<group>"; };
 		516DB1202331DC84000C1973 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		5174D7F5234086D5004E7CBA /* TitleSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleSupplementaryView.swift; sourceTree = "<group>"; };
 		5186024D233940280019E1C0 /* MovieBookmarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieBookmarkViewController.swift; sourceTree = "<group>"; };
 		518A3BE5233299170093ADA9 /* MovieDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewController.swift; sourceTree = "<group>"; };
 		518A3BE723329F770093ADA9 /* WidgetGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetGenerator.swift; sourceTree = "<group>"; };
@@ -227,6 +229,7 @@
 			children = (
 				516DB1182331545B000C1973 /* MovieListCollectionViewCell.swift */,
 				51641B3323353B28004AE5B7 /* GenreListTableViewCell.swift */,
+				5174D7F5234086D5004E7CBA /* TitleSupplementaryView.swift */,
 			);
 			path = cells;
 			sourceTree = "<group>";
@@ -375,6 +378,7 @@
 				516830C4233DBF3F003F2763 /* Extension.swift in Sources */,
 				518A3BEE2332BEE40093ADA9 /* NetworkUtil.swift in Sources */,
 				516830BE233DB0B0003F2763 /* MovieVO.swift in Sources */,
+				5174D7F6234086D5004E7CBA /* TitleSupplementaryView.swift in Sources */,
 				516DB102233142BF000C1973 /* API.swift in Sources */,
 				516830C2233DB0EC003F2763 /* BookmarkVO.swift in Sources */,
 				516DB11523315039000C1973 /* MovieListResponse.swift in Sources */,
@@ -538,6 +542,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 89V2ZL7PL7;
 				INFOPLIST_FILE = "movie-core-data/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -557,6 +562,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 89V2ZL7PL7;
 				INFOPLIST_FILE = "movie-core-data/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
