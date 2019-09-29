@@ -30,22 +30,8 @@ class MovieBookmarkViewController: UIViewController {
         collectionViewMovieList.delegate = self
         collectionViewMovieList.backgroundColor = Theme.background
         
-        bookmarkList = realm.objects(BookmarkVO.self).sorted(byKeyPath: "created_at", ascending: true)
-        bookmarkListToken = bookmarkList?.observe{ [weak self] changes in
-            switch changes {
-            case .initial:
-                break
-            case .update(_, let deletions, let insertions, let modifications):
-                self?.collectionViewMovieList.performBatchUpdates({ () -> Void in
-                    self?.collectionViewMovieList.deleteItems(at: deletions.map({IndexPath(row: $0, section: 0)}))
-                    self?.collectionViewMovieList.insertItems(at: insertions.map({ IndexPath(row: $0, section: 0) }))
-                    self?.collectionViewMovieList.reloadItems(at: modifications.map({ IndexPath(row: $0, section: 0) }))
-                }, completion: nil)
-                break
-            case .error(let error):
-                fatalError("failed to load bookmarks \(error.localizedDescription)")
-            }
-        }
+        //TODO: Implment Realm BookmarkVO observer
+
         
     }
     

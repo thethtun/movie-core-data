@@ -30,28 +30,8 @@ class GenreListViewController: UIViewController {
     }
     
     fileprivate func initView() {
-        movieGenres = realm.objects(MovieGenreVO.self)
-        if movieGenres!.isEmpty {
-            //Do Network Fetch
-        }
         
-        movieGenresNotiToken = movieGenres?.observe { [weak self] changes in
-            switch changes {
-            case .initial:
-                self?.tableViewGenreList.reloadData()
-            case .update(_, let insertions, let deletions, let modifications):
-                self?.tableViewGenreList.beginUpdates()
-                self?.tableViewGenreList.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0)}),
-                                     with: .automatic)
-                self?.tableViewGenreList.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
-                                     with: .automatic)
-                self?.tableViewGenreList.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
-                                     with: .automatic)
-                self?.tableViewGenreList.endUpdates()
-            case .error:
-                fatalError("")
-            }
-        }
+        //TODO: Implement Realm GenreVO List Observer
         
     }
     

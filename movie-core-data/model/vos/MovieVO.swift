@@ -34,27 +34,18 @@ class MovieVO : Object {
     
     
     //Production Companies
+    //TODO: Save Production Companies
     
-    //Production Countries
-    
-    //Spoken Languages
-    
-    //Genres
-    
-    
-    override class func primaryKey() -> String? {
-        return "id"
-    }
-    
-    override class func ignoredProperties() -> [String] {
-        return ["genre_ids"]
-    }
-    
+    //TODO: Set Primary Key
+
+    //TODO: Set genre_ids as ignored
+
 }
 
 
 extension MovieVO {
     static func getMovieById(movieId : Int, realm : Realm) -> MovieVO? {
-        return realm.object(ofType: MovieVO.self, forPrimaryKey: movieId)
+        //TODO: Implement realm object fetch API
+        return nil
     }
 }

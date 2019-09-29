@@ -24,35 +24,13 @@ class BookmarkVO : Object {
 extension BookmarkVO {
     static func saveMovieBookmark(movieId : Int, realm : Realm) {
         
+        //TODO: Implment save method for Realm Object BookmarkVO
         
-        let movieVO = MovieVO.getMovieById(movieId: movieId, realm: realm)
-        
-        let bookmarkVO = BookmarkVO()
-        bookmarkVO.id = UUID().uuidString
-        bookmarkVO.created_at = Date()
-        bookmarkVO.movieDetails = movieVO
-        bookmarkVO.movie_id = movieVO?.id ?? 0
-        
-        do {
-            try realm.write {
-                realm.add(bookmarkVO)
-            }
-        } catch {
-            print("Failed to save bookmark \(error.localizedDescription)")
-        }
     }
     
     static func deleteMovieBookmark(movieId : Int, realm : Realm) {
         
-        let bookmarks = realm.objects(BookmarkVO.self).filter(NSPredicate(format: "id == %d", movieId) )
-    
-        do {
-            try realm.write {
-                
-                realm.delete(bookmarks)
-            }
-        } catch {
-            print("Failed to save bookmark \(error.localizedDescription)")
-        }
+        //TODO: Implment delete method for Realm Object BookmarkVO
+        
     }
 }

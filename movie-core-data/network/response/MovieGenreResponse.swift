@@ -15,17 +15,8 @@ struct MovieGenreResponse : Codable {
     let name : String
     
     static func saveMovieGenre(data : MovieGenreResponse, realm: Realm) {
-        let entity = MovieGenreVO()
-        entity.id = data.id
-        entity.name = data.name
         
-        do {
-            try realm.write {
-                realm.add(entity)
-            }
-        } catch {
-            print("failed to save movie genre : \(error.localizedDescription)")
-        }
+        //TODO: Implement Save Realm object MovieGenreVO
         
     }
 }

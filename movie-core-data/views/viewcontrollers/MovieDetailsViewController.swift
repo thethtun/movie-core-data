@@ -47,20 +47,7 @@ class MovieDetailsViewController: UIViewController {
         if let data = MovieVO.getMovieById(movieId: movieId, realm: realm) {
             self.bindData(data: data)
         }
-        
-//        if NetworkUtils.checkReachable() == false {
-//            Dialog.showAlert(viewController: self, title: "Error", message: "No Internet Connection!")
-//
-//            ///Load persistent data
-//            if let data = MovieVO.getMovieById(movieId: movieId, realm: realm) {
-//                self.bindData(data: data)
-//            }
-//
-//        } else {
-//            fetchMovieDetails(movieId : movieId)
-//        }
-        
-
+    
     }
 
     

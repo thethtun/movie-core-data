@@ -28,7 +28,6 @@
 		516DB11523315039000C1973 /* MovieListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516DB11423315039000C1973 /* MovieListResponse.swift */; };
 		516DB117233153BD000C1973 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516DB116233153BD000C1973 /* Theme.swift */; };
 		516DB1192331545B000C1973 /* MovieListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516DB1182331545B000C1973 /* MovieListCollectionViewCell.swift */; };
-		516DB1212331DC84000C1973 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516DB1202331DC84000C1973 /* CoreDataStack.swift */; };
 		5174D7F6234086D5004E7CBA /* TitleSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5174D7F5234086D5004E7CBA /* TitleSupplementaryView.swift */; };
 		5186024E233940280019E1C0 /* MovieBookmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5186024D233940280019E1C0 /* MovieBookmarkViewController.swift */; };
 		518A3BE6233299170093ADA9 /* MovieDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518A3BE5233299170093ADA9 /* MovieDetailsViewController.swift */; };
@@ -51,7 +50,7 @@
 		516830BF233DB0CF003F2763 /* MovieGenreVO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieGenreVO.swift; sourceTree = "<group>"; };
 		516830C1233DB0EC003F2763 /* BookmarkVO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkVO.swift; sourceTree = "<group>"; };
 		516830C3233DBF3F003F2763 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
-		516DB0EC23314296000C1973 /* movie-core-data.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "movie-core-data.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		516DB0EC23314296000C1973 /* ဓာတ်ရှင်.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ဓာတ်ရှင်.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		516DB0EF23314296000C1973 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		516DB0F123314296000C1973 /* MovieListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListViewController.swift; sourceTree = "<group>"; };
 		516DB0F423314296000C1973 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -65,7 +64,6 @@
 		516DB11423315039000C1973 /* MovieListResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListResponse.swift; sourceTree = "<group>"; };
 		516DB116233153BD000C1973 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		516DB1182331545B000C1973 /* MovieListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListCollectionViewCell.swift; sourceTree = "<group>"; };
-		516DB1202331DC84000C1973 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		5174D7F5234086D5004E7CBA /* TitleSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleSupplementaryView.swift; sourceTree = "<group>"; };
 		5186024D233940280019E1C0 /* MovieBookmarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieBookmarkViewController.swift; sourceTree = "<group>"; };
 		518A3BE5233299170093ADA9 /* MovieDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewController.swift; sourceTree = "<group>"; };
@@ -129,7 +127,7 @@
 		516DB0ED23314296000C1973 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				516DB0EC23314296000C1973 /* movie-core-data.app */,
+				516DB0EC23314296000C1973 /* ဓာတ်ရှင်.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -155,18 +153,9 @@
 			isa = PBXGroup;
 			children = (
 				516830BC233DB0A8003F2763 /* vos */,
-				516DB1222331DC8E000C1973 /* coredata */,
 				516DB105233143F8000C1973 /* MovieModel.swift */,
-				516DB10823314461000C1973 /* data */,
 			);
 			path = model;
-			sourceTree = "<group>";
-		};
-		516DB10823314461000C1973 /* data */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = data;
 			sourceTree = "<group>";
 		};
 		516DB10923314466000C1973 /* viewcontrollers */ = {
@@ -234,14 +223,6 @@
 			path = cells;
 			sourceTree = "<group>";
 		};
-		516DB1222331DC8E000C1973 /* coredata */ = {
-			isa = PBXGroup;
-			children = (
-				516DB1202331DC84000C1973 /* CoreDataStack.swift */,
-			);
-			path = coredata;
-			sourceTree = "<group>";
-		};
 		D33EF8B3F652596D30427A7A /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -270,7 +251,7 @@
 			);
 			name = "movie-core-data";
 			productName = "movie-core-data";
-			productReference = 516DB0EC23314296000C1973 /* movie-core-data.app */;
+			productReference = 516DB0EC23314296000C1973 /* ဓာတ်ရှင်.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -384,7 +365,6 @@
 				516DB11523315039000C1973 /* MovieListResponse.swift in Sources */,
 				516830C0233DB0CF003F2763 /* MovieGenreVO.swift in Sources */,
 				5160920E2335460300977C3C /* MovieListByGenreViewController.swift in Sources */,
-				516DB1212331DC84000C1973 /* CoreDataStack.swift in Sources */,
 				516DB1192331545B000C1973 /* MovieListCollectionViewCell.swift in Sources */,
 				518A3BF12332C8790093ADA9 /* Dialog.swift in Sources */,
 				518A3BE6233299170093ADA9 /* MovieDetailsViewController.swift in Sources */,
@@ -547,8 +527,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mm.padc.movie-core-data";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mm.padc.movie-realm";
+				PRODUCT_NAME = "ဓာတ်ရှင်";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -567,8 +547,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mm.padc.movie-core-data";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mm.padc.movie-realm";
+				PRODUCT_NAME = "ဓာတ်ရှင်";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

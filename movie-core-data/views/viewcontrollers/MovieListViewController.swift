@@ -31,18 +31,7 @@ class MovieListViewController: UIViewController {
     
     let TAG : String = "MovieListViewController"
     
-    let realm = try! Realm(configuration: Realm.Configuration(
-        schemaVersion: 4,
-        migrationBlock: { migration, oldSchemaVersion in
-            if (oldSchemaVersion < 4) {
-                migration.enumerateObjects(ofType: BookmarkVO.className(), { oldObject, newObject in
-                    //                    newObject!["id"] = oldObject!["id"]
-                    //                    newObject!["movieDetails"] = oldObject!["movieDetails"]
-                    //                    newObject!["created_at"] = Date()
-                    //                    oldObject!["movie_id"] = nil
-                })
-            }
-    }))
+    let realm = try! Realm()
     
     var movieList : Results<MovieVO>?
     
@@ -65,10 +54,8 @@ class MovieListViewController: UIViewController {
     private func initView() {
         
         collectionViewMovieList.dataSource = self
-//        collectionViewMovieList.delegate = self
         collectionViewMovieList.backgroundColor = Theme.background
         collectionViewMovieList.register(TitleSupplementaryView.self, forSupplementaryViewOfKind: "header", withReuseIdentifier: TitleSupplementaryView.reuseIdentifier)
-        
         if #available(iOS 13.0, *) {
             // use the feature only available in iOS 9
             // for ex. UIStackView
@@ -102,30 +89,7 @@ class MovieListViewController: UIViewController {
     
     fileprivate func initMovieListFetchRequest() {
         
-        movieList = realm.objects(MovieVO.self)
-        if movieList!.isEmpty {
-            self.fetchPopularMovies()
-        }
-        
-        movieListNotifierToken = movieList!._observe{ [weak self] changes in
-            switch changes {
-            case .initial:
-                self?.collectionViewMovieList.reloadData()
-                self?.activityIndicator.stopAnimating()
-                break
-            case .update(_,let deletions,let insertions,let modification):
-                self?.collectionViewMovieList.performBatchUpdates({
-                    self?.collectionViewMovieList.deleteItems(at: deletions.map({IndexPath(row: $0, section: 0)}))
-                    self?.collectionViewMovieList.insertItems(at: insertions.map({ IndexPath(row: $0, section: 0) }))
-                    self?.collectionViewMovieList.reloadItems(at: modification.map({ IndexPath(row: $0, section: 0) }))
-                }, completion: nil)
-                
-                break
-            case .error(let error):
-                fatalError("\(error)")
-            }
-            
-        }
+        //TODO: Setup Realm Notification Observer
         
     }
     
@@ -223,6 +187,7 @@ class MovieListViewController: UIViewController {
             if sectionIndex == 0 {
                 
                 
+                
                 let aItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                       heightDimension: .fractionalHeight(1.0))
                 
@@ -233,6 +198,7 @@ class MovieListViewController: UIViewController {
                                                         heightDimension: .fractionalHeight(1.0))
                 
                 let aGroup = NSCollectionLayoutGroup.horizontal(layoutSize: aGroupSize, subitems: [aItem])
+                
                 
                 
                 
@@ -335,7 +301,6 @@ class MovieListViewController: UIViewController {
                 let dGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),heightDimension: .fractionalWidth(0.33 * 2.9))
                 let dGroup = NSCollectionLayoutGroup.vertical(layoutSize: dGroupSize, subitem: bGroup, count: 2)
                 
-//                let mainGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),heightDimension: .fractionalHeight(0.5))
                 let mainGroup = NSCollectionLayoutGroup.horizontal(layoutSize: dGroupSize, subitems: [dGroup])
                 
                 let section = NSCollectionLayoutSection(group: mainGroup)
@@ -362,14 +327,10 @@ class MovieListViewController: UIViewController {
                 
                 let bGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),heightDimension: .fractionalWidth(0.33 * 1.45) )
                 let bGroup = NSCollectionLayoutGroup.horizontal(layoutSize: bGroupSize, subitem: aGroup, count: 3)
-                
-//                let mainGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),heightDimension: .fractionalHeight(0.5))
+            
                 let mainGroup = NSCollectionLayoutGroup.vertical(layoutSize: bGroupSize, subitems: [bGroup])
                 
                 let section = NSCollectionLayoutSection(group: mainGroup)
-                
-//                section.orthogonalScrollingBehavior = .continuous
-//                section.interGroupSpacing = 10
                 section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 10)
             
                 let sectionHeaderSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
