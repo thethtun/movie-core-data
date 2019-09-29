@@ -102,9 +102,9 @@ class MovieListViewController: UIViewController {
     
     fileprivate func initMovieListFetchRequest() {
         
-        movieList = realm.objects(MovieVO.self).sorted(byKeyPath: "vote_average", ascending: false)
+        movieList = realm.objects(MovieVO.self)
         if movieList!.isEmpty {
-            self.fetchTopRatedMovies()
+            self.fetchPopularMovies()
         }
         
         movieListNotifierToken = movieList!._observe{ [weak self] changes in
@@ -135,6 +135,30 @@ class MovieListViewController: UIViewController {
         self.navigationItem.title = "Movie List"
     }
     
+    
+    fileprivate func fetchPopularMovies() {
+           if NetworkUtils.checkReachable() == false {
+               Dialog.showAlert(viewController: self, title: "Error", message: "No Internet Connection!")
+               return
+           }
+           
+           for index in 0...5 {
+               MovieModel.shared.fetchPopularMovies(pageId: index) { [weak self] movies in
+                   DispatchQueue.main.async { [weak self] in
+                       
+                       movies.forEach{ movie in
+                           MovieInfoResponse.saveMovie(data: movie, realm: self!.realm)
+                       }
+                       
+                       self?.activityIndicator.stopAnimating()
+                       self?.refreshControl.endRefreshing()
+                   }
+                   
+               }
+           }
+           
+
+       }
     
     
     fileprivate func fetchTopRatedMovies() {
@@ -171,7 +195,7 @@ class MovieListViewController: UIViewController {
                 }
             }
             
-            self.fetchTopRatedMovies()
+            self.fetchPopularMovies()
         }
         
         

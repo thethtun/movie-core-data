@@ -50,6 +50,21 @@ class MovieModel {
         
     }
     
+     func fetchPopularMovies(pageId : Int = 1, completion : @escaping (([MovieInfoResponse]) -> Void) )  {
+            let route = URL(string: "\(Routes.ROUTE_POPULAR_MOVIES)&page=\(pageId)")!
+            URLSession.shared.dataTask(with: route) { (data, urlResponse, error) in
+                let response : MovieListResponse? = self.responseHandler(data: data, urlResponse: urlResponse, error: error)
+                if let data = response {
+    //                print(data.results.count)
+                    completion(data.results)
+                    
+                } else {
+                    completion([MovieInfoResponse]())
+                }
+            }.resume()
+            
+        }
+    
     func fetchMovieGenres(completion : @escaping ([MovieGenreResponse]) -> Void ) {
         
         let route = URL(string: Routes.ROUTE_MOVIE_GENRES)!
