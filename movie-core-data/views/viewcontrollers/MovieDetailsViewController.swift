@@ -8,32 +8,28 @@
 
 import UIKit
 import CoreData
+import CoreImage
 
 class MovieDetailsViewController: UIViewController {
 
-    let scrollViewPrimary : UIScrollView = {
-        let ui = UIScrollView()
-        ui.translatesAutoresizingMaskIntoConstraints = false
-        return ui
-    }()
+    @IBOutlet weak var buttonDismissContainer : UIView!
+    @IBOutlet weak var imageViewMoviePoster : UIImageView!
+    @IBOutlet weak var imageViewMovieBackDrop : UIImageView!
+    @IBOutlet weak var labelMovieDescription : UILabel!
+    @IBOutlet weak var labelMovieDescriptionHeight : NSLayoutConstraint!
+    @IBOutlet weak var labelMovieReleaseYear : UILabel!
+    @IBOutlet weak var labelMovieTargetAudience : UILabel!
+    @IBOutlet weak var labelMovieDuration : UILabel!
+    @IBOutlet weak var collectionViewSimilarMovies : UICollectionView!
+    @IBOutlet weak var collectionViewSimilarMoviesHeight : NSLayoutConstraint!
     
-    let stackViewTemp : UIStackView = {
-        let ui = UIStackView()
-        ui.translatesAutoresizingMaskIntoConstraints = false
-        ui.axis = .vertical
-        ui.spacing = 5
-        return ui
-    }()
-    
-    let activityIndicator : UIActivityIndicatorView = {
-        let ui = UIActivityIndicatorView()
-        ui.translatesAutoresizingMaskIntoConstraints = false
-        ui.color = UIColor.red
-        ui.startAnimating()
-        return ui
-    }()
-    
+    static var identifier = "MovieDetailsViewController"
     var movieId : Int = 0
+    var bookmarkButton = UIButton(type: .custom)
+    var isBookmarked = false
+    
+    private var similarMovies = [MovieInfoResponse]()
+    private var movieTrailerId = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,6 +44,35 @@ class MovieDetailsViewController: UIViewController {
             return
         }
         
+        fetchMovieDetails()
+        
+        fetchSimilarMovies()
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.isNavigationBarHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationItem.searchController?.hidesNavigationBarDuringPresentation = false
+        self.navigationController?.isNavigationBarHidden = false
+    }
+    
+    fileprivate func initView() {
+        navigationItem.hidesBackButton = true
+        buttonDismissContainer.layer.cornerRadius = buttonDismissContainer.frame.size.width / 2
+        
+        collectionViewSimilarMovies.delegate = self
+        collectionViewSimilarMovies.dataSource = self
+        collectionViewSimilarMovies.register(MovieListCollectionViewCell.self, forCellWithReuseIdentifier: MovieListCollectionViewCell.identifier)
+        collectionViewSimilarMoviesHeight.constant = 0
+    }
+    
+    fileprivate func fetchMovieDetails() {
+        let loadingIndicator = LoadingIndicator(viewController: self)
         MovieModel.shared.fetchMovieDetails(movieId: movieId) { movieDetails in
             
             let fetchRequest : NSFetchRequest<MovieVO> = MovieVO.fetchRequest()
@@ -56,78 +81,150 @@ class MovieDetailsViewController: UIViewController {
             if let movies = try? CoreDataStack.shared.viewContext.fetch(fetchRequest), !movies.isEmpty {
                 MovieInfoResponse.updateMovieEntity(existingData: movies[0], newData: movieDetails, context: CoreDataStack.shared.viewContext)
                 DispatchQueue.main.async { [weak self] in
+                    loadingIndicator.stopLoading()
                     self?.bindData(data: movies[0])
                 }
             } else {
                 let movieVO = MovieInfoResponse.convertToMovieVO(data: movieDetails, context: CoreDataStack.shared.viewContext)
                 
                 DispatchQueue.main.async { [weak self] in
+                    loadingIndicator.stopLoading()
                     self?.bindData(data: movieVO)
                 }
             }
             
         }
+    }
+ 
+    fileprivate func fetchSimilarMovies() {
         
+        MovieModel.shared.fetchSimilarMovies(movieId: movieId) { [weak self] similarMovies in
+            DispatchQueue.main.async {
+                self?.similarMovies = similarMovies
+                self?.collectionViewSimilarMovies.reloadData()
+            }
+        }
     }
     
-    fileprivate func initView() {
-        self.view.addSubview(scrollViewPrimary)
-        scrollViewPrimary.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
-        scrollViewPrimary.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
-        scrollViewPrimary.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive = true
-        scrollViewPrimary.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
-        
-        scrollViewPrimary.backgroundColor = Theme.background
-        
-        scrollViewPrimary.addSubview(stackViewTemp)
-        stackViewTemp.leadingAnchor.constraint(equalTo: self.scrollViewPrimary.leadingAnchor, constant: 20).isActive = true
-        stackViewTemp.trailingAnchor.constraint(equalTo: self.scrollViewPrimary.trailingAnchor, constant: -20).isActive = true
-        stackViewTemp.topAnchor.constraint(equalTo: self.scrollViewPrimary.topAnchor, constant: 20).isActive = true
-        stackViewTemp.bottomAnchor.constraint(equalTo: self.scrollViewPrimary.bottomAnchor, constant: 20).isActive = true
-        stackViewTemp.centerXAnchor.constraint(equalTo: self.scrollViewPrimary.centerXAnchor).isActive = true
-        
-        scrollViewPrimary.addSubview(activityIndicator)
-        activityIndicator.centerXAnchor.constraint(equalTo: scrollViewPrimary.centerXAnchor, constant: 0).isActive = true
-        activityIndicator.centerYAnchor.constraint(equalTo: scrollViewPrimary.centerYAnchor, constant: -100).isActive = true
-        activityIndicator.startAnimating()
-    }
-    
-    fileprivate func bindData(data : MovieVO) {
-        activityIndicator.stopAnimating()
-        
-        let overviewTitle = WidgetGenerator.getUILabelTitle("Overview")
-        stackViewTemp.addArrangedSubview(overviewTitle)
-        let movieOverview = data.overview ?? "No overview"
-        stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo(movieOverview))
-        
-        stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo(" ")) //Add some spacing
-        
-        let releaseTitle = WidgetGenerator.getUILabelTitle("Release Date")
-        stackViewTemp.addArrangedSubview(releaseTitle)
-        let releasedDate = data.release_date ?? "No release date"
-        stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo(releasedDate))
-        
-        stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo(" ")) //Add some spacing
-        
-        let genreTitle = WidgetGenerator.getUILabelTitle("Genres")
-        stackViewTemp.addArrangedSubview(genreTitle)
-        if let genres = data.genres, genres.count > 0 {
-            genres.allObjects.forEach{ data in
-                if let genre = data as? MovieGenreVO {
-                    stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo(genre.name ?? "undefined"))
+    fileprivate func fetchRelatedVideoID(_ completion : @escaping () -> Void) {
+        let loader = LoadingIndicator(viewController: self)
+        MovieModel.shared.fetchMovieVideo(movieId: movieId) { movieVideoResponse in
+            DispatchQueue.main.async { [weak self] in
+                loader.stopLoading()
+                if let response = movieVideoResponse {
+                    if response.results.count > 0 {
+                        self?.movieTrailerId = response.results[0].key ?? ""
+                        completion()
+                    } else {
+                        Dialog.showAlert(viewController: self!, title: "Uh-oh", message: "No Trailer for this movie :(")
+                    }
                 }
             }
         }
+    }
+   
+    
+    @IBAction func onClickViewTrailer(_ sender : Any) {
         
-        
-        stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo(" ")) //Add some spacing
-        
-        let ratinTitle = WidgetGenerator.getUILabelTitle("Rating")
-        stackViewTemp.addArrangedSubview(ratinTitle)
-        stackViewTemp.addArrangedSubview(WidgetGenerator.getUILabelMovieInfo("\(data.vote_average)"))
-        
-        
-        
+        fetchRelatedVideoID { [weak self] in
+            let viewcontroller = self?.storyboard?.instantiateViewController(withIdentifier: "MovieTrailerViewController") as? MovieTrailerViewController
+            viewcontroller?.videoId = self?.movieTrailerId
+            guard let vc = viewcontroller else {
+                return
+            }
+            self?.navigationController?.isNavigationBarHidden = false
+            self?.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
+    
+    
+    fileprivate func bindData(data : MovieVO) {
+        imageViewMoviePoster.sd_setImage(with: URL(string: "\(API.BASE_IMG_URL)\(data.poster_path ?? "")"), completed: nil)
+        imageViewMovieBackDrop.sd_setImage(with: URL(string: "\(API.BASE_IMG_URL)\(data.poster_path ?? "")"), completed: nil)
+        imageViewMovieBackDrop.blur()
+        
+        if let release_date = data.release_date {
+            let results = release_date.split(separator: "-")
+            if results.count > 0 {
+                labelMovieReleaseYear.text = String(results[0])
+            }
+            
+        }
+        
+        let movie_overview = data.overview ?? ""
+        labelMovieDescription.text = movie_overview
+        let calculatedMovieOverviewHeight = labelMovieDescription.getHeight(for: movie_overview, font: UIFont.systemFont(ofSize: 15), width: self.view.frame.width - 100)
+        labelMovieDescriptionHeight.constant = calculatedMovieOverviewHeight
+        
+        labelMovieDuration.text = "\(data.runtime) mins"
+        labelMovieTargetAudience.text = data.adult ? "18+" : "Not Rated"
+    }
+    
+    @IBAction func onClickDismiss(_ sender : Any) {
+        navigationController?.popViewController(animated: true)
+    }
+    
+}
+
+extension MovieDetailsViewController: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        let width = (collectionView.bounds.width / 3) - 10;
+        let heightForSingleRow = width * 1.45
+        var totalCount = similarMovies.count
+        repeat {
+            collectionViewSimilarMoviesHeight.constant += heightForSingleRow
+            totalCount = totalCount - 3
+        } while totalCount > 0
+        return similarMovies.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let movie = similarMovies[indexPath.row]
+
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieListCollectionViewCell.identifier, for: indexPath) as? MovieListCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        
+        cell.data = MovieInfoResponse.convertToMovieVO(data: movie, context: CoreDataStack.shared.viewContext)
+        
+        return cell
+    }
+}
+
+extension MovieDetailsViewController : UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let movie = similarMovies[indexPath.row]
+        if let vc = storyboard?.instantiateViewController(withIdentifier: "MovieDetailsViewController") as? MovieDetailsViewController {
+            vc.movieId = movie.id ?? 0
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        
+    }
+}
+
+extension MovieDetailsViewController : UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = (collectionView.bounds.width / 3) - 10;
+        return CGSize(width: width, height: width * 1.45)
+    }
+}
+
+
+extension UILabel {
+    func getHeight(for string: String, font: UIFont, width: CGFloat) -> CGFloat {
+        let textStorage = NSTextStorage(string: string)
+        let textContainter = NSTextContainer(size: CGSize(width: width, height: CGFloat.greatestFiniteMagnitude))
+        let layoutManager = NSLayoutManager()
+        layoutManager.addTextContainer(textContainter)
+        textStorage.addLayoutManager(layoutManager)
+        textStorage.addAttribute(NSAttributedString.Key.font, value: font, range: NSMakeRange(0, textStorage.length))
+        textContainter.lineFragmentPadding = 0.0
+        layoutManager.glyphRange(for: textContainter)
+        return layoutManager.usedRect(for: textContainter).size.height
+    }
 }

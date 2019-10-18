@@ -18,20 +18,10 @@ class SearchMovieViewController: UIViewController {
     
     private var searchedResult = [MovieInfoResponse]()
     
-    let activityIndicator : UIActivityIndicatorView = {
-        let ui = UIActivityIndicatorView()
-        ui.translatesAutoresizingMaskIntoConstraints = false
-        ui.color = UIColor.red
-        ui.startAnimating()
-        return ui
-    }()
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         initView()
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -39,6 +29,12 @@ class SearchMovieViewController: UIViewController {
         navigationItem.title = "Search Movies"
         
         searchController.searchBar.becomeFirstResponder()
+    }
+    
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.isNavigationBarHidden = false
     }
     
     fileprivate func initView() {
@@ -53,16 +49,13 @@ class SearchMovieViewController: UIViewController {
         // Setup the Scope Bar
         searchController.searchBar.delegate = self
         searchController.searchBar.barStyle = .black
-    
+        searchController.searchBar.searchTextField.textColor = .white
         
         collectionViewMovieList.dataSource = self
         collectionViewMovieList.delegate = self
         collectionViewMovieList.backgroundColor = Theme.background
+        collectionViewMovieList.register(MovieListCollectionViewCell.self, forCellWithReuseIdentifier: MovieListCollectionViewCell.identifier)
         
-        self.view.addSubview(activityIndicator)
-        activityIndicator.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
-        activityIndicator.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 0).isActive = true
-        activityIndicator.stopAnimating()
     }
     
 }
@@ -95,7 +88,7 @@ extension SearchMovieViewController: UICollectionViewDataSource {
                 self?.labelMovieNotFound.text = "No movie found :("
                 return
             }
-            
+            self?.searchedResult = results
             self?.labelMovieNotFound.text = ""
             self?.collectionViewMovieList.reloadData()
         }
@@ -105,11 +98,15 @@ extension SearchMovieViewController: UICollectionViewDataSource {
 extension SearchMovieViewController : UISearchBarDelegate {
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        activityIndicator.startAnimating()
+        let loading = LoadingIndicator(viewController: self)
         let searchedMovie = searchBar.text ?? ""
-        
-        //TODO :
-        //Implement Search Movie API
+    
+        MovieModel.shared.searchMoviesByName(movieName: searchedMovie, completion: { (movieInfoResponse) in
+            DispatchQueue.main.async { [weak self] in
+                loading.stopLoading()
+                self?.bindData(movieInfoResponse)
+            }
+        })
         
     }
 }
@@ -117,7 +114,11 @@ extension SearchMovieViewController : UISearchBarDelegate {
 extension SearchMovieViewController : UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        let movie = searchedResult[indexPath.row]
+        if let vc = storyboard?.instantiateViewController(withIdentifier: "MovieDetailsViewController") as? MovieDetailsViewController {
+            vc.movieId = movie.id ?? 0
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -9,6 +9,13 @@
 import Foundation
 import CoreData
 
+enum MovieTag : String {
+    case Popular = "popular"
+    case Upcoming = "upcoming"
+    case TopRated = "top_rated"
+    case NowPlaying = "now_playing"
+}
+
 extension MovieVO {
     static func fetchMovies() -> [MovieVO]? {
         let fetchRequest : NSFetchRequest<MovieVO> = MovieVO.fetchRequest()

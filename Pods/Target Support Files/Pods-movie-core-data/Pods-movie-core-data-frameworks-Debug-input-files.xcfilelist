@@ -1,3 +1,4 @@
 ${PODS_ROOT}/Target Support Files/Pods-movie-core-data/Pods-movie-core-data-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework
 ${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework
+${BUILT_PRODUCTS_DIR}/YoutubePlayer-in-WKWebView/YoutubePlayer_in_WKWebView.framework

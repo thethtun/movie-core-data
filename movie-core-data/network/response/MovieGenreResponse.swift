@@ -13,16 +13,20 @@ struct MovieGenreResponse : Codable {
     let id : Int
     let name : String
     
-    static func saveMovieGenreEntity(data : MovieGenreResponse, context : NSManagedObjectContext) {
-        let entity = MovieGenreVO(context: context)
-        entity.id = Int32(data.id)
-        entity.name = data.name
-        
-        do {
-            try context.save()
-        } catch {
-            print("failed to save movie genre : \(error.localizedDescription)")
+    static func saveMovieGenreEntity(data : [MovieGenreResponse], context : NSManagedObjectContext) {
+        data.forEach { (resp) in
+            
+            let entity = MovieGenreVO(context: context)
+            entity.id = Int32(resp.id)
+            entity.name = resp.name
+            
+            do {
+                try context.save()
+            } catch {
+                print("failed to save movie genre : \(error.localizedDescription)")
+            }
         }
+        
         
     }
 }

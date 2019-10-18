@@ -6,6 +6,8 @@ target 'movie-core-data' do
   use_frameworks!
   pod 'SDWebImage', '~> 5.0'
   pod 'ReachabilitySwift'
+  pod 'YoutubePlayer-in-WKWebView'
   # Pods for movie-core-data
 
 end
+

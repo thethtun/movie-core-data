@@ -31,6 +31,7 @@ struct MovieInfoResponse : Codable {
     let revenue : Int?
     let runtime : Int?
     let tagline : String?
+    var movieTag : MovieTag? = MovieTag.NowPlaying
     
     //Production Companies
     
@@ -62,7 +63,7 @@ struct MovieInfoResponse : Codable {
         case runtime
         case tagline = "tagline"
     }
-    
+  
     static func saveMovieEntity(data : MovieInfoResponse, context : NSManagedObjectContext) {
         
         guard let id = data.id, id > 0 else {
@@ -98,7 +99,7 @@ struct MovieInfoResponse : Codable {
         movieEntity.revenue = Int32(data.revenue ?? 0)
         movieEntity.runtime = Int16(data.runtime ?? 0)
         movieEntity.tagline = data.tagline
-        
+        movieEntity.movie_tag = data.movieTag.map { $0.rawValue }
         
         do {
             try context.save()
@@ -130,7 +131,7 @@ struct MovieInfoResponse : Codable {
         movieEntity.revenue = Int32(data.revenue ?? 0)
         movieEntity.runtime = Int16(data.runtime ?? 0)
         movieEntity.tagline = data.tagline
-        
+        movieEntity.movie_tag = data.movieTag.map { $0.rawValue }
         
         do {
             try context.save()
@@ -164,7 +165,7 @@ struct MovieInfoResponse : Codable {
         movieVO.revenue = Int32(data.revenue ?? 0)
         movieVO.runtime = Int16(data.runtime ?? 0)
         movieVO.tagline = data.tagline
-        
+        movieVO.movie_tag = data.movieTag.map { $0.rawValue }
         
         return movieVO
     }

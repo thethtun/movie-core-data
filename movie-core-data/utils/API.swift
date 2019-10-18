@@ -11,5 +11,6 @@ import Foundation
 class API {
     static let BASE_URL = "https://api.themoviedb.org/3";
     static let BASE_IMG_URL = "https://image.tmdb.org/t/p/w500";
-    static let KEY = ""
+    static let KEY = "97085397ac3d7d66a85e2f4db8d9225d"
+    
 }

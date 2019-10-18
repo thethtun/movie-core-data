@@ -10,6 +10,7 @@ import Foundation
 import CoreData
 
 extension MovieGenreVO {
+    
     static func getMovieGenreVOById(genreId : Int) -> MovieGenreVO? {
         let fetchRequest : NSFetchRequest<MovieGenreVO> = MovieGenreVO.fetchRequest()
         let predicate = NSPredicate(format: "id == %d", genreId)
