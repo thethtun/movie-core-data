@@ -19,7 +19,7 @@ class BaseModel {
         
         let response = urlResponse as! HTTPURLResponse
         
-        if response.statusCode == 200 {
+        if response.statusCode >= 200 && response.statusCode < 300 {
             guard let data = data else {
                 print("\(TAG): empty data")
                 return nil

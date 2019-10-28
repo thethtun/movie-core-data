@@ -31,7 +31,7 @@ struct MovieInfoResponse : Codable {
     let revenue : Int?
     let runtime : Int?
     let tagline : String?
-    var movieTag : MovieTag? = MovieTag.NowPlaying
+    var movieTag : MovieTag? = MovieTag.NOT_LISTED
     
     //Production Companies
     
@@ -101,10 +101,12 @@ struct MovieInfoResponse : Codable {
         movieEntity.tagline = data.tagline
         movieEntity.movie_tag = data.movieTag.map { $0.rawValue }
         
-        do {
-            try context.save()
-        } catch {
-            print("failed to save movie : \(error.localizedDescription)")
+        context.performAndWait {
+            do {
+                try context.save()
+            } catch {
+                print("failed to save movie : \(error.localizedDescription)")
+            }
         }
         
         
@@ -133,11 +135,14 @@ struct MovieInfoResponse : Codable {
         movieEntity.tagline = data.tagline
         movieEntity.movie_tag = data.movieTag.map { $0.rawValue }
         
-        do {
-            try context.save()
-        } catch {
-            print("failed to update movie : \(error.localizedDescription)")
+        context.performAndWait {
+            do {
+                try context.save()
+            } catch {
+                print("failed to update movie : \(error.localizedDescription)")
+            }
         }
+        
         
         
     }

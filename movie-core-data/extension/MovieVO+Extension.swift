@@ -10,13 +10,31 @@ import Foundation
 import CoreData
 
 enum MovieTag : String {
-    case Popular = "popular"
-    case Upcoming = "upcoming"
-    case TopRated = "top_rated"
-    case NowPlaying = "now_playing"
+    case NOW_PLAYING = "Now Playing"
+    case POPULAR = "Popular"
+    case TOP_RATED = "Top Rated"
+    case UPCOMING = "Upcoming"
+    case NOT_LISTED = "Not Listed"
 }
 
 extension MovieVO {
+    
+    static func deleteAllMovies() {
+        let fetchRequest : NSFetchRequest<MovieVO> = MovieVO.fetchRequest()
+        let sortDescriptor = NSSortDescriptor(key: "popularity", ascending: false)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        if let data = try? CoreDataStack.shared.viewContext.fetch(fetchRequest), !data.isEmpty {
+            data.forEach { movie in
+                CoreDataStack.shared.viewContext.delete(movie)
+                
+            }
+            try? CoreDataStack.shared.viewContext.save()
+        }
+        
+    }
+    
+    
     static func fetchMovies() -> [MovieVO]? {
         let fetchRequest : NSFetchRequest<MovieVO> = MovieVO.fetchRequest()
         let sortDescriptor = NSSortDescriptor(key: "popularity", ascending: false)

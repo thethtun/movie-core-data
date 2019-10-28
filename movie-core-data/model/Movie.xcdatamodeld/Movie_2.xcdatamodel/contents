@@ -1,37 +1,112 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14897.2" systemVersion="19A573a" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14492.1" systemVersion="19A573a" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="MovieBookmarkVO" representedClassName="MovieBookmarkVO" syncable="YES" codeGenerationType="class">
-        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="movie" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MovieVO" inverseName="bookmarks" inverseEntity="MovieVO"/>
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES">
+            <userInfo/>
+        </attribute>
+        <relationship name="movie" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MovieVO" inverseName="bookmarks" inverseEntity="MovieVO">
+            <userInfo/>
+        </relationship>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="MovieGenreVO" representedClassName="MovieGenreVO" syncable="YES" codeGenerationType="class">
-        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="name" optional="YES" attributeType="String"/>
-        <relationship name="movies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MovieVO" inverseName="genres" inverseEntity="MovieVO"/>
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="name" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <relationship name="movies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MovieVO" inverseName="genres" inverseEntity="MovieVO">
+            <userInfo/>
+        </relationship>
     </entity>
     <entity name="MovieVO" representedClassName="MovieVO" syncable="YES" codeGenerationType="class">
-        <attribute name="adult" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="backdrop_path" optional="YES" attributeType="String"/>
-        <attribute name="budget" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="homepage" optional="YES" attributeType="String"/>
-        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="imdb_id" optional="YES" attributeType="String"/>
-        <attribute name="movie_tag" optional="YES" attributeType="String"/>
-        <attribute name="original_language" optional="YES" attributeType="String"/>
-        <attribute name="original_title" optional="YES" attributeType="String"/>
-        <attribute name="overview" optional="YES" attributeType="String"/>
-        <attribute name="popularity" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="poster_path" optional="YES" attributeType="String"/>
-        <attribute name="release_date" optional="YES" attributeType="String"/>
-        <attribute name="revenue" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="runtime" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="tagline" optional="YES" attributeType="String"/>
-        <attribute name="title" optional="YES" attributeType="String"/>
-        <attribute name="video" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="vote_average" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="vote_count" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="bookmarks" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MovieBookmarkVO" inverseName="movie" inverseEntity="MovieBookmarkVO"/>
-        <relationship name="genres" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MovieGenreVO" inverseName="movies" inverseEntity="MovieGenreVO"/>
+        <attribute name="adult" optional="YES" attributeType="Boolean" usesScalarValueType="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="backdrop_path" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="budget" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="homepage" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="imdb_id" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="movie_tag" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="original_language" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="original_title" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="overview" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="popularity" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="poster_path" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="release_date" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="revenue" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="runtime" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="tagline" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="title" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="video" optional="YES" attributeType="Boolean" usesScalarValueType="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="vote_average" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES">
+            <userInfo/>
+        </attribute>
+        <attribute name="vote_count" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES">
+            <userInfo/>
+        </attribute>
+        <relationship name="bookmarks" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MovieBookmarkVO" inverseName="movie" inverseEntity="MovieBookmarkVO">
+            <userInfo/>
+        </relationship>
+        <relationship name="genres" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MovieGenreVO" inverseName="movies" inverseEntity="MovieGenreVO">
+            <userInfo/>
+        </relationship>
+    </entity>
+    <entity name="RatedMovieVO" representedClassName="RatedMovieVO" syncable="YES" codeGenerationType="class">
+        <attribute name="created_at" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="movie_id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="WatchListMovieVO" representedClassName="WatchListMovieVO" syncable="YES" codeGenerationType="class">
+        <attribute name="created_at" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="movie_id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="movie" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MovieVO" syncable="YES"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="id"/>
@@ -39,8 +114,10 @@
         </uniquenessConstraints>
     </entity>
     <elements>
-        <element name="MovieBookmarkVO" positionX="-4138.59765625" positionY="-2932.5" width="128" height="73"/>
-        <element name="MovieGenreVO" positionX="-3773.3359375" positionY="-2658.23046875" width="128" height="88"/>
-        <element name="MovieVO" positionX="-3957.4140625" positionY="-2913.03125" width="128" height="373"/>
+        <element name="MovieBookmarkVO" positionX="-4191.85546875" positionY="-2729.71484375" width="128" height="73"/>
+        <element name="MovieGenreVO" positionX="-3773.12109375" positionY="-2884.3828125" width="128" height="88"/>
+        <element name="WatchListMovieVO" positionX="-3748.08203125" positionY="-2575.01953125" width="128" height="103"/>
+        <element name="MovieVO" positionX="-3951" positionY="-2826" width="128" height="373"/>
+        <element name="RatedMovieVO" positionX="-4185.34765625" positionY="-2540.375" width="128" height="88"/>
     </elements>
 </model>

@@ -22,6 +22,10 @@ class MovieDetailsViewController: UIViewController {
     @IBOutlet weak var labelMovieDuration : UILabel!
     @IBOutlet weak var collectionViewSimilarMovies : UICollectionView!
     @IBOutlet weak var collectionViewSimilarMoviesHeight : NSLayoutConstraint!
+    @IBOutlet weak var buttonAddToWatchList : UIButton!
+    @IBOutlet weak var buttonRateMovie : UIButton!
+    @IBOutlet weak var labelRateMovie : UILabel!
+    @IBOutlet weak var labelAddToWatchList : UILabel!
     
     static var identifier = "MovieDetailsViewController"
     var movieId : Int = 0
@@ -30,6 +34,31 @@ class MovieDetailsViewController: UIViewController {
     
     private var similarMovies = [MovieInfoResponse]()
     private var movieTrailerId = ""
+    private var isMovieRated : Bool? {
+        didSet {
+            if let isMovieRated = isMovieRated, isMovieRated  {
+                labelRateMovie.text = "Un-Rate"
+                labelRateMovie.textColor = UIColor.red
+                buttonRateMovie.setImage(#imageLiteral(resourceName: "icons8-thumb_up_red"), for: .normal)
+            } else {
+                labelRateMovie.text = "Rate"
+                labelRateMovie.textColor = UIColor.lightGray
+                buttonRateMovie.setImage(#imageLiteral(resourceName: "icons8-thumb_up"), for: .normal)
+            }
+        }
+    }
+    private var isMovieInWatchList : Bool? {
+        didSet {
+            if let isMovieInWatchList = isMovieInWatchList, isMovieInWatchList {
+                labelAddToWatchList.textColor = UIColor.red
+                buttonAddToWatchList.setImage(#imageLiteral(resourceName: "icons8-checkmark_filled"), for: .normal)
+            } else {
+                labelAddToWatchList.textColor = UIColor.lightGray
+                buttonAddToWatchList.setImage(#imageLiteral(resourceName: "icons8-plus"), for: .normal)
+            }
+        }
+    }
+    private let sessionId = UserDefaultsManager.getSessionId()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +76,9 @@ class MovieDetailsViewController: UIViewController {
         fetchMovieDetails()
         
         fetchSimilarMovies()
+        
+        isMovieRated = RatedMovieVO.isMovieRated(movieId: movieId, context: CoreDataStack.shared.viewContext)
+        isMovieInWatchList = WatchListMovieVO.isMoviewatchList(movieId: movieId, context: CoreDataStack.shared.viewContext)
         
     }
     
@@ -159,10 +191,70 @@ class MovieDetailsViewController: UIViewController {
         
         labelMovieDuration.text = "\(data.runtime) mins"
         labelMovieTargetAudience.text = data.adult ? "18+" : "Not Rated"
+ 
     }
+    
+    
     
     @IBAction func onClickDismiss(_ sender : Any) {
         navigationController?.popViewController(animated: true)
+    }
+    
+    @IBAction func onClickAddToWatchList(_ sender : Any) {
+        let loader = LoadingIndicator(viewController: self)
+        guard let isMovieInWatchList = isMovieInWatchList else {
+            Dialog.showAlert(viewController: self, title: "Error", message: "Dismiss current view and try again. (Dev Debug: isMovieInWatchList is null.)")
+            return
+        }
+        if isMovieInWatchList {
+            UserModel.shared.removeFromWatchList(sessionId: sessionId, movieId: movieId) { (data) in
+                DispatchQueue.main.async {
+                    WatchListMovieVO.delete(movieId: self.movieId, context: CoreDataStack.shared.viewContext)
+                    loader.stopLoading()
+                    self.isMovieInWatchList = false
+                }
+            }
+        } else {
+            UserModel.shared.addToWatchList(sessionId: sessionId, movieId: movieId) { (data) in
+                MovieModel.shared.fetchMovieDetails(movieId: self.movieId, completion: { (data) in
+                    DispatchQueue.main.async {
+                        MovieInfoResponse.saveMovieEntity(data: data, context: CoreDataStack.shared.viewContext)
+                        WatchListMovieVO.save(movieId: self.movieId, context: CoreDataStack.shared.viewContext)
+                        loader.stopLoading()
+                        self.isMovieInWatchList = true
+                    }
+                })
+            }
+        }
+        
+    }
+    
+    @IBAction func onClickRateMovie(_ sender : Any) {
+        let loader = LoadingIndicator(viewController: self)
+        guard let isMovieRated = isMovieRated else {
+            Dialog.showAlert(viewController: self, title: "Error", message: "Dismiss current view and try again. (Dev Debug: isMovieRated is null.)")
+            return
+        }
+        if isMovieRated {
+            UserModel.shared.deleteRating(movieId: self.movieId) { (data) in
+                DispatchQueue.main.async {
+                    RatedMovieVO.delete(movieId: self.movieId, context: CoreDataStack.shared.viewContext)
+                    loader.stopLoading()
+                    self.isMovieRated = false
+                }
+            }
+        } else {
+            UserModel.shared.rateMovie(movieId: self.movieId) { (data) in
+                MovieModel.shared.fetchMovieDetails(movieId: self.movieId, completion: { (data) in
+                    DispatchQueue.main.async {
+                        MovieInfoResponse.saveMovieEntity(data: data, context: CoreDataStack.shared.viewContext)
+                        RatedMovieVO.save(movieId: self.movieId, context: CoreDataStack.shared.viewContext)
+                        loader.stopLoading()
+                        self.isMovieRated = true
+                    }
+                })
+            }
+        }
     }
     
 }

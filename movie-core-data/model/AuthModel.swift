@@ -74,12 +74,22 @@ class AuthModel : BaseModel {
     }
     
     
-    func fetchAccountDetails(sessionId : String, completion : @escaping (UserAccountResponse?) -> Void) {
+    func logOutSession(sessionId : String, completion : @escaping (GeneralResponse?) -> Void) {
+        let route = URL(string: "\(API.BASE_URL)/authentication/session?api_key=\(API.KEY)")!
         
-        let route = URL(string: "\(API.BASE_URL)/account?api_key=\(API.KEY)&session_id=\(sessionId)")!
+        var request = URLRequest(url: route)
+        request.httpMethod = "DELETE"
         
-        URLSession.shared.dataTask(with: route) { (data, urlResponse, error) in
-            let response : UserAccountResponse? = self.responseHandler(data: data, urlResponse: urlResponse, error: error)
+        let headers = ["content-type": "application/json"]
+        request.allHTTPHeaderFields = headers
+        
+        let body = [
+            "session_id" : sessionId
+        ]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: .prettyPrinted)
+        
+        URLSession.shared.dataTask(with: request) { (data, urlResponse, error) in
+            let response : GeneralResponse? = self.responseHandler(data: data, urlResponse: urlResponse, error: error)
             if let data = response {
                 completion(data)
             } else {
@@ -87,11 +97,6 @@ class AuthModel : BaseModel {
             }
             }.resume()
     }
-    
-    
-    func fetchRatedMovies() {
-        
-    }
-    
+
     
 }
