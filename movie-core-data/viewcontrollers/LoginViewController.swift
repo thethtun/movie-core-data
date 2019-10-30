@@ -17,7 +17,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let sessionId = UserDefaultsManager.getSessionId()
+        let sessionId = UserDefaultsManager.sessionId
         if !sessionId.isEmpty {
             displayLoggedInUser()
         }
@@ -51,7 +51,7 @@ class LoginViewController: UIViewController {
                     
                     if let response = response {
                         let sessionId = response.session_id ?? ""
-                        UserDefaultsManager.saveSessionId(sessionId)
+                        UserDefaultsManager.sessionId = sessionId
                         
                         self?.displayLoggedInUser()
                         

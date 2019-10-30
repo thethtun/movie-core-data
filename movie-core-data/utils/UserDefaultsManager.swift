@@ -8,41 +8,48 @@
 
 import Foundation
 
-class UserDefaultsManager {
-    
+struct UserDefaultsManager {
+
     enum Keys : String {
         case SESSION_ID = "session_id"
         case ACCOUNT_ID = "account_id"
         case USER_NAME = "username"
     }
+
+    @UserDefault(Keys.SESSION_ID.rawValue, defaultValue: "")
+    static var sessionId : String
+
+    @UserDefault(Keys.ACCOUNT_ID.rawValue, defaultValue: "")
+    static var accountId : String
     
-    static func saveSessionId(_ value : String) {
-        UserDefaults.standard.set(value, forKey: Keys.SESSION_ID.rawValue)
-    }
-    
-    static func getSessionId() -> String {
-        return UserDefaults.standard.string(forKey: Keys.SESSION_ID.rawValue) ?? ""
-    }
-    
-    static func saveAccountId(_ value : String) {
-        UserDefaults.standard.set(value, forKey: Keys.ACCOUNT_ID.rawValue)
-    }
-    
-    static func getAccountId() -> String {
-        return UserDefaults.standard.string(forKey: Keys.ACCOUNT_ID.rawValue) ?? ""
-    }
-    
-    static func saveUsername(_ value : String) {
-        UserDefaults.standard.set(value, forKey: Keys.USER_NAME.rawValue)
-    }
-    
-    static func getUsername() -> String {
-        return UserDefaults.standard.string(forKey: Keys.USER_NAME.rawValue) ?? ""
-    }
+    @UserDefault(Keys.USER_NAME.rawValue, defaultValue: "")
+    static var username : String
     
     static func clearAll() {
-        UserDefaults.standard.set("", forKey: Keys.SESSION_ID.rawValue)
-        UserDefaults.standard.set("", forKey: Keys.ACCOUNT_ID.rawValue)
+        self.sessionId = ""
+        self.accountId = ""
+        self.username = ""
     }
     
+}
+
+
+@propertyWrapper
+struct UserDefault<T> {
+    let key: String
+    let defaultValue: T
+
+    init(_ key: String, defaultValue: T) {
+        self.key = key
+        self.defaultValue = defaultValue
+    }
+
+    var wrappedValue: T {
+        get {
+            return UserDefaults.standard.object(forKey: key) as? T ?? defaultValue
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: key)
+        }
+    }
 }

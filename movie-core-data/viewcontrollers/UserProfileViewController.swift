@@ -15,7 +15,7 @@ class UserProfileViewController: UIViewController {
     @IBOutlet weak var viewpodRatedMoviesList : MovieListView!
     @IBOutlet weak var viewpodWatchListMovies : MovieListView!
     
-    let sessionId = UserDefaultsManager.getSessionId()
+    let sessionId = UserDefaultsManager.sessionId
     
     override func viewDidLoad() {
         super.viewDidLoad()

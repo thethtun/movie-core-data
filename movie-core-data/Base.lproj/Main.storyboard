@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="qfx-ja-iGE">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14865.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="qfx-ja-iGE">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14819.2"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -65,11 +62,11 @@
                                         <rect key="frame" x="0.0" y="28" width="414" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ZLM-gf-Gqe" id="tme-Pu-KsM">
-                                            <rect key="frame" x="0.0" y="0.0" width="376" height="54.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="382.5" height="55"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Genre Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r4R-Dz-JeZ">
-                                                    <rect key="frame" x="30" y="21" width="328" height="13"/>
+                                                    <rect key="frame" x="30" y="21" width="334.5" height="13"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -568,18 +565,9 @@
                     <connections>
                         <outlet property="collectionViewMovieList" destination="nCf-hw-VY6" id="uA8-Tt-tZV"/>
                         <outlet property="labelMovieNotFound" destination="h9V-nB-axj" id="pXV-EU-7pa"/>
-                        <outlet property="searchDisplayController" destination="z7S-o9-Abt" id="bQz-Xv-0O4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mos-FI-cHm" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <searchDisplayController id="z7S-o9-Abt">
-                    <connections>
-                        <outlet property="delegate" destination="RUd-eW-9f2" id="Ogk-xx-4jy"/>
-                        <outlet property="searchContentsController" destination="RUd-eW-9f2" id="SWy-QU-dIV"/>
-                        <outlet property="searchResultsDataSource" destination="RUd-eW-9f2" id="8hs-F5-VZg"/>
-                        <outlet property="searchResultsDelegate" destination="RUd-eW-9f2" id="tjx-qk-3zy"/>
-                    </connections>
-                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="1835" y="1472"/>
         </scene>
@@ -690,18 +678,10 @@
                     <connections>
                         <outlet property="collectionViewMovieList" destination="EgK-cd-KKF" id="8Ud-TQ-zHr"/>
                         <outlet property="labelMovieNotFound" destination="S19-sP-Mlv" id="ZXW-eA-zH4"/>
-                        <outlet property="searchDisplayController" destination="z7S-o9-Abt" id="h7W-YP-mg8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Idf-2F-nau" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <searchDisplayController id="KCS-Wi-VaM">
-                    <connections>
-                        <outlet property="delegate" destination="OgF-2q-4X8" id="qjJ-QU-axV"/>
-                        <outlet property="searchContentsController" destination="OgF-2q-4X8" id="FSM-GJ-0zZ"/>
-                        <outlet property="searchResultsDataSource" destination="OgF-2q-4X8" id="DaY-He-ec3"/>
-                        <outlet property="searchResultsDelegate" destination="OgF-2q-4X8" id="LLh-10-ifF"/>
-                    </connections>
-                </searchDisplayController>
+                <searchDisplayController id="KCS-Wi-VaM"/>
             </objects>
             <point key="canvasLocation" x="1835" y="1472"/>
         </scene>

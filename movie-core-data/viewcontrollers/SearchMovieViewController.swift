@@ -49,7 +49,7 @@ class SearchMovieViewController: UIViewController {
         // Setup the Scope Bar
         searchController.searchBar.delegate = self
         searchController.searchBar.barStyle = .black
-//        searchController.searchBar.searchTextField.textColor = .white
+        searchController.searchBar.searchTextField.textColor = .white
         
         
         collectionViewMovieList.dataSource = self

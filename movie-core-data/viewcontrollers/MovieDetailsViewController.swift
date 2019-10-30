@@ -58,7 +58,7 @@ class MovieDetailsViewController: UIViewController {
             }
         }
     }
-    private let sessionId = UserDefaultsManager.getSessionId()
+    private let sessionId = UserDefaultsManager.sessionId
     
     override func viewDidLoad() {
         super.viewDidLoad()
