@@ -14,6 +14,8 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var textFieldPassword : UITextField!
     @IBOutlet weak var buttonSignIn : UIButton!
     
+    var loading : LoadingIndicator?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -26,6 +28,7 @@ class LoginViewController: UIViewController {
     }
     
     private func initView() {
+        loading = LoadingIndicator.init(viewController: self)
         textFieldEmail.attributedPlaceholder =
             NSAttributedString(string: "Enter username", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
         
@@ -41,13 +44,13 @@ class LoginViewController: UIViewController {
     
     @IBAction func onClickSignIn(_ sender : Any) {
         
+        
         validateInput { username, password in
-            
-            let loading = LoadingIndicator.init(viewController: self)
+            self.loading?.startLoading()
             loginWithID(username, password) { response in
                 
                 DispatchQueue.main.async { [weak self] in
-                    loading.stopLoading()
+                    self?.loading?.stopLoading()
                     
                     if let response = response {
                         let sessionId = response.session_id ?? ""
@@ -83,12 +86,18 @@ class LoginViewController: UIViewController {
             requestBody["request_token"] = requestToken ?? ""
             
             AuthModel.shared.createSessionWithLogin(body: requestBody) { response in
-                
-                let creatSessionBody = [
-                    "request_token" : response?.request_token ?? ""
-                ]
-                
-                AuthModel.shared.createSession(body: creatSessionBody, completion: completion)
+                if let _ = response {
+                    let creatSessionBody = [
+                        "request_token" : response?.request_token ?? ""
+                    ]
+                    
+                    AuthModel.shared.createSession(body: creatSessionBody, completion: completion)
+                } else {
+                    DispatchQueue.main.async {
+                        self.loading?.stopLoading()
+                        Dialog.showAlert(viewController: self, title: "Hello there...", message: "Either email or password is incorrect")
+                    }
+                }
             }
         }
     }
