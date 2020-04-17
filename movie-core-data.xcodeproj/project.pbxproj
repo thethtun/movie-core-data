@@ -65,7 +65,7 @@
 
 /* Begin PBXFileReference section */
 		11AD258DC3E04BDD16DEC66C /* Pods-movie-core-data.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-movie-core-data.release.xcconfig"; path = "Target Support Files/Pods-movie-core-data/Pods-movie-core-data.release.xcconfig"; sourceTree = "<group>"; };
-		516DB0EC23314296000C1973 /* movie-core-data.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "movie-core-data.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		516DB0EC23314296000C1973 /* Movie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Movie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		516DB0EF23314296000C1973 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		516DB0F423314296000C1973 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		516DB0F62331429C000C1973 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -170,7 +170,7 @@
 		516DB0ED23314296000C1973 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				516DB0EC23314296000C1973 /* movie-core-data.app */,
+				516DB0EC23314296000C1973 /* Movie.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -364,7 +364,7 @@
 			);
 			name = "movie-core-data";
 			productName = "movie-core-data";
-			productReference = 516DB0EC23314296000C1973 /* movie-core-data.app */;
+			productReference = 516DB0EC23314296000C1973 /* Movie.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -667,7 +667,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mm.padc.movie-core-data";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Movie;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -687,7 +687,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mm.padc.movie-core-data";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Movie;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
