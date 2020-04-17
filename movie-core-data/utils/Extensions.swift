@@ -38,20 +38,23 @@ extension UIView: Bluring {}
 
 extension UIImageView {
     func blur()  {
-        let context = CIContext(options: nil)
+        if let image = self.image {
+            let context = CIContext(options: nil)
+            
+            let currentFilter = CIFilter(name: "CIGaussianBlur")
+            let beginImage = CIImage(image: image)
+            currentFilter!.setValue(beginImage, forKey: kCIInputImageKey)
+            currentFilter!.setValue(10, forKey: kCIInputRadiusKey)
+            
+            let cropFilter = CIFilter(name: "CICrop")
+            cropFilter!.setValue(currentFilter!.outputImage, forKey: kCIInputImageKey)
+            cropFilter!.setValue(CIVector(cgRect: beginImage!.extent), forKey: "inputRectangle")
+            
+            let output = cropFilter!.outputImage
+            let cgimg = context.createCGImage(output!, from: output!.extent)
+            let processedImage = UIImage(cgImage: cgimg!)
+            self.image = processedImage
+        }
         
-        let currentFilter = CIFilter(name: "CIGaussianBlur")
-        let beginImage = CIImage(image: self.image!)
-        currentFilter!.setValue(beginImage, forKey: kCIInputImageKey)
-        currentFilter!.setValue(10, forKey: kCIInputRadiusKey)
-        
-        let cropFilter = CIFilter(name: "CICrop")
-        cropFilter!.setValue(currentFilter!.outputImage, forKey: kCIInputImageKey)
-        cropFilter!.setValue(CIVector(cgRect: beginImage!.extent), forKey: "inputRectangle")
-        
-        let output = cropFilter!.outputImage
-        let cgimg = context.createCGImage(output!, from: output!.extent)
-        let processedImage = UIImage(cgImage: cgimg!)
-        self.image = processedImage
     }
 }

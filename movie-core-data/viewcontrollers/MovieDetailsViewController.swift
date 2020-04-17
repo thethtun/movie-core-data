@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import CoreImage
+import ReSwift
 
 class MovieDetailsViewController: UIViewController {
 
@@ -27,7 +28,7 @@ class MovieDetailsViewController: UIViewController {
     @IBOutlet weak var labelRateMovie : UILabel!
     @IBOutlet weak var labelAddToWatchList : UILabel!
     
-    static var identifier = "MovieDetailsViewController"
+
     var movieId : Int = 0
     var bookmarkButton = UIButton(type: .custom)
     var isBookmarked = false
@@ -58,13 +59,18 @@ class MovieDetailsViewController: UIViewController {
             }
         }
     }
+    var loadingIndicator : LoadingIndicator? = nil
+    
     private let sessionId = UserDefaultsManager.sessionId
     
+    deinit {
+        print("Yeah...")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
         initView()
-        
+
         if NetworkUtils.checkReachable() == false {
             Dialog.showAlert(viewController: self, title: "Error", message: "No Internet Connection!")
             if let data = MovieVO.getMovieById(movieId: movieId) {
@@ -72,25 +78,36 @@ class MovieDetailsViewController: UIViewController {
             }
             return
         }
-        
+
         fetchMovieDetails()
-        
+
         fetchSimilarMovies()
-        
+
         isMovieRated = RatedMovieVO.isMovieRated(movieId: movieId, context: CoreDataStack.shared.viewContext)
         isMovieInWatchList = WatchListMovieVO.isMoviewatchList(movieId: movieId, context: CoreDataStack.shared.viewContext)
+
+        //clear existing movie detail state
+        mainStore.dispatch(FetchMovieDetailsSuccess(data: nil))
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.isNavigationBarHidden = true
+        
+        mainStore.subscribe(self)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.navigationItem.searchController?.hidesNavigationBarDuringPresentation = false
         self.navigationController?.isNavigationBarHidden = false
+        
+        mainStore.unsubscribe(self)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        loadingIndicator = nil
     }
     
     fileprivate func initView() {
@@ -101,37 +118,18 @@ class MovieDetailsViewController: UIViewController {
         collectionViewSimilarMovies.dataSource = self
         collectionViewSimilarMovies.register(MovieListCollectionViewCell.self, forCellWithReuseIdentifier: MovieListCollectionViewCell.identifier)
         collectionViewSimilarMoviesHeight.constant = 0
+        
+        loadingIndicator = LoadingIndicator(viewController: self)
     }
     
     fileprivate func fetchMovieDetails() {
-        let loadingIndicator = LoadingIndicator(viewController: self)
-        MovieModel.shared.fetchMovieDetails(movieId: movieId) { movieDetails in
-            
-            let fetchRequest : NSFetchRequest<MovieVO> = MovieVO.fetchRequest()
-            let predicate = NSPredicate(format: "id == %d", self.movieId)
-            fetchRequest.predicate = predicate
-            if let movies = try? CoreDataStack.shared.viewContext.fetch(fetchRequest), !movies.isEmpty {
-                MovieInfoResponse.updateMovieEntity(existingData: movies[0], newData: movieDetails, context: CoreDataStack.shared.viewContext)
-                DispatchQueue.main.async { [weak self] in
-                    loadingIndicator.stopLoading()
-                    self?.bindData(data: movies[0])
-                }
-            } else {
-                let movieVO = MovieInfoResponse.convertToMovieVO(data: movieDetails, context: CoreDataStack.shared.viewContext)
-                
-                DispatchQueue.main.async { [weak self] in
-                    loadingIndicator.stopLoading()
-                    self?.bindData(data: movieVO)
-                }
-            }
-            
-        }
+        mainStore.dispatch(fetchMovieDetailsThunk(movieId))
     }
  
     fileprivate func fetchSimilarMovies() {
         
-        MovieModel.shared.fetchSimilarMovies(movieId: movieId) { [weak self] similarMovies in
-            DispatchQueue.main.async {
+        MovieModel.shared.fetchSimilarMovies(movieId: movieId) { similarMovies in
+            DispatchQueue.main.async { [weak self] in
                 self?.similarMovies = similarMovies
                 self?.collectionViewSimilarMovies.reloadData()
             }
@@ -197,6 +195,9 @@ class MovieDetailsViewController: UIViewController {
     
     
     @IBAction func onClickDismiss(_ sender : Any) {
+        //clear existing movie detail state
+        mainStore.dispatch(FetchMovieDetailsSuccess(data: nil))
+        
         navigationController?.popViewController(animated: true)
     }
     
@@ -223,7 +224,7 @@ class MovieDetailsViewController: UIViewController {
                         loader.stopLoading()
                         self.isMovieInWatchList = true
                     }
-                })
+                }, failure: nil)
             }
         }
         
@@ -252,7 +253,7 @@ class MovieDetailsViewController: UIViewController {
                         loader.stopLoading()
                         self.isMovieRated = true
                     }
-                })
+                }, failure: nil)
             }
         }
     }
@@ -306,6 +307,36 @@ extension MovieDetailsViewController : UICollectionViewDelegateFlowLayout {
     }
 }
 
+extension MovieDetailsViewController : StoreSubscriber {
+    func newState(state: AppState) {
+        DispatchQueue.main.async { [weak self] in
+            if state.isLoading {
+                self?.loadingIndicator?.startLoading()
+            } else {
+                self?.loadingIndicator?.stopLoading()
+            }
+            
+            if !state.isNetworkSuccess {
+                self?.showDialog(err: state.errorMsg)
+            }
+            
+            if let movieDetail = state.movieDetail {
+                self?.bindData(data: movieDetail)
+            }
+            
+            if !state.similarMovies.isEmpty {
+                self?.similarMovies = state.similarMovies
+                self?.collectionViewSimilarMovies.reloadData()
+            }
+        }
+
+    }
+    
+    fileprivate func showDialog(err : String) {
+        Dialog.showAlert(viewController: self, title: "Error", message: err)
+    }
+    
+}
 
 extension UILabel {
     func getHeight(for string: String, font: UIFont, width: CGFloat) -> CGFloat {

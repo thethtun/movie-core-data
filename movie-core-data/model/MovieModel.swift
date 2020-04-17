@@ -52,14 +52,21 @@ class MovieModel : BaseModel {
             }.resume()
     }
     
-    func fetchMovieDetails(movieId : Int, completion: @escaping (MovieInfoResponse) -> Void) {
+    func fetchMovieDetails(movieId : Int, completion: @escaping (MovieInfoResponse) -> Void, failure : ((String) -> Void)?) {
         let route = URL(string: "\(Routes.ROUTE_MOVIE_DETAILS)/\(movieId)?api_key=\(API.KEY)")!
         URLSession.shared.dataTask(with: route) { (data, urlResponse, error) in
-            let response : MovieInfoResponse? = self.responseHandler(data: data, urlResponse: urlResponse, error: error)
-            if let data = response {
-                completion(data)
+            if let err = error {
+                failure?(err.localizedDescription)
+            } else {
+                let response : MovieInfoResponse? = self.responseHandler(data: data, urlResponse: urlResponse, error: error)
+                if let data = response {
+                    completion(data)
+                } else {
+                    failure?("data is nil")
+                }
             }
-            }.resume()
+            
+        }.resume()
     }
     
     func fetchTopRatedMovies(pageId : Int = 1, completion : @escaping (([MovieInfoResponse]) -> Void) )  {

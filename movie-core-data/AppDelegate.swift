@@ -8,6 +8,11 @@
 
 import UIKit
 import CoreData
+import ReSwift
+import ReSwiftThunk
+
+let thunksMiddleware : Middleware<AppState> = createThunkMiddleware()
+let mainStore = Store<AppState>(reducer: movieReducer, state: nil, middleware: [thunksMiddleware], automaticallySkipsRepeats: true)
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

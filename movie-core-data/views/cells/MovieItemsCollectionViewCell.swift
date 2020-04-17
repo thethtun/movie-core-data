@@ -21,6 +21,7 @@ class MovieItemsCollectionViewCell: UICollectionViewCell {
         return ui
     }()
     
+    static let cellHeight : CGFloat = 230
     
     override init(frame: CGRect) {
         super.init(frame: frame)

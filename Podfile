@@ -4,10 +4,14 @@
 target 'movie-core-data' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
+  
+  # Pods for movie-core-data
   pod 'SDWebImage', '~> 5.0'
   pod 'ReachabilitySwift'
   pod 'YoutubePlayer-in-WKWebView'
-  # Pods for movie-core-data
+  pod 'ReSwift'
+  pod 'ReSwiftThunk'
   pod 'Wormholy', :configurations => ['Debug']
+  
 end
 

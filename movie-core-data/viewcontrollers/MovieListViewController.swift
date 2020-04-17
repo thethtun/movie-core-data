@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import ReSwift
 
 class MovieListViewController: UIViewController {
     
@@ -38,23 +39,26 @@ class MovieListViewController: UIViewController {
         
         initMovieListFetchRequest()
         
-        
     }
     
-    
-    fileprivate func initGenreListFetchRequest() {
-        //TODO : Fetch Genre List
-        let fetchRequest: NSFetchRequest<MovieGenreVO> = MovieGenreVO.fetchRequest()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        do{
-            let genres = try CoreDataStack.shared.viewContext.fetch(fetchRequest)
-            if genres.isEmpty{
-                fetchGenresList()
-            }
-            
-        } catch {
-            print("TAG: \(error.localizedDescription)")
-        }
+        self.navigationItem.title = "Movie List"
+        
+        //Subscribe to redux store
+        mainStore.subscribe(self)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        //Unsubscribe to redux store
+        mainStore.unsubscribe(self)
+    }
+ 
+    fileprivate func initGenreListFetchRequest() {
+        mainStore.dispatch(startGenreListFetchRequest)
     }
     
     private func fetchGenresList() {
@@ -62,38 +66,16 @@ class MovieListViewController: UIViewController {
             Dialog.showAlert(viewController: self, title: "Error", message: "No Internet Connection!")
             return
         }
-        MovieModel.shared.fetchMovieGenres { (genreInfoResponse) in
-            MovieGenreResponse.saveMovieGenreEntity(data: genreInfoResponse, context: CoreDataStack.shared.viewContext)
-        }
+        
+        mainStore.dispatch(fetchMovieGenresFromNetwork)
     }
-    
-    
     
     fileprivate func initMovieListFetchRequest() {
-        let fetchRequest : NSFetchRequest<MovieVO> = MovieVO.fetchRequest()
-        let sortDescriptor = NSSortDescriptor(key: "popularity", ascending: false)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        
-        do {
-            let data = try CoreDataStack.shared.viewContext.fetch(fetchRequest)
-            if data.isEmpty {
-                fetchMovies()
-            }
-            
-        } catch {
-            print("\(error.localizedDescription)")
-        }
+        mainStore.dispatch(startMovieListFetchRequest)
+    }
+    
 
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        self.navigationItem.title = "Movie List"
-    }
-    
     private func initView() {
-        
         collectionViewMovieList.dataSource = self
         collectionViewMovieList.delegate = self
         collectionViewMovieList.register(MovieItemsCollectionViewCell.self, forCellWithReuseIdentifier: MovieItemsCollectionViewCell.identifier)
@@ -103,54 +85,12 @@ class MovieListViewController: UIViewController {
     }
     
     fileprivate func fetchMovies() {
-        var movieInfoResponses = [MovieInfoResponse]()
-        
         if NetworkUtils.checkReachable() == false {
             Dialog.showAlert(viewController: self, title: "Error", message: "No Internet Connection!")
             self.refreshControl.endRefreshing()
             return
         }
-        
-        MovieVO.deleteAllMovies()
-        
-        MovieModel.shared.fetchTopRatedMovies(pageId: 1) { [weak self] data in
-            data.forEach({ (movieInfo) in
-                var data = movieInfo
-                data.movieTag = MovieTag.TOP_RATED
-                movieInfoResponses.append(data)
-            })
-            
-            MovieModel.shared.fetchPopularMovies(pageId: 1) { [weak self] data in
-                data.forEach({ (movieInfo) in
-                    var data = movieInfo
-                    data.movieTag = MovieTag.POPULAR
-                    movieInfoResponses.append(data)
-                })
-                
-                MovieModel.shared.fetchUpcomingMovies(pageId: 1) { [weak self] data in
-                    data.forEach({ (movieInfo) in
-                        var data = movieInfo
-                        data.movieTag = MovieTag.UPCOMING
-                        movieInfoResponses.append(data)
-                    })
-                    
-                    MovieModel.shared.fetchNowPlaying(pageId: 1) {  data in
-                        data.forEach({ (movieInfo) in
-                            var data = movieInfo
-                            data.movieTag = MovieTag.NOW_PLAYING
-                            movieInfoResponses.append(data)
-                        })
-                        
-                        DispatchQueue.main.async {
-                            movieInfoResponses.forEach({ (movieInfoRes) in
-                                MovieInfoResponse.saveMovieEntity(data: movieInfoRes, context: CoreDataStack.shared.viewContext)
-                            })
-                            self?.refreshControl.endRefreshing()
-                        }
-                    }
-                }
-            }
-        }
+        mainStore.dispatch(fetchMoviesFromNetwork)
     }
     
     
@@ -175,6 +115,7 @@ extension MovieListViewController: UICollectionViewDataSource {
         let movieTag = movieTags[indexPath.row]
         let fetchResultController = FetchResultControllerManager.getFetchResultsControllerByMovieTag(tag: movieTag)
         cell.initState(fetchResultController: fetchResultController, movieListTitle: movieTag.rawValue)
+
         cell.movieListView.onClickItem = { data in
             Navigator.navigateToMovieDetailScreen(viewController: self, data: data)
         }
@@ -184,9 +125,19 @@ extension MovieListViewController: UICollectionViewDataSource {
 
 extension MovieListViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.bounds.width, height: 230)
+        return CGSize(width: collectionView.bounds.width, height: MovieItemsCollectionViewCell.cellHeight)
     }
 }
 
 
-
+extension MovieListViewController : StoreSubscriber {
+    
+     func newState(state: AppState) {
+        self.refreshControl.endRefreshing()
+        
+        if !state.isNetworkSuccess {
+            Dialog.showAlert(viewController: self, title: "Error", message: state.errorMsg)
+        }
+     }
+     
+}
