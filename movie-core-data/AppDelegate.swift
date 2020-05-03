@@ -21,6 +21,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //Inject persistent container for now
         CoreDataStack.shared.persistentContainer = self.persistentContainer
         
+        //Start MovieList Screen
+        let movieListVC = MovieListRouter.createMovieListViewController()
+        let tabBarController = UITabBarController()
+        tabBarController.setViewControllers([movieListVC], animated: true)
+        tabBarController.tabBar.barTintColor = UIColor.black
+        window?.rootViewController = tabBarController
+        window?.makeKeyAndVisible()
+        
         return true
     }
 

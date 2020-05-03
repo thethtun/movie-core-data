@@ -13,6 +13,8 @@ class MovieListViewController: UIViewController {
     
     @IBOutlet weak var collectionViewMovieList : UICollectionView!
     
+    var presenter: MovieListPresenterDelegate?
+    
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action:#selector(handleRefresh(_:)),for: .valueChanged)
@@ -34,57 +36,9 @@ class MovieListViewController: UIViewController {
         //Remove all cached data in URL Response
         URLCache.shared.removeAllCachedResponses()
         
-        initGenreListFetchRequest()
-        
-        initMovieListFetchRequest()
-        
-        
+        presenter?.viewDidLoad()
     }
     
-    
-    fileprivate func initGenreListFetchRequest() {
-        //TODO : Fetch Genre List
-        let fetchRequest: NSFetchRequest<MovieGenreVO> = MovieGenreVO.fetchRequest()
-        
-        do{
-            let genres = try CoreDataStack.shared.viewContext.fetch(fetchRequest)
-            if genres.isEmpty{
-                fetchGenresList()
-            }
-            
-        } catch {
-            print("TAG: \(error.localizedDescription)")
-        }
-    }
-    
-    private func fetchGenresList() {
-        if NetworkUtils.checkReachable() == false {
-            Dialog.showAlert(viewController: self, title: "Error", message: "No Internet Connection!")
-            return
-        }
-        MovieModel.shared.fetchMovieGenres { (genreInfoResponse) in
-            MovieGenreResponse.saveMovieGenreEntity(data: genreInfoResponse, context: CoreDataStack.shared.viewContext)
-        }
-    }
-    
-    
-    
-    fileprivate func initMovieListFetchRequest() {
-        let fetchRequest : NSFetchRequest<MovieVO> = MovieVO.fetchRequest()
-        let sortDescriptor = NSSortDescriptor(key: "popularity", ascending: false)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        
-        do {
-            let data = try CoreDataStack.shared.viewContext.fetch(fetchRequest)
-            if data.isEmpty {
-                fetchMovies()
-            }
-            
-        } catch {
-            print("\(error.localizedDescription)")
-        }
-
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -102,60 +56,8 @@ class MovieListViewController: UIViewController {
         self.collectionViewMovieList.addSubview(refreshControl)
     }
     
-    fileprivate func fetchMovies() {
-        var movieInfoResponses = [MovieInfoResponse]()
-        
-        if NetworkUtils.checkReachable() == false {
-            Dialog.showAlert(viewController: self, title: "Error", message: "No Internet Connection!")
-            self.refreshControl.endRefreshing()
-            return
-        }
-        
-        MovieVO.deleteAllMovies()
-        
-        MovieModel.shared.fetchTopRatedMovies(pageId: 1) { [weak self] data in
-            data.forEach({ (movieInfo) in
-                var data = movieInfo
-                data.movieTag = MovieTag.TOP_RATED
-                movieInfoResponses.append(data)
-            })
-            
-            MovieModel.shared.fetchPopularMovies(pageId: 1) { [weak self] data in
-                data.forEach({ (movieInfo) in
-                    var data = movieInfo
-                    data.movieTag = MovieTag.POPULAR
-                    movieInfoResponses.append(data)
-                })
-                
-                MovieModel.shared.fetchUpcomingMovies(pageId: 1) { [weak self] data in
-                    data.forEach({ (movieInfo) in
-                        var data = movieInfo
-                        data.movieTag = MovieTag.UPCOMING
-                        movieInfoResponses.append(data)
-                    })
-                    
-                    MovieModel.shared.fetchNowPlaying(pageId: 1) {  data in
-                        data.forEach({ (movieInfo) in
-                            var data = movieInfo
-                            data.movieTag = MovieTag.NOW_PLAYING
-                            movieInfoResponses.append(data)
-                        })
-                        
-                        DispatchQueue.main.async {
-                            movieInfoResponses.forEach({ (movieInfoRes) in
-                                MovieInfoResponse.saveMovieEntity(data: movieInfoRes, context: CoreDataStack.shared.viewContext)
-                            })
-                            self?.refreshControl.endRefreshing()
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    
     @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
-        self.fetchMovies()
+        self.presenter?.refreshMovieList()
     }
 }
 
@@ -163,6 +65,7 @@ extension MovieListViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return movieTags.count
     }
@@ -188,5 +91,18 @@ extension MovieListViewController : UICollectionViewDelegateFlowLayout {
     }
 }
 
-
-
+extension MovieListViewController : MovieListViewProtocol {
+    
+    func showError(msg: String) {
+        Dialog.showAlert(viewController: self, title: "Error", message: msg)
+    }
+    
+    func showLoading() {
+        self.refreshControl.beginRefreshing()
+    }
+    
+    func stopLoading() {
+        self.refreshControl.endRefreshing()
+    }
+    
+}
