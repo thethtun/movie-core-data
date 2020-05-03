@@ -79,7 +79,7 @@ extension MovieListViewController: UICollectionViewDataSource {
         let fetchResultController = FetchResultControllerManager.getFetchResultsControllerByMovieTag(tag: movieTag)
         cell.initState(fetchResultController: fetchResultController, movieListTitle: movieTag.rawValue)
         cell.movieListView.onClickItem = { data in
-            Navigator.navigateToMovieDetailScreen(viewController: self, data: data)
+            self.presenter?.showMovieDetails(viewController: self, data: data)
         }
         return cell
     }

@@ -6,14 +6,14 @@
 //  Copyright © 2020 padc. All rights reserved.
 //
 
-import Foundation
 import UIKit
+import CoreData
 
 class MovieListRouter: MovieListRouterProtocol {
-    
-    func navigateToMovieDetailsViewControlelr() {
-        
+    func navigateToMovieDetailsViewControlelr(viewController: UIViewController, data: NSFetchRequestResult?) {
+        Navigator.navigateToMovieDetailScreen(viewController: viewController, data: data)
     }
+    
     
     static func createMovieListViewController() -> UINavigationController {
         let navVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(identifier: String(describing: MovieListViewController.self)) as! UINavigationController

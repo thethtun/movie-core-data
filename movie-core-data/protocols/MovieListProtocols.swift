@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import CoreData
 
 protocol MovieListRouterProtocol: class{
     static func createMovieListViewController() -> UINavigationController
-    func navigateToMovieDetailsViewControlelr()
+    func navigateToMovieDetailsViewControlelr(viewController : UIViewController, data : NSFetchRequestResult?)
 }
 
 protocol MovieListPresenterDelegate {
@@ -20,6 +21,8 @@ protocol MovieListPresenterDelegate {
     func viewDidLoad()
     func fetchMovies()
     func refreshMovieList()
+    func showMovieDetails(viewController : UIViewController, data : NSFetchRequestResult?)
+    
 }
 
 protocol MovieListViewProtocol:class {

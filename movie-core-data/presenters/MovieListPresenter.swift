@@ -6,9 +6,11 @@
 //  Copyright © 2020 padc. All rights reserved.
 //
 
-import Foundation
+import UIKit
+import CoreData
 
 class MovieListPresenter: MovieListPresenterDelegate {
+    
     
     weak var view: MovieListViewProtocol?
     var interactor: MovieListInteractorProtocol?
@@ -27,4 +29,9 @@ class MovieListPresenter: MovieListPresenterDelegate {
         MovieVO.deleteAllMovies()
         interactor?.retrieveMovies()
     }
+    
+    func showMovieDetails(viewController: UIViewController, data: NSFetchRequestResult?) {
+        router?.navigateToMovieDetailsViewControlelr(viewController: viewController, data: data)
+    }
+
 }
