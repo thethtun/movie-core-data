@@ -11,7 +11,7 @@ import CoreData
 
 class MovieListDataManager : MovieListDataManagerProtocol {
    
-    
+
     private let dbContext = CoreDataStack.shared.viewContext
     
     func retrieveGenres() -> [MovieGenreVO] {
