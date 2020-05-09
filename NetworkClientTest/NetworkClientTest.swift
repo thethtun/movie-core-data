@@ -36,6 +36,36 @@ class NetworkClientTest: XCTestCase {
         
     }
     
+    func test_movie_search_failure() throws {
+        let response = HTTPURLResponse(url: URL(string: "https://google.com/")!,
+                                       statusCode: 403,
+                                       httpVersion: nil,
+                                       headerFields: nil)
+        let error = NSError(domain: "test_movie_search_failure", code: 403, userInfo: nil)
+        let mockSession = MockURLSession(data: nil, response: response, error: error)
+        let client = NetworkClient(mockSession)
+        client.searchMoviesByName(movieName: "game") { (data) in
+            XCTAssertEqual(data.count, 0)
+        }
+        
+    }
+    
+    func test_movie_search_no_mock_success() {
+        
+        let session = URLSession.shared
+        let client = NetworkClient(session)
+        
+        let searchMovieExpectation = expectation(description: "search movies")
+        
+        client.searchMoviesByName(movieName: "How to train your dragon") { (data) in
+            
+            XCTAssertEqual(data.count, 9)
+            searchMovieExpectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+    
     func testPerformanceExample() {
         // This is an example of a performance test case.
         measure {
