@@ -18,6 +18,19 @@ class NetworkClientTest: XCTestCase {
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
+    
+    func test_LoginWithPasswordViewController() {
+        //Instantiate storyboard
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        XCTAssertNotNil(storyboard, "Target storyboard should be present")
+        
+        //Instantiate viewcontroller
+        let viewcontroller = storyboard.instantiateViewController(identifier: "MovieListViewController") as? UINavigationController
+
+        //Assert that viewcontroller is fully loaded
+        XCTAssertNotNil(viewcontroller, "Target view controller should be present")
+
+    }
 
     func test_movie_search_success() throws {
         let data = try Data.fromJSON(fileName: "search_movie_result")
