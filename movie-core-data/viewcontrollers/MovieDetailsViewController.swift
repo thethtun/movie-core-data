@@ -65,7 +65,7 @@ class MovieDetailsViewController: UIViewController {
         
         initView()
         
-        if NetworkUtils.checkReachable() == false {
+        if NetworkUtils().checkReachable() == false {
             Dialog.showAlert(viewController: self, title: "Error", message: "No Internet Connection!")
             if let data = MovieVO.getMovieById(movieId: movieId) {
                 self.bindData(data: data)

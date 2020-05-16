@@ -10,10 +10,16 @@ import Foundation
 import Reachability
 import SystemConfiguration
 
-class NetworkUtils {
+protocol NetworkUtilsAPI {
+    func isNetworkReachable(with flags: SCNetworkReachabilityFlags) -> Bool
+    func isOnline(callback: @escaping (Bool) -> Void)
+    func checkReachable() -> Bool
+}
+
+
+class NetworkUtils : NetworkUtilsAPI  {
     
-    
-    static func isOnline(callback: @escaping (Bool) -> Void){
+    func isOnline(callback: @escaping (Bool) -> Void){
         //declare this property where it won't go out of scope relative to your listener
         let reachability = Reachability()!
         
@@ -39,7 +45,7 @@ class NetworkUtils {
         }
     }
     
-    static func checkReachable() -> Bool
+    func checkReachable() -> Bool
     {
         let reachability = SCNetworkReachabilityCreateWithName(nil, "www.raywenderlich.com")
         
@@ -67,7 +73,7 @@ class NetworkUtils {
     }
     
     
-    static func isNetworkReachable(with flags: SCNetworkReachabilityFlags) -> Bool {
+    func isNetworkReachable(with flags: SCNetworkReachabilityFlags) -> Bool {
         let isReachable = flags.contains(.reachable)
         let needsConnection = flags.contains(.connectionRequired)
         let canConnectAutomatically = flags.contains(.connectionOnDemand) || flags.contains(.connectionOnTraffic)

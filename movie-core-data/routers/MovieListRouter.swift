@@ -26,6 +26,7 @@ class MovieListRouter: MovieListRouterProtocol {
         interactor.presenter = presenter
         interactor.dataManager = MovieListDataManager()
         interactor.movieNetworkClient = MovieNetworkClient()
+        interactor.networkUtil = NetworkUtils()
         
         presenter.interactor = interactor
         presenter.view = movieListVC

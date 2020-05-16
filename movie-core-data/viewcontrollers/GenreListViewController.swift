@@ -60,7 +60,7 @@ class GenreListViewController: UIViewController {
     }
     
     fileprivate func fetchMovieGenres() {
-        if NetworkUtils.checkReachable() == false {
+        if NetworkUtils().checkReachable() == false {
             Dialog.showAlert(viewController: self, title: "Error", message: "No Internet Connection!")
             return
         }

@@ -14,19 +14,19 @@ class MovieListInteractor: MovieListInteractorProtocol {
     var dataManager : MovieListDataManagerProtocol?
     var movieNetworkClient : MovieNetworkClientAPI?
     
+    //Inverse network util dependency
+    var networkUtil : NetworkUtilsAPI?
+    
     func retrieveGenres() {
         if let genreList = dataManager?.retrieveGenres() {
             if genreList.isEmpty {
-                if NetworkUtils.checkReachable() == false {
+                if networkUtil?.checkReachable() == false {
                     self.presenter?.view?.showError(msg: "No internet connection!")
                 } else {
                     movieNetworkClient?.fetchMovieGenres(completion: { (data) in
-                        
                         self.dataManager?.saveGenres(data: data)
                     })
                 }
-            } else {
-                //??
             }
         } else {
             //TODO: data manager is null => show prompt appropriately.
@@ -39,7 +39,7 @@ class MovieListInteractor: MovieListInteractorProtocol {
         
         if let movieList = dataManager?.retrieveMovies() {
             if movieList.isEmpty {
-                if NetworkUtils.checkReachable() == false {
+                if networkUtil?.checkReachable() == false {
                     self.presenter?.view?.stopLoading()
                     self.presenter?.view?.showError(msg: "No internet connection!")
                 } else {

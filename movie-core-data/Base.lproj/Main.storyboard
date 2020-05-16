@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="qfx-ja-iGE">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="qfx-ja-iGE">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -11,7 +11,7 @@
         <!--Movies-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="MovieListViewController" customModule="Movie" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="MovieListViewController" customModule="movie_core_data" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -49,7 +49,7 @@
         <!--Genres-->
         <scene sceneID="T4s-yH-bZZ">
             <objects>
-                <viewController id="g61-7X-Kmg" customClass="GenreListViewController" customModule="Movie" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="g61-7X-Kmg" customClass="GenreListViewController" customModule="movie_core_data" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5N5-u3-3Wy">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -58,7 +58,7 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="GenreListTableViewCell" rowHeight="55" id="ZLM-gf-Gqe" customClass="GenreListTableViewCell" customModule="Movie" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="GenreListTableViewCell" rowHeight="55" id="ZLM-gf-Gqe" customClass="GenreListTableViewCell" customModule="movie_core_data" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ZLM-gf-Gqe" id="tme-Pu-KsM">
@@ -108,7 +108,7 @@
         <!--Movie Details View Controller-->
         <scene sceneID="TzN-bp-hDD">
             <objects>
-                <viewController storyboardIdentifier="MovieDetailsViewController" id="RDH-qR-ecD" customClass="MovieDetailsViewController" customModule="Movie" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MovieDetailsViewController" id="RDH-qR-ecD" customClass="MovieDetailsViewController" customModule="movie_core_data" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="L4f-ul-XGc">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="1000"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -150,7 +150,7 @@
                                                     <constraint firstItem="eUH-cp-1LH" firstAttribute="leading" secondItem="0ak-LH-o2u" secondAttribute="leading" constant="5" id="pRJ-Sp-znT"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CKL-qT-v6v" customClass="CardView" customModule="Movie" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CKL-qT-v6v" customClass="CardView" customModule="movie_core_data" customModuleProvider="target">
                                                 <rect key="frame" x="132" y="105" width="150" height="220"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="H6G-kt-BKg">
@@ -417,7 +417,7 @@
         <!--Movie Trailer View Controller-->
         <scene sceneID="Q1v-QH-n7W">
             <objects>
-                <viewController storyboardIdentifier="MovieTrailerViewController" id="d5r-3H-RCt" customClass="MovieTrailerViewController" customModule="Movie" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MovieTrailerViewController" id="d5r-3H-RCt" customClass="MovieTrailerViewController" customModule="movie_core_data" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ZlY-v6-dRP">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -525,7 +525,7 @@
         <!--Search Movies-->
         <scene sceneID="3Up-oh-UR9">
             <objects>
-                <viewController id="RUd-eW-9f2" customClass="SearchMovieViewController" customModule="Movie" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="RUd-eW-9f2" customClass="SearchMovieViewController" customModule="movie_core_data" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8C3-O8-pC5">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -574,7 +574,7 @@
         <!--Movies-->
         <scene sceneID="M1K-3c-LGu">
             <objects>
-                <viewController id="sh9-Ni-ESQ" customClass="MovieListByGenreViewController" customModule="Movie" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="sh9-Ni-ESQ" customClass="MovieListByGenreViewController" customModule="movie_core_data" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="haz-tG-2Zy">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -638,7 +638,7 @@
         <!--Search Movies-->
         <scene sceneID="qcx-uB-aPQ">
             <objects>
-                <viewController id="OgF-2q-4X8" customClass="SearchMovieViewController" customModule="Movie" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="OgF-2q-4X8" customClass="SearchMovieViewController" customModule="movie_core_data" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="sGB-tr-0mG">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -681,7 +681,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Idf-2F-nau" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <searchDisplayController id="KCS-Wi-VaM"/>
             </objects>
             <point key="canvasLocation" x="1835" y="1472"/>
         </scene>
@@ -714,7 +713,7 @@
         <!--Books-->
         <scene sceneID="oFP-7a-bQr">
             <objects>
-                <viewController id="wUe-ZN-G0a" customClass="BookmarkViewController" customModule="Movie" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="wUe-ZN-G0a" customClass="BookmarkViewController" customModule="movie_core_data" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="HSK-u1-6YC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -752,7 +751,7 @@
         <!--Profile-->
         <scene sceneID="j2K-pC-gVN">
             <objects>
-                <viewController storyboardIdentifier="LoginViewController" id="XxO-Ez-ky5" customClass="LoginViewController" customModule="Movie" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginViewController" id="XxO-Ez-ky5" customClass="LoginViewController" customModule="movie_core_data" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tdk-9Q-BJR">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -869,7 +868,7 @@
         <!--User Profile View Controller-->
         <scene sceneID="QrZ-lz-2wh">
             <objects>
-                <viewController storyboardIdentifier="UserProfileViewController" id="5i4-xn-MAt" customClass="UserProfileViewController" customModule="Movie" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="UserProfileViewController" id="5i4-xn-MAt" customClass="UserProfileViewController" customModule="movie_core_data" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hBg-Se-Lj6">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -912,14 +911,14 @@
                                             <constraint firstAttribute="bottom" secondItem="zTL-qT-7uB" secondAttribute="bottom" constant="15" id="piz-ja-RB8"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z0c-8d-5W3" userLabel="RatedMovies" customClass="MovieListView" customModule="Movie" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z0c-8d-5W3" userLabel="RatedMovies" customClass="MovieListView" customModule="movie_core_data" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="155" width="414" height="220"/>
                                         <color key="backgroundColor" red="0.16101157669999999" green="0.1644179821" blue="0.1843163967" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="220" id="VQC-7F-MhL"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s7I-Fd-Vwn" userLabel="WatchListMovies" customClass="MovieListView" customModule="Movie" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s7I-Fd-Vwn" userLabel="WatchListMovies" customClass="MovieListView" customModule="movie_core_data" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="395" width="414" height="220"/>
                                         <color key="backgroundColor" red="0.16101157669999999" green="0.1644179821" blue="0.1843163967" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
