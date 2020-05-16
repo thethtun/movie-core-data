@@ -27,11 +27,10 @@ class LoadingIndicator {
     init(viewController : UIViewController) {
         self.refView = viewController
         
-        self.startLoading()
     }
     
     
-    private func startLoading() {
+    func startLoading() {
         guard let viewcontroller = self.refView else {
             print("\(TAG) : Failed to start Loading")
             return
