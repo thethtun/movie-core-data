@@ -8,6 +8,6 @@ target 'movie-core-data' do
   pod 'ReachabilitySwift'
   pod 'YoutubePlayer-in-WKWebView'
   # Pods for movie-core-data
-
+  pod 'Wormholy', :configurations => ['Debug']
 end
 

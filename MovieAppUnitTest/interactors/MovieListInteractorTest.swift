@@ -48,7 +48,7 @@ class MovieListInteractorTest: XCTestCase {
         XCTAssertEqual(movieListView.errorMsg!, "No internet connection!")
     }
     
-    func test_retrieveGenres_genreListEmptyInDB_networkFailed_networkOk() {
+    func test_retrieveGenres_genreListEmptyInDB_networkOk() {
         let networkUtils = MockNetworkUtils()
         networkUtils.checkReachability = true
         

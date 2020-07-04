@@ -3,24 +3,28 @@ PODS:
   - SDWebImage (5.0.3):
     - SDWebImage/Core (= 5.0.3)
   - SDWebImage/Core (5.0.3)
+  - Wormholy (1.5.2)
   - YoutubePlayer-in-WKWebView (0.3.3)
 
 DEPENDENCIES:
   - ReachabilitySwift
   - SDWebImage (~> 5.0)
+  - Wormholy
   - YoutubePlayer-in-WKWebView
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - ReachabilitySwift
     - SDWebImage
+    - Wormholy
     - YoutubePlayer-in-WKWebView
 
 SPEC CHECKSUMS:
   ReachabilitySwift: 4032e2f59586e11e3b0ebe15b167abdd587a388b
   SDWebImage: d4f87d7d36c8a4d9f9459dc282e0caa057fdf935
+  Wormholy: 3344d3591d78488d957402d51dccfbfafd6f9641
   YoutubePlayer-in-WKWebView: 7694e858c5c3472ed067d6fe34eb9b944845e63c
 
-PODFILE CHECKSUM: 4e1e7b857f158b21f052c448605484e5c7ac66c3
+PODFILE CHECKSUM: a5492ca6a158c80738bc430c011ff49707cd4f09
 
 COCOAPODS: 1.7.5
