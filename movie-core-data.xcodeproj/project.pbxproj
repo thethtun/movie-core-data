@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5133602924CC14670045B622 /* MovieSearchProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5133602824CC14670045B622 /* MovieSearchProtocols.swift */; };
+		5133602B24CC14B70045B622 /* SearchMovieListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5133602A24CC14B60045B622 /* SearchMovieListInteractor.swift */; };
+		5133602D24CC15480045B622 /* SearchMovieListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5133602C24CC15480045B622 /* SearchMovieListPresenter.swift */; };
+		5133602F24CC16C50045B622 /* SearchMovieListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5133602E24CC16C50045B622 /* SearchMovieListRouter.swift */; };
 		516DB0F023314296000C1973 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516DB0EF23314296000C1973 /* AppDelegate.swift */; };
 		516DB0F523314296000C1973 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 516DB0F323314296000C1973 /* Main.storyboard */; };
 		516DB0F72331429C000C1973 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 516DB0F62331429C000C1973 /* Assets.xcassets */; };
@@ -89,6 +93,10 @@
 
 /* Begin PBXFileReference section */
 		11AD258DC3E04BDD16DEC66C /* Pods-movie-core-data.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-movie-core-data.release.xcconfig"; path = "Target Support Files/Pods-movie-core-data/Pods-movie-core-data.release.xcconfig"; sourceTree = "<group>"; };
+		5133602824CC14670045B622 /* MovieSearchProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieSearchProtocols.swift; sourceTree = "<group>"; };
+		5133602A24CC14B60045B622 /* SearchMovieListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovieListInteractor.swift; sourceTree = "<group>"; };
+		5133602C24CC15480045B622 /* SearchMovieListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovieListPresenter.swift; sourceTree = "<group>"; };
+		5133602E24CC16C50045B622 /* SearchMovieListRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovieListRouter.swift; sourceTree = "<group>"; };
 		516DB0EC23314296000C1973 /* Movie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Movie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		516DB0EF23314296000C1973 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		516DB0F423314296000C1973 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -236,8 +244,8 @@
 				516DB10E23314ABA000C1973 /* network */,
 				516DB10A2331446E000C1973 /* utils */,
 				516DB10923314466000C1973 /* viewcontrollers */,
-				516DB10B23314475000C1973 /* views */,
 				516DB10723314458000C1973 /* model */,
+				516DB10B23314475000C1973 /* views */,
 				516DB0EF23314296000C1973 /* AppDelegate.swift */,
 				516DB0F323314296000C1973 /* Main.storyboard */,
 				516DB0F62331429C000C1973 /* Assets.xcassets */,
@@ -419,6 +427,7 @@
 			isa = PBXGroup;
 			children = (
 				51F6D9B3245F19A800A1CD40 /* MovieListInteractor.swift */,
+				5133602A24CC14B60045B622 /* SearchMovieListInteractor.swift */,
 			);
 			path = interactors;
 			sourceTree = "<group>";
@@ -427,6 +436,7 @@
 			isa = PBXGroup;
 			children = (
 				51F6D9BC245F1E1300A1CD40 /* MovieListPresenter.swift */,
+				5133602C24CC15480045B622 /* SearchMovieListPresenter.swift */,
 			);
 			path = presenters;
 			sourceTree = "<group>";
@@ -435,6 +445,7 @@
 			isa = PBXGroup;
 			children = (
 				51F6D9C4245F2BD800A1CD40 /* MovieListRouter.swift */,
+				5133602E24CC16C50045B622 /* SearchMovieListRouter.swift */,
 			);
 			path = routers;
 			sourceTree = "<group>";
@@ -443,6 +454,7 @@
 			isa = PBXGroup;
 			children = (
 				51F6D9B7245F1A4C00A1CD40 /* MovieListProtocols.swift */,
+				5133602824CC14670045B622 /* MovieSearchProtocols.swift */,
 			);
 			path = protocols;
 			sourceTree = "<group>";
@@ -643,21 +655,25 @@
 				517BBE64235A5D6F007CE353 /* Routes.swift in Sources */,
 				518F5B2E2366D8E1000D6446 /* Navigator.swift in Sources */,
 				517BBE5E235A5D6F007CE353 /* LoadingIndicator.swift in Sources */,
+				5133602924CC14670045B622 /* MovieSearchProtocols.swift in Sources */,
 				517BBE8B235A5E09007CE353 /* MovieListViewController.swift in Sources */,
 				517BBE72235A5DB7007CE353 /* MovieVideoResponse.swift in Sources */,
 				517BBE5C235A5D6F007CE353 /* Theme.swift in Sources */,
 				51F6D9B4245F19A800A1CD40 /* MovieListInteractor.swift in Sources */,
 				517BBE85235A5E09007CE353 /* BookmarkViewController.swift in Sources */,
+				5133602B24CC14B70045B622 /* SearchMovieListInteractor.swift in Sources */,
 				517BBE9E235A5E94007CE353 /* MovieBookmark+Extension.swift in Sources */,
 				517BBE91235A5E5D007CE353 /* BookmarkCollectionViewCell.swift in Sources */,
 				517BBE8A235A5E09007CE353 /* MovieListByGenreViewController.swift in Sources */,
 				517BBE77235A5DB7007CE353 /* MovieGenreListResponse.swift in Sources */,
 				517BBE76235A5DB7007CE353 /* UserAccountResponse.swift in Sources */,
+				5133602F24CC16C50045B622 /* SearchMovieListRouter.swift in Sources */,
 				517BBE86235A5E09007CE353 /* SearchMovieViewController.swift in Sources */,
 				517BBEA6235A77EE007CE353 /* MovieItemsCollectionViewCell.swift in Sources */,
 				517BBEA3235A5EBE007CE353 /* CoreDataStack.swift in Sources */,
 				517BBE63235A5D6F007CE353 /* Extensions.swift in Sources */,
 				517BBE93235A5E5D007CE353 /* MovieListCollectionViewCell.swift in Sources */,
+				5133602D24CC15480045B622 /* SearchMovieListPresenter.swift in Sources */,
 				517BBE89235A5E09007CE353 /* MovieDetailsViewController.swift in Sources */,
 				517BBE60235A5D6F007CE353 /* NetworkUtil.swift in Sources */,
 				51F6D9C3245F213D00A1CD40 /* MovieNetworkClientAPI.swift in Sources */,

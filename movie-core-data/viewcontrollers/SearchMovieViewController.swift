@@ -18,6 +18,8 @@ class SearchMovieViewController: UIViewController {
     
     private var searchedResult = [MovieInfoResponse]()
     
+    var presenter : SearchMoviePresenterProtocol?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -75,7 +77,6 @@ extension SearchMovieViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        
         let movieVO = MovieInfoResponse.convertToMovieVO(data: movie, context: CoreDataStack.shared.viewContext)
         
         cell.data = movieVO
@@ -99,16 +100,11 @@ extension SearchMovieViewController: UICollectionViewDataSource {
 extension SearchMovieViewController : UISearchBarDelegate {
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        let loading = LoadingIndicator(viewController: self)
+//        let loading = LoadingIndicator(viewController: self)
+//        loading.stopLoading()
         let searchedMovie = searchBar.text ?? ""
     
-        MovieModel.shared.searchMoviesByName(movieName: searchedMovie, completion: { (movieInfoResponse) in
-            DispatchQueue.main.async { [weak self] in
-                loading.stopLoading()
-                self?.bindData(movieInfoResponse)
-            }
-        })
-        
+        presenter?.searchMovie(name: searchedMovie)
     }
 }
 
@@ -146,4 +142,23 @@ extension SearchMovieViewController : UICollectionViewDelegateFlowLayout {
 }
 
 
-
+extension SearchMovieViewController : SearchMovieViewProtocol {
+    
+    func showError(msg: String) {
+        Dialog.showAlert(viewController: self, title: "Error", message: msg)
+    }
+    
+    func showLoading() {
+        
+    }
+    
+    func stopLoading() {
+        
+    }
+    
+    func onMovieFound(data: [MovieInfoResponse]) {
+        self.bindData(data)
+    }
+    
+    
+}

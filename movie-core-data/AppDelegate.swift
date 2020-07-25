@@ -22,9 +22,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         CoreDataStack.shared.persistentContainer = self.persistentContainer
         
         //Start MovieList Screen
-        let movieListVC = MovieListRouter.createMovieListViewController()
+        let movieListVC = MovieListRouter.createVC()
+        let searchMovieListVC = SearchMovieListRouter.createVC()
         let tabBarController = UITabBarController()
-        tabBarController.setViewControllers([movieListVC], animated: true)
+        tabBarController.setViewControllers([
+            movieListVC,
+            searchMovieListVC], animated: true)
+        
         tabBarController.tabBar.barTintColor = UIColor.black
         window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()

@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 protocol MovieListRouterProtocol: class{
-    static func createMovieListViewController() -> UINavigationController
+    static func createVC() -> UINavigationController
     func navigateToMovieDetailsViewControlelr(viewController : UIViewController, data : NSFetchRequestResult?)
 }
 

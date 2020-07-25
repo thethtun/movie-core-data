@@ -15,7 +15,7 @@ class MovieListRouter: MovieListRouterProtocol {
     }
     
     
-    static func createMovieListViewController() -> UINavigationController {
+    static func createVC() -> UINavigationController {
         let navVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(identifier: String(describing: MovieListViewController.self)) as! UINavigationController
         let movieListVC = navVC.viewControllers[0] as! MovieListViewController
         

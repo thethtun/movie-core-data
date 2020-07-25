@@ -11,7 +11,6 @@ import CoreData
 
 class MovieListPresenter: MovieListPresenterDelegate {
     
-    
     weak var view: MovieListViewProtocol?
     var interactor: MovieListInteractorProtocol?
     var router : MovieListRouterProtocol?

@@ -22,11 +22,9 @@ class MovieListViewController: UIViewController {
         return refreshControl
     }()
     
-    
     var movieTags : [MovieTag] = [.UPCOMING, .NOW_PLAYING, .TOP_RATED, .POPULAR]
     
     let TAG : String = "MovieListViewController"
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
