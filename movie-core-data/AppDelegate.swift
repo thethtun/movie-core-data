@@ -24,10 +24,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //Start MovieList Screen
         let movieListVC = MovieListRouter.createVC()
         let searchMovieListVC = SearchMovieListRouter.createVC()
+        let loginVC = LoginScreenRouter.createVC()
         let tabBarController = UITabBarController()
         tabBarController.setViewControllers([
             movieListVC,
-            searchMovieListVC], animated: true)
+            searchMovieListVC,
+            loginVC,
+        ], animated: true)
         
         tabBarController.tabBar.barTintColor = UIColor.black
         window?.rootViewController = tabBarController

@@ -16,6 +16,8 @@ class LoginViewController: UIViewController {
     
     var loading : LoadingIndicator?
     
+    var presenter : UserLoginPresenterProtocol?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -43,65 +45,19 @@ class LoginViewController: UIViewController {
     
     
     @IBAction func onClickSignIn(_ sender : Any) {
-        
-        
         validateInput { username, password in
-            self.loading?.startLoading()
-            loginWithID(username, password) { response in
-                
-                DispatchQueue.main.async { [weak self] in
-                    self?.loading?.stopLoading()
-                    
-                    if let response = response {
-                        let sessionId = response.session_id ?? ""
-                        UserDefaultsManager.sessionId = sessionId
-                        
-                        self?.displayLoggedInUser()
-                        
-                    } else {
-                        if let viewcontroller = self {
-                            Dialog.showAlert(viewController: viewcontroller, title: "Error :(", message: "Failed to login. Try Again.")
-                        }
-                        
-                    }
-                }
-            }
+            self.presenter?.signIn(username: username, password: password)
         }
     }
     
     
     func displayLoggedInUser() {
-        if let userProfileViewController = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileViewController") as? UserProfileViewController {
+        if let userProfileViewController = self.storyboard?.instantiateViewController(withIdentifier: String(describing: UserProfileViewController.self)) as? UserProfileViewController {
             self.navigationController?.setViewControllers([userProfileViewController], animated: true)
         }
     }
     
-    func loginWithID(_ username : String,_ password : String, completion: @escaping (CreateSessionResponse?) -> Void) {
-        AuthModel.shared.fetchRequestToken { response in
-            let requestToken = response?.request_token
-            
-            var requestBody = [String : String]()
-            requestBody["username"] = username
-            requestBody["password"] = password
-            requestBody["request_token"] = requestToken ?? ""
-            
-            AuthModel.shared.createSessionWithLogin(body: requestBody) { response in
-                if let _ = response {
-                    let creatSessionBody = [
-                        "request_token" : response?.request_token ?? ""
-                    ]
-                    
-                    AuthModel.shared.createSession(body: creatSessionBody, completion: completion)
-                } else {
-                    DispatchQueue.main.async {
-                        self.loading?.stopLoading()
-                        Dialog.showAlert(viewController: self, title: "Hello there...", message: "Either email or password is incorrect")
-                    }
-                }
-            }
-        }
-    }
-    
+ 
     func validateInput(success : (String, String) -> Void)  {
         guard let username = textFieldEmail.text, !username.isEmpty else {
             Dialog.showAlert(viewController: self, title: "Attention", message: "Enter Your MovieDB username")
@@ -117,4 +73,33 @@ class LoginViewController: UIViewController {
     }
    
 
+}
+
+extension LoginViewController: UserLoginViewProtocol {
+    func onLogginSuccess(data: CreateSessionResponse?) {
+        if let response = data {
+            let sessionId = response.session_id ?? ""
+            UserDefaultsManager.sessionId = sessionId
+            
+            self.displayLoggedInUser()
+            
+        } else {
+            Dialog.showAlert(viewController: self, title: "Error :(", message: "Failed to login. Try Again.")
+        }
+    }
+    
+    
+    func showError(msg: String) {
+        Dialog.showAlert(viewController: self, title: "Oops...", message: msg)
+    }
+    
+    func showLoading() {
+        self.loading?.startLoading()
+    }
+    
+    func stopLoading() {
+        self.loading?.stopLoading()
+    }
+    
+    
 }

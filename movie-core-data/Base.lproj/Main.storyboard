@@ -751,7 +751,7 @@
         <!--Profile-->
         <scene sceneID="j2K-pC-gVN">
             <objects>
-                <viewController storyboardIdentifier="LoginViewController" id="XxO-Ez-ky5" customClass="LoginViewController" customModule="Movie" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="XxO-Ez-ky5" customClass="LoginViewController" customModule="Movie" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tdk-9Q-BJR">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -842,7 +842,7 @@
         <!--Profile-->
         <scene sceneID="l3N-vb-x53">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="wNX-kO-p6f" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="LoginViewController" automaticallyAdjustsScrollViewInsets="NO" id="wNX-kO-p6f" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Profile" image="icons8-gender_neutral_user_filled" selectedImage="icons8-gender_neutral_user_filled" id="E8w-NA-V5E"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="4aR-JR-jEh">

@@ -11,6 +11,13 @@
 		5133602B24CC14B70045B622 /* SearchMovieListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5133602A24CC14B60045B622 /* SearchMovieListInteractor.swift */; };
 		5133602D24CC15480045B622 /* SearchMovieListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5133602C24CC15480045B622 /* SearchMovieListPresenter.swift */; };
 		5133602F24CC16C50045B622 /* SearchMovieListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5133602E24CC16C50045B622 /* SearchMovieListRouter.swift */; };
+		5133603324CC44090045B622 /* UserLoginProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5133603224CC44090045B622 /* UserLoginProtocols.swift */; };
+		5133603524CC45740045B622 /* LoginInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5133603424CC45740045B622 /* LoginInteractor.swift */; };
+		5133603724CC45A20045B622 /* LoginPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5133603624CC45A20045B622 /* LoginPresenter.swift */; };
+		5133603924CC45CB0045B622 /* LoginScreenRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5133603824CC45CB0045B622 /* LoginScreenRouter.swift */; };
+		5133603B24CC480F0045B622 /* UserAuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5133603A24CC480F0045B622 /* UserAuthAPI.swift */; };
+		5133603D24CC486F0045B622 /* UserAuthClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5133603C24CC486F0045B622 /* UserAuthClient.swift */; };
+		5133603F24CC48A40045B622 /* ClientAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5133603E24CC48A40045B622 /* ClientAPI.swift */; };
 		516DB0F023314296000C1973 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516DB0EF23314296000C1973 /* AppDelegate.swift */; };
 		516DB0F523314296000C1973 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 516DB0F323314296000C1973 /* Main.storyboard */; };
 		516DB0F72331429C000C1973 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 516DB0F62331429C000C1973 /* Assets.xcassets */; };
@@ -97,6 +104,13 @@
 		5133602A24CC14B60045B622 /* SearchMovieListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovieListInteractor.swift; sourceTree = "<group>"; };
 		5133602C24CC15480045B622 /* SearchMovieListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovieListPresenter.swift; sourceTree = "<group>"; };
 		5133602E24CC16C50045B622 /* SearchMovieListRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovieListRouter.swift; sourceTree = "<group>"; };
+		5133603224CC44090045B622 /* UserLoginProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLoginProtocols.swift; sourceTree = "<group>"; };
+		5133603424CC45740045B622 /* LoginInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInteractor.swift; sourceTree = "<group>"; };
+		5133603624CC45A20045B622 /* LoginPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPresenter.swift; sourceTree = "<group>"; };
+		5133603824CC45CB0045B622 /* LoginScreenRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreenRouter.swift; sourceTree = "<group>"; };
+		5133603A24CC480F0045B622 /* UserAuthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAuthAPI.swift; sourceTree = "<group>"; };
+		5133603C24CC486F0045B622 /* UserAuthClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAuthClient.swift; sourceTree = "<group>"; };
+		5133603E24CC48A40045B622 /* ClientAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientAPI.swift; sourceTree = "<group>"; };
 		516DB0EC23314296000C1973 /* Movie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Movie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		516DB0EF23314296000C1973 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		516DB0F423314296000C1973 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -428,6 +442,7 @@
 			children = (
 				51F6D9B3245F19A800A1CD40 /* MovieListInteractor.swift */,
 				5133602A24CC14B60045B622 /* SearchMovieListInteractor.swift */,
+				5133603424CC45740045B622 /* LoginInteractor.swift */,
 			);
 			path = interactors;
 			sourceTree = "<group>";
@@ -437,6 +452,7 @@
 			children = (
 				51F6D9BC245F1E1300A1CD40 /* MovieListPresenter.swift */,
 				5133602C24CC15480045B622 /* SearchMovieListPresenter.swift */,
+				5133603624CC45A20045B622 /* LoginPresenter.swift */,
 			);
 			path = presenters;
 			sourceTree = "<group>";
@@ -446,6 +462,7 @@
 			children = (
 				51F6D9C4245F2BD800A1CD40 /* MovieListRouter.swift */,
 				5133602E24CC16C50045B622 /* SearchMovieListRouter.swift */,
+				5133603824CC45CB0045B622 /* LoginScreenRouter.swift */,
 			);
 			path = routers;
 			sourceTree = "<group>";
@@ -455,6 +472,7 @@
 			children = (
 				51F6D9B7245F1A4C00A1CD40 /* MovieListProtocols.swift */,
 				5133602824CC14670045B622 /* MovieSearchProtocols.swift */,
+				5133603224CC44090045B622 /* UserLoginProtocols.swift */,
 			);
 			path = protocols;
 			sourceTree = "<group>";
@@ -471,6 +489,7 @@
 			isa = PBXGroup;
 			children = (
 				51F6D9BF245F211300A1CD40 /* MovieNetworkClient.swift */,
+				5133603C24CC486F0045B622 /* UserAuthClient.swift */,
 			);
 			path = clients;
 			sourceTree = "<group>";
@@ -479,6 +498,8 @@
 			isa = PBXGroup;
 			children = (
 				51F6D9C2245F213D00A1CD40 /* MovieNetworkClientAPI.swift */,
+				5133603A24CC480F0045B622 /* UserAuthAPI.swift */,
+				5133603E24CC48A40045B622 /* ClientAPI.swift */,
 			);
 			path = api;
 			sourceTree = "<group>";
@@ -649,12 +670,16 @@
 				51F6D9C0245F211300A1CD40 /* MovieNetworkClient.swift in Sources */,
 				517BBEA4235A5EBE007CE353 /* FetchResultControllerManager.swift in Sources */,
 				51F6D9BD245F1E1300A1CD40 /* MovieListPresenter.swift in Sources */,
+				5133603F24CC48A40045B622 /* ClientAPI.swift in Sources */,
 				518F5B302366DF55000D6446 /* UserModel.swift in Sources */,
+				5133603924CC45CB0045B622 /* LoginScreenRouter.swift in Sources */,
 				517BBEA0235A5E94007CE353 /* MovieVO+Extension.swift in Sources */,
 				517BBE5D235A5D6F007CE353 /* Dialog.swift in Sources */,
+				5133603B24CC480F0045B622 /* UserAuthAPI.swift in Sources */,
 				517BBE64235A5D6F007CE353 /* Routes.swift in Sources */,
 				518F5B2E2366D8E1000D6446 /* Navigator.swift in Sources */,
 				517BBE5E235A5D6F007CE353 /* LoadingIndicator.swift in Sources */,
+				5133603324CC44090045B622 /* UserLoginProtocols.swift in Sources */,
 				5133602924CC14670045B622 /* MovieSearchProtocols.swift in Sources */,
 				517BBE8B235A5E09007CE353 /* MovieListViewController.swift in Sources */,
 				517BBE72235A5DB7007CE353 /* MovieVideoResponse.swift in Sources */,
@@ -665,7 +690,9 @@
 				517BBE9E235A5E94007CE353 /* MovieBookmark+Extension.swift in Sources */,
 				517BBE91235A5E5D007CE353 /* BookmarkCollectionViewCell.swift in Sources */,
 				517BBE8A235A5E09007CE353 /* MovieListByGenreViewController.swift in Sources */,
+				5133603524CC45740045B622 /* LoginInteractor.swift in Sources */,
 				517BBE77235A5DB7007CE353 /* MovieGenreListResponse.swift in Sources */,
+				5133603724CC45A20045B622 /* LoginPresenter.swift in Sources */,
 				517BBE76235A5DB7007CE353 /* UserAccountResponse.swift in Sources */,
 				5133602F24CC16C50045B622 /* SearchMovieListRouter.swift in Sources */,
 				517BBE86235A5E09007CE353 /* SearchMovieViewController.swift in Sources */,
@@ -698,6 +725,7 @@
 				51F6D9C5245F2BD800A1CD40 /* MovieListRouter.swift in Sources */,
 				51F6D9B8245F1A4C00A1CD40 /* MovieListProtocols.swift in Sources */,
 				517BBE68235A5D9D007CE353 /* AuthModel.swift in Sources */,
+				5133603D24CC486F0045B622 /* UserAuthClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
